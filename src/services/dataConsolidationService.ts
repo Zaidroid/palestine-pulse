@@ -568,9 +568,9 @@ export class DataConsolidationService {
         case 'agriculture':
           // Return agriculture-related data from West Bank dataset
           return {
-            agriculture: allDatasets.jerusalemWestBank?.filter(item =>
+            agriculture: Array.isArray(allDatasets.jerusalemWestBank) ? allDatasets.jerusalemWestBank.filter(item =>
               item.incident_type?.toLowerCase().includes('agricultur')
-            ) || [],
+            ) : [],
             metadata: { source: 'goodshepherd', lastUpdated: new Date().toISOString() }
           };
 

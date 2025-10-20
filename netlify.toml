@@ -35,7 +35,7 @@
     Permissions-Policy = "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
     
     # Content Security Policy
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://data.techforpalestine.org https://data.humdata.org https://api.worldbank.org https://api.who.int https://docs.google.com https://corsproxy.io https://doc-0g-60-sheets.googleusercontent.com https://goodshepherdcollective.org; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://data.techforpalestine.org https://data.humdata.org https://api.worldbank.org https://api.who.int https://www.unrwa.org https://www.pcbs.gov.ps https://www.btselem.org https://api.wfp.org https://goodshepherdcollective.org https://docs.google.com https://corsproxy.io https://doc-0g-60-sheets.googleusercontent.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
 
 # Cache static assets
 [[headers]]
