@@ -8,7 +8,7 @@
  * - Unified data models for Gaza and West Bank dashboards
  */
 
-import { apiOrchestrator } from './apiOrchestrator';
+import { apiOrchestrator, WFP_ENDPOINTS } from './apiOrchestrator';
 import { goodShepherdService } from './goodShepherdService';
 import { useV3Store } from '@/store/v3Store';
 import {
@@ -21,10 +21,6 @@ import {
   SharedData,
   QualityMetrics
 } from '../types/data.types';
-
-// ============================================
-// DATA SOURCE MAPPING
-// ============================================
 
 // ============================================
 // DATA SOURCE MAPPING
@@ -504,15 +500,33 @@ export class DataConsolidationService {
       case 'wfp':
         data = await this.fetchWFPData(endpoint);
         break;
-      // Add cases for other data sources if they have specific fetching logic
+      case 'btselem':
+        data = await this.fetchBtselemData(endpoint);
+        break;
+      case 'who':
+        data = await this.fetchWHOData(endpoint);
+        break;
+      case 'unrwa':
+        data = await this.fetchUNRWAData(endpoint);
+        break;
+      case 'pcbs':
+        data = await this.fetchPCBSData(endpoint);
+        break;
       default:
         // Generic fetch for sources without special logic
-        data = await apiOrchestrator.fetch(source, endpoint);
+        try {
+          data = await apiOrchestrator.fetch(source, endpoint);
+        } catch (error) {
+            console.error(`Generic fetch for source ${source} failed:`, error);
+            data = null;
+        }
         break;
     }
 
     // Cache the result (5 minutes TTL for most data)
-    await this.db.storeApiCache(cacheKey, data, 5 * 60 * 1000);
+    if (data) {
+        await this.db.storeApiCache(cacheKey, data, 5 * 60 * 1000);
+    }
 
     return data;
   }
@@ -701,15 +715,48 @@ export class DataConsolidationService {
   private async fetchWFPData(endpoint: string): Promise<any> {
     switch (endpoint) {
       case 'foodSecurity':
-        return apiOrchestrator.fetch('wfp', 'food_security_assessment.json');
+        return apiOrchestrator.fetch('wfp', WFP_ENDPOINTS.foodSecurity);
       default:
         throw new Error(`Unknown WFP endpoint: ${endpoint}`);
     }
   }
 
   /**
-   * Calculate data quality metrics
+   * Fetch data from B'Tselem API
    */
+  private async fetchBtselemData(endpoint: string): Promise<any> {
+    // TODO: Implement B'Tselem data fetching logic
+    console.warn(`Btselem endpoint not implemented: ${endpoint}`);
+    return Promise.resolve(null);
+  }
+
+  /**
+   * Fetch data from WHO API
+   */
+  private async fetchWHOData(endpoint: string): Promise<any> {
+    // TODO: Implement WHO data fetching logic
+    console.warn(`WHO endpoint not implemented: ${endpoint}`);
+    return Promise.resolve(null);
+  }
+
+  /**
+   * Fetch data from UNRWA API
+   */
+  private async fetchUNRWAData(endpoint: string): Promise<any> {
+    // TODO: Implement UNRWA data fetching logic
+    console.warn(`UNRWA endpoint not implemented: ${endpoint}`);
+    return Promise.resolve(null);
+  }
+
+  /**
+   * Fetch data from PCBS API
+   */
+  private async fetchPCBSData(endpoint: string): Promise<any> {
+    // TODO: Implement PCBS data fetching logic
+    console.warn(`PCBS endpoint not implemented: ${endpoint}`);
+    return Promise.resolve(null);
+  }
+
   private calculateQualityMetrics(dataSections: any[]): QualityMetrics {
     const issues: string[] = [];
     let totalScore = 0;

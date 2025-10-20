@@ -9,7 +9,7 @@ import {
   Settings,
   Clock,
   CheckCircle2,
- Info
+  Info
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -24,20 +24,19 @@ import { useV3Store, DataSourceState } from "@/store/v3Store";
 
 interface V3FooterProps {
   autoRefreshInterval?: number;
-  onRefresh?: () => void;
   onExport?: () => void;
   className?: string;
 }
 
 export const V3Footer = ({
   autoRefreshInterval = 300000, // 5 minutes
-  onRefresh,
   onExport,
   className
 }: V3FooterProps) => {
-  const { dataSourceStatus, lastUpdated } = useV3Store(state => ({
+  const { dataSourceStatus, lastUpdated, fetchConsolidatedData } = useV3Store(state => ({
     dataSourceStatus: state.dataSourceStatus,
     lastUpdated: state.lastUpdated,
+    fetchConsolidatedData: state.fetchConsolidatedData,
   }));
   
   const [timeUntilRefresh, setTimeUntilRefresh] = useState(autoRefreshInterval / 1000);
@@ -45,15 +44,38 @@ export const V3Footer = ({
 
   const dataSources = Object.values(dataSourceStatus);
 
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchConsolidatedData(true);
+    setTimeUntilRefresh(autoRefreshInterval / 1000);
+    setIsRefreshing(false);
+  };
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Palestine Pulse Dashboard',
+        text: 'Check out this dashboard for real-time data on Palestine.',
+        url: window.location.href,
+      })
+      .then(() => console.log('Successful share'))
+      .catch((error) => console.log('Error sharing', error));
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      // You might want to add a toast notification here to inform the user
+      console.log('URL copied to clipboard');
+    }
+  };
+
+  const handleDocs = () => {
+    window.open('https://github.com/Zaidroid/palestine-pulse/blob/main/docs/README.md', '_blank');
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeUntilRefresh((prev) => {
         if (prev <= 1) {
-          if (onRefresh) {
-            setIsRefreshing(true);
-            onRefresh();
-            setTimeout(() => setIsRefreshing(false), 1000);
-          }
+          handleRefresh();
           return autoRefreshInterval / 1000;
         }
         return prev - 1;
@@ -61,7 +83,7 @@ export const V3Footer = ({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [autoRefreshInterval, onRefresh]);
+  }, [autoRefreshInterval]);
 
   const getStatusColor = (status: DataSourceState['status']) => {
     switch (status) {
@@ -146,7 +168,7 @@ export const V3Footer = ({
                         </p>
                         {source.lastSync && (
                           <p className="text-xs text-muted-foreground">
-                            Last sync: {formatDistanceToNow(source.lastSync, { addSuffix: true })}
+                            Last sync: {formatDistanceToNow(new Date(source.lastSync), { addSuffix: true })}
                           </p>
                         )}
                       </div>
@@ -192,31 +214,24 @@ export const V3Footer = ({
                   Export
                 </Button>
               )}
-              <Button variant="outline" size="sm" className="gap-2" onClick={() => console.log('Share clicked')}>
+              <Button variant="outline" size="sm" className="gap-2" onClick={handleShare}>
                 <Share2 className="h-4 w-4" />
                 Share
               </Button>
-              <Button variant="outline" size="sm" className="gap-2" onClick={() => console.log('Docs clicked')}>
+              <Button variant="outline" size="sm" className="gap-2" onClick={handleDocs}>
                 <FileText className="h-4 w-4" />
                 Docs
               </Button>
-              {onRefresh && (
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => {
-                    setIsRefreshing(true);
-                    onRefresh();
-                    setTimeUntilRefresh(autoRefreshInterval / 1000);
-                    setTimeout(() => setIsRefreshing(false), 1000);
-                  }}
+                  onClick={handleRefresh}
                   disabled={isRefreshing}
                   className="gap-2"
                 >
                   <RefreshCw className={cn("h-4 w-4", isRefreshing && "animate-spin")} />
                   Refresh
                 </Button>
-              )}
             </div>
             <div className="pt-2 text-xs text-muted-foreground">
               <p>

@@ -28,7 +28,7 @@ import {
 export const DATA_SOURCES: Record<DataSource, DataSourceConfig> = {
   tech4palestine: {
     name: 'tech4palestine',
-    baseUrl: 'https://techforpalestine.org/api',
+    baseUrl: '/api/tech4palestine',
     enabled: true,
     priority: 1,
     cache_ttl: 5 * 60 * 1000, // 5 minutes
@@ -52,7 +52,7 @@ export const DATA_SOURCES: Record<DataSource, DataSourceConfig> = {
   },
   world_bank: {
     name: 'world_bank',
-    baseUrl: 'https://api.worldbank.org/v2',
+    baseUrl: '/api/worldbank',
     enabled: true, // ✅ ENABLED: World Bank Open Data API
     priority: 3,
     cache_ttl: 24 * 60 * 60 * 1000, // 24 hours (economic data updates slowly)
@@ -76,7 +76,7 @@ export const DATA_SOURCES: Record<DataSource, DataSourceConfig> = {
   },
   btselem: {
     name: 'btselem',
-    baseUrl: 'https://www.btselem.org',
+    baseUrl: '/api/btselem',
     enabled: true,
     priority: 7,
     cache_ttl: 60 * 60 * 1000, // 1 hour
@@ -92,7 +92,7 @@ export const DATA_SOURCES: Record<DataSource, DataSourceConfig> = {
   },
   goodshepherd: {
     name: 'goodshepherd',
-    baseUrl: 'https://goodshepherdcollective.org/api/',
+    baseUrl: '/api/goodshepherd',
     enabled: true,
     priority: 2,
     cache_ttl: 60 * 60 * 1000, // 1 hour (data doesn't change frequently)

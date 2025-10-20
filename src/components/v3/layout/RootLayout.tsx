@@ -9,6 +9,7 @@ import { useV3Store } from "@/store/v3Store";
 import { useV3Shortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useTheme } from "next-themes";
 import { Loader2 } from "lucide-react";
+import IntroductionModal from "@/components/v3/shared/IntroductionModal";
 
 const PageLoader = () => (
     <div className="min-h-screen flex items-center justify-center bg-background">
@@ -61,6 +62,7 @@ export const RootLayout = () => {
           <AdvancedFilterPanel onClose={() => setFiltersOpen(false)} />
         </SheetContent>
       </Sheet>
+      <IntroductionModal />
     </div>
   );
 };

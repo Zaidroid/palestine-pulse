@@ -65,6 +65,10 @@ interface V3StoreState {
   // Last Update
   lastUpdated: Date;
   updateTimestamp: () => void;
+
+  // First Visit
+  isFirstVisit: boolean;
+  setFirstVisit: (isFirst: boolean) => void;
 }
 
 const getPresetDates = (preset: DateRange['preset']): { start: Date; end: Date } => {
@@ -237,7 +241,11 @@ export const useV3Store = create<V3StoreState>()(
 
       // Last Update
       lastUpdated: new Date(),
-      updateTimestamp: () => set({ lastUpdated: new Date() })
+      updateTimestamp: () => set({ lastUpdated: new Date() }),
+
+      // First Visit
+      isFirstVisit: true,
+      setFirstVisit: (isFirst) => set({ isFirstVisit: isFirst }),
     }),
     {
       name: 'v3-store',
@@ -245,6 +253,7 @@ export const useV3Store = create<V3StoreState>()(
         dateRange: state.dateRange,
         filters: state.filters,
         filterPresets: state.filterPresets,
+        isFirstVisit: state.isFirstVisit,
         // Don't persist runtime data
         // consolidatedData: state.consolidatedData,
         // isLoadingData: state.isLoadingData,

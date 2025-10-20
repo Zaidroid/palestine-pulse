@@ -17,11 +17,36 @@
     NPM_VERSION = "9"
 
 # Redirect rules for SPA routing
+# Proxy redirects to bypass CORS
+[[redirects]]
+  from = "/api/tech4palestine/*"
+  to = "https://techforpalestine.org/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/goodshepherd/*"
+  to = "https://goodshepherdcollective.org/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/worldbank/*"
+  to = "https://api.worldbank.org/v2/:splat"
+  status = 200
+  force = true
+  
+[[redirects]]
+  from = "/api/btselem/*"
+  to = "https://www.btselem.org/:splat"
+  status = 200
+  force = true
+
+# SPA redirect
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  force = false
 
 # Headers for security and performance
 [[headers]]
