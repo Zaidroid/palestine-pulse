@@ -35,9 +35,6 @@ jobs:
         env:
           NODE_ENV: production
 
-      - name: Run tests (if available)
-        run: npm test
-        continue-on-error: true
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2.1
