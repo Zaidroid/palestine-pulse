@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useV3Store } from '@/store/v3Store';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { BarChart, Database, Target, ArrowRight, Map, Users, ShieldCheck } from 'lucide-react';
 import { Logo } from '../layout/Logo';
 
@@ -87,6 +88,9 @@ const IntroductionModal = () => {
   return (
     <Dialog open={isFirstVisit} onOpenChange={() => setFirstVisit(false)}>
       <DialogContent className="sm:max-w-2xl w-full h-auto md:h-3/4 flex flex-col p-0">
+        <VisuallyHidden>
+          <DialogTitle>{steps[step].title}</DialogTitle>
+        </VisuallyHidden>
         <div className="flex-grow flex items-center justify-center p-8 md:p-12">
           <AnimatePresence mode="wait">
             <motion.div

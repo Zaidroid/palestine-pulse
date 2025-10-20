@@ -129,21 +129,21 @@ export interface MapData {
 // ============================================
 
 export class GoodShepherdService {
-  private baseUrl = 'https://goodshepherdcollective.org';
-  private apiBaseUrl = 'https://goodshepherdcollective.org/api';
+  private baseUrl = '/api/goodshepherd';
+  private apiBaseUrl = '/api/goodshepherd';
   private cache = new Map<string, { data: any; timestamp: number; ttl: number }>();
   private cacheTTL = 60 * 60 * 1000; // 1 hour default
 
   // Alternative data sources based on website analysis
   private alternativeSources = {
-    'gaza-casualties': 'https://goodshepherdcollective.org/data/gaza_deaths_injuries.json',
-    'jerusalem-westbank': 'https://goodshepherdcollective.org/data/jerusalem_westbank_data.json',
-    'child-prisoners': 'https://goodshepherdcollective.org/data/child_prisoners.json',
-    'political-prisoners': 'https://goodshepherdcollective.org/data/political_prisoners.json',
-    'home-demolitions': 'https://goodshepherdcollective.org/data/home_demolitions.json',
-    'healthcare-attacks': 'https://goodshepherdcollective.org/data/healthcare_attacks.json',
-    'gaza-destruction': 'https://goodshepherdcollective.org/data/gaza_destruction.json',
-    'ngo-data': 'https://goodshepherdcollective.org/data/ngo_data.json',
+    'gaza-casualties': '/api/goodshepherd/data/gaza_deaths_injuries.json',
+    'jerusalem-westbank': '/api/goodshepherd/data/jerusalem_westbank_data.json',
+    'child-prisoners': '/api/goodshepherd/data/child_prisoners.json',
+    'political-prisoners': '/api/goodshepherd/data/political_prisoners.json',
+    'home-demolitions': '/api/goodshepherd/data/home_demolitions.json',
+    'healthcare-attacks': '/api/goodshepherd/data/healthcare_attacks.json',
+    'gaza-destruction': '/api/goodshepherd/data/gaza_destruction.json',
+    'ngo-data': '/api/goodshepherd/data/ngo_data.json',
   };
 
   // Fallback data for when API is not available
