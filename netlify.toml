@@ -42,6 +42,13 @@
   status = 200
   force = true
 
+# Redirect bare domain to www
+[[redirects]]
+  from = "https://palboard.net/*"
+  to = "https://www.palboard.net/:splat"
+  status = 301
+  force = true
+
 # SPA redirect
 [[redirects]]
   from = "/*"
