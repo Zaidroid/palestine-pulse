@@ -130,20 +130,16 @@ export interface MapData {
 
 export class GoodShepherdService {
   private baseUrl = '/api/goodshepherd';
-  private apiBaseUrl = '/api/goodshepherd';
+  private apiBaseUrl = '/api/goodshepherd/data';
   private cache = new Map<string, { data: any; timestamp: number; ttl: number }>();
   private cacheTTL = 60 * 60 * 1000; // 1 hour default
 
   // Alternative data sources based on website analysis
   private alternativeSources = {
-    'gaza-casualties': '/api/goodshepherd/data/gaza_deaths_injuries.json',
-    'jerusalem-westbank': '/api/goodshepherd/data/jerusalem_westbank_data.json',
-    'child-prisoners': '/api/goodshepherd/data/child_prisoners.json',
-    'political-prisoners': '/api/goodshepherd/data/political_prisoners.json',
-    'home-demolitions': '/api/goodshepherd/data/home_demolitions.json',
-    'healthcare-attacks': '/api/goodshepherd/data/healthcare_attacks.json',
-    'gaza-destruction': '/api/goodshepherd/data/gaza_destruction.json',
-    'ngo-data': '/api/goodshepherd/data/ngo_data.json',
+    'gaza-casualties': '/api/goodshepherd/data/gaza_deaths',
+    'jerusalem-westbank': '/api/goodshepherd/data/wb_deaths_and_injuries',
+    'child-prisoners': '/api/goodshepherd/data/child_prisoners',
+    'ngo-data': '/api/goodshepherd/data/ngo_data',
   };
 
   // Fallback data for when API is not available
@@ -223,7 +219,7 @@ export class GoodShepherdService {
   async fetchChildPrisonersData(): Promise<ChildPrisonersData[]> {
     return this.fetchWithCache('child-prisoners', async () => {
       try {
-        const response = await fetch(`${this.apiBaseUrl}/child_prisoners.json`);
+        const response = await fetch(`${this.apiBaseUrl}/child_prisoners`);
         if (response.ok) {
           return response.json();
         }
@@ -255,7 +251,7 @@ export class GoodShepherdService {
   async fetchJerusalemWestBankData(): Promise<JerusalemWestBankData[]> {
     return this.fetchWithCache('jerusalem-westbank-violence', async () => {
       try {
-        const response = await fetch(`${this.apiBaseUrl}/wb_data.json`);
+        const response = await fetch(`${this.apiBaseUrl}/wb_deaths_and_injuries`);
         if (response.ok) return response.json();
         throw new Error(`API returned ${response.status}`);
       } catch (error) {
@@ -281,7 +277,7 @@ export class GoodShepherdService {
   async fetchJerusalemWestBankCasualtiesData(): Promise<JerusalemWestBankData[]> {
     return this.fetchWithCache('jerusalem-westbank-casualties', async () => {
       try {
-        const response = await fetch(`${this.apiBaseUrl}/jerusalem-westbank-casualties`);
+        const response = await fetch(`${this.apiBaseUrl}/wb_deaths_and_injuries`);
         if (response.ok) return response.json();
         throw new Error(`API returned ${response.status}`);
       } catch (error) {
@@ -307,7 +303,7 @@ export class GoodShepherdService {
   async fetchGazaCasualtiesData(): Promise<GazaCasualtiesData[]> {
     return this.fetchWithCache('gaza-casualties', async () => {
       try {
-        const response = await fetch(`${this.apiBaseUrl}/gaza-casualties`);
+        const response = await fetch(`${this.apiBaseUrl}/gaza_deaths`);
         if (response.ok) {
           return response.json();
         }
@@ -370,7 +366,7 @@ export class GoodShepherdService {
   async fetchHealthcareAttacksData(): Promise<HealthcareAttacksData[]> {
     return this.fetchWithCache('healthcare-attacks', async () => {
       try {
-        const response = await fetch(`${this.apiBaseUrl}/healthcare_attacks.json`);
+        const response = await fetch(`${this.apiBaseUrl}/healthcare-attacks`);
         if (response.ok) return response.json();
         throw new Error(`API returned ${response.status}`);
       } catch (error) {
@@ -397,7 +393,7 @@ export class GoodShepherdService {
   async fetchHomeDemolitionsData(): Promise<HomeDemolitionsData[]> {
     return this.fetchWithCache('home-demolitions', async () => {
       try {
-        const response = await fetch(`${this.apiBaseUrl}/home_demolitions.json`);
+        const response = await fetch(`${this.apiBaseUrl}/home-demolitions`);
         if (response.ok) return response.json();
         throw new Error(`API returned ${response.status}`);
       } catch (error) {
@@ -438,7 +434,7 @@ export class GoodShepherdService {
   async fetchNGOData(): Promise<NGOData[]> {
     return this.fetchWithCache('ngo-data', async () => {
       try {
-        const response = await fetch(`${this.apiBaseUrl}/ngo_data.json`);
+        const response = await fetch(`${this.apiBaseUrl}/ngo_data`);
         if (response.ok) return response.json();
         throw new Error(`API returned ${response.status}`);
       } catch (error) {
