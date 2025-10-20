@@ -1,0 +1,95 @@
+{
+  "app": {
+    "title": "لوحة بيانات فلسطين الإنسانية",
+    "subtitle": "تصور البيانات الإنسانية في الوقت الفعلي",
+    "lastUpdated": "آخر تحديث"
+  },
+  "nav": {
+    "dashboard": "لوحة المعلومات",
+    "maps": "الخرائط",
+    "analytics": "التحليلات",
+    "ai": "الذكاء الاصطناعي",
+    "export": "تصدير البيانات"
+  },
+  "tabs": {
+    "gaza": "الحرب على غزة",
+    "westBank": "الضفة الغربية",
+    "overview": "نظرة عامة",
+    "casualties": "اتجاه الضحايا",
+    "infrastructure": "البنية التحتية",
+    "press": "الصحافة",
+    "daily": "الاتجاه اليومي",
+    "gazaMap": "خريطة غزة",
+    "westBankMap": "الضفة الغربية",
+    "timeline": "الجدول الزمني"
+  },
+  "timeRange": {
+    "label": "الفترة الزمنية",
+    "last7Days": "آخر ٧ أيام",
+    "lastMonth": "الشهر الماضي",
+    "last60Days": "آخر ٦٠ يوم",
+    "last90Days": "آخر ٩٠ يوم",
+    "last6Months": "آخر ٦ أشهر",
+    "lastYear": "السنة الماضية",
+    "allTime": "كل الوقت"
+  },
+  "metrics": {
+    "totalKilled": "إجمالي القتلى",
+    "totalInjured": "إجمالي الجرحى",
+    "children": "الأطفال",
+    "women": "النساء",
+    "massacres": "المجازر",
+    "pressKilled": "الصحفيون القتلى",
+    "destroyed": "مدمر",
+    "damaged": "متضرر",
+    "partiallyDamaged": "متضرر جزئياً"
+  },
+  "analytics": {
+    "title": "التحليلات والرؤى",
+    "subtitle": "تحليل البيانات المتقدم وتقييم الأثر الاقتصادي",
+    "economic": "اقتصادي",
+    "aid": "المساعدات",
+    "healthcare": "الرعاية الصحية",
+    "displacement": "النزوح",
+    "education": "التعليم",
+    "utilities": "المرافق",
+    "food": "الغذاء",
+    "prisoners": "الأسرى",
+    "settlements": "المستوطنات",
+    "international": "دولي",
+    "economicShort": "اقتصاد",
+    "healthcareShort": "صحة",
+    "displacementShort": "نازحون",
+    "educationShort": "تعليم",
+    "utilitiesShort": "مرافق",
+    "gazaStrip": "قطاع غزة",
+    "westBankRegion": "الضفة الغربية"
+  },
+  "maps": {
+    "title": "الخرائط والجدول الزمني",
+    "subtitle": "التصور الجغرافي والزمني للبيانات",
+    "gazaTitle": "قطاع غزة - نظرة جغرافية عامة",
+    "gazaDescription": "خريطة تفاعلية تعرض المواقع الرئيسية وبيانات الضحايا في غزة",
+    "westBankTitle": "الضفة الغربية - نظرة جغرافية عامة",
+    "westBankDescription": "خريطة تفاعلية تعرض المواقع الرئيسية وبيانات الحوادث في الضفة الغربية",
+    "timelineTitle": "الجدول الزمني التاريخي",
+    "timelineDescription": "نظرة زمنية على الأحداث الرئيسية منذ ٧ أكتوبر ٢٠٢٣"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "خطأ في تحميل البيانات",
+    "noData": "لا توجد بيانات متاحة",
+    "viewDetails": "عرض التفاصيل",
+    "export": "تصدير",
+    "share": "مشاركة",
+    "filter": "تصفية",
+    "search": "بحث",
+    "dataSource": "مصدر البيانات",
+    "economicNote": "البيانات الاقتصادية بناءً على تقديرات البنك الدولي والأونكتاد والسلطات الفلسطينية"
+  },
+  "theme": {
+    "light": "فاتح",
+    "dark": "داكن",
+    "system": "النظام"
+  }
+}

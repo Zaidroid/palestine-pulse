@@ -1,0 +1,265 @@
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Tajawal:wght@400;500;700&display=swap');
+
+/* Leaflet CSS imports - must be first */
+@import 'leaflet/dist/leaflet.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* RTL Support */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .flex-row {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .mr-1 {
+  margin-right: 0;
+  margin-left: 0.25rem;
+}
+
+[dir="rtl"] .mr-2 {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+[dir="rtl"] .mr-3 {
+  margin-right: 0;
+  margin-left: 0.75rem;
+}
+
+[dir="rtl"] .mr-4 {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+[dir="rtl"] .ml-auto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+@layer base {
+  :root {
+    /* Palestinian Solidarity Theme - Light Mode */
+    --background: 0 0% 98%;
+    --foreground: 0 0% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    
+    /* Primary: Crisis Red (Palestinian flag) */
+    --primary: 0 85% 45%;
+    --primary-foreground: 0 0% 98%;
+    
+    /* Secondary: Hope Green (Palestinian flag) */
+    --secondary: 142 76% 36%;
+    --secondary-foreground: 0 0% 98%;
+    
+    /* Muted */
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 50%;
+    
+    /* Accent */
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 10%;
+    
+    /* Destructive: Danger */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    /* Warning */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 10%;
+    
+    /* Borders & Input */
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 85% 45%;
+    
+    /* Chart Colors: 10-color accessible palette */
+    --chart-1: 0 85% 45%;      /* Red - Primary */
+    --chart-2: 142 76% 36%;    /* Green - Secondary */
+    --chart-3: 0 0% 10%;       /* Black - Mourning */
+    --chart-4: 38 92% 50%;     /* Warning Orange */
+    --chart-5: 221 83% 53%;    /* Blue */
+    --chart-6: 280 65% 60%;    /* Purple */
+    --chart-7: 173 58% 39%;    /* Teal */
+    --chart-8: 43 74% 66%;     /* Yellow */
+    --chart-9: 330 81% 60%;    /* Pink */
+    --chart-10: 24 70% 50%;    /* Brown */
+    
+    /* Design Tokens */
+    --radius: 0.5rem;
+    --shadow-glow: 0 0 20px rgba(239, 68, 68, 0.2);
+    --duration-fast: 200ms;
+    --duration-normal: 400ms;
+    --duration-slow: 600ms;
+    
+    /* Colors for specific use cases */
+    --color-crisis: 0 85% 45%;
+    --color-hope: 142 76% 36%;
+    --color-mourning: 0 0% 10%;
+  }
+
+  .dark {
+    /* Palestinian Solidarity Theme - Dark Mode */
+    --background: 0 0% 10%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 98%;
+    
+    /* Primary: Crisis Red (Palestinian flag) */
+    --primary: 0 85% 55%;
+    --primary-foreground: 0 0% 10%;
+    
+    /* Secondary: Hope Green (Palestinian flag) */
+    --secondary: 142 76% 46%;
+    --secondary-foreground: 0 0% 10%;
+    
+    /* Muted */
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 60%;
+    
+    /* Accent */
+    --accent: 0 0% 20%;
+    --accent-foreground: 0 0% 98%;
+    
+    /* Destructive: Danger */
+    --destructive: 0 84% 65%;
+    --destructive-foreground: 0 0% 10%;
+    
+    /* Warning */
+    --warning: 38 92% 60%;
+    --warning-foreground: 0 0% 10%;
+    
+    /* Borders & Input */
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 85% 55%;
+    
+    /* Chart Colors: 10-color accessible palette (adjusted for dark) */
+    --chart-1: 0 85% 55%;      /* Red - Primary */
+    --chart-2: 142 76% 46%;    /* Green - Secondary */
+    --chart-3: 0 0% 90%;       /* White - Inverse mourning */
+    --chart-4: 38 92% 60%;     /* Warning Orange */
+    --chart-5: 221 83% 63%;    /* Blue */
+    --chart-6: 280 65% 70%;    /* Purple */
+    --chart-7: 173 58% 49%;    /* Teal */
+    --chart-8: 43 74% 76%;     /* Yellow */
+    --chart-9: 330 81% 70%;    /* Pink */
+    --chart-10: 24 70% 60%;    /* Brown */
+    
+    /* Design Tokens */
+    --shadow-glow: 0 0 20px rgba(239, 68, 68, 0.3);
+    
+    /* Colors for specific use cases */
+    --color-crisis: 0 85% 55%;
+    --color-hope: 142 76% 46%;
+    --color-mourning: 0 0% 90%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+/* Leaflet map container fixes */
+.leaflet-container {
+  @apply rounded-lg;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+
+.leaflet-popup-content-wrapper {
+  @apply rounded-lg shadow-lg;
+  background: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+}
+
+.leaflet-popup-content {
+  @apply p-4;
+  margin: 0;
+}
+
+.leaflet-popup-tip {
+  background: hsl(var(--card));
+}
+
+/* Dark mode adjustments for Leaflet */
+.dark .leaflet-layer,
+.dark .leaflet-control-zoom-in,
+.dark .leaflet-control-zoom-out,
+.dark .leaflet-control-attribution {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.dark .leaflet-popup-content-wrapper,
+.dark .leaflet-popup-tip {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .leaflet-container {
+    height: 300px;
+  }
+}
+
+/* Shimmer loading animation */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 0%,
+    hsl(var(--muted-foreground) / 0.1) 50%,
+    hsl(var(--muted)) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 1.5s linear infinite;
+}

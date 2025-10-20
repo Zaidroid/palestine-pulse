@@ -1,0 +1,95 @@
+{
+  "app": {
+    "title": "Palestine Humanitarian Dashboard",
+    "subtitle": "Real-time humanitarian data visualization",
+    "lastUpdated": "Updated"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "maps": "Maps",
+    "analytics": "Analytics",
+    "ai": "AI",
+    "export": "Export Data"
+  },
+  "tabs": {
+    "gaza": "War on Gaza",
+    "westBank": "West Bank",
+    "overview": "Overview",
+    "casualties": "Casualties Trend",
+    "infrastructure": "Infrastructure",
+    "press": "Press",
+    "daily": "Daily Trend",
+    "gazaMap": "Gaza Map",
+    "westBankMap": "West Bank",
+    "timeline": "Timeline"
+  },
+  "timeRange": {
+    "label": "Time Period",
+    "last7Days": "Last 7 Days",
+    "lastMonth": "Last Month",
+    "last60Days": "Last 60 Days",
+    "last90Days": "Last 90 Days",
+    "last6Months": "Last 6 Months",
+    "lastYear": "Last Year",
+    "allTime": "All Time"
+  },
+  "metrics": {
+    "totalKilled": "Total Killed",
+    "totalInjured": "Total Injured",
+    "children": "Children",
+    "women": "Women",
+    "massacres": "Massacres",
+    "pressKilled": "Press Killed",
+    "destroyed": "Destroyed",
+    "damaged": "Damaged",
+    "partiallyDamaged": "Partially Damaged"
+  },
+  "analytics": {
+    "title": "Analytics & Insights",
+    "subtitle": "Advanced data analysis and economic impact assessment",
+    "economic": "Economic",
+    "aid": "Aid",
+    "healthcare": "Healthcare",
+    "displacement": "Displacement",
+    "education": "Education",
+    "utilities": "Utilities",
+    "food": "Food",
+    "prisoners": "Prisoners",
+    "settlements": "Settlements",
+    "international": "International",
+    "economicShort": "Econ",
+    "healthcareShort": "Health",
+    "displacementShort": "IDPs",
+    "educationShort": "Edu",
+    "utilitiesShort": "Utils",
+    "gazaStrip": "Gaza Strip",
+    "westBankRegion": "West Bank"
+  },
+  "maps": {
+    "title": "Maps & Timeline",
+    "subtitle": "Geographic and chronological data visualization",
+    "gazaTitle": "Gaza Strip - Geographic Overview",
+    "gazaDescription": "Interactive map showing key locations and casualty data in Gaza",
+    "westBankTitle": "West Bank - Geographic Overview",
+    "westBankDescription": "Interactive map showing key locations and incident data in West Bank",
+    "timelineTitle": "Historical Timeline",
+    "timelineDescription": "Chronological overview of major events since October 7, 2023"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error loading data",
+    "noData": "No data available",
+    "viewDetails": "View Details",
+    "export": "Export",
+    "share": "Share",
+    "filter": "Filter",
+    "search": "Search",
+    "dataSource": "Data source",
+    "economicNote": "Economic data based on estimates from World Bank, UNCTAD, and Palestinian authorities"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  }
+}
