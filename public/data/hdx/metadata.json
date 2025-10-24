@@ -1,0 +1,44 @@
+{
+  "source": "hdx-ckan",
+  "last_updated": "2025-10-24T18:03:08.095Z",
+  "baseline_date": "2023-10-07",
+  "api_base": "https://data.humdata.org/api/3/action",
+  "summary": {
+    "totalCategories": 6,
+    "totalDatasets": 11,
+    "totalRecords": 0,
+    "failedDownloads": 23
+  },
+  "categories": {
+    "conflict": {
+      "downloaded": 1,
+      "failed": 7,
+      "datasets": 1
+    },
+    "education": {
+      "downloaded": 2,
+      "failed": 3,
+      "datasets": 2
+    },
+    "water": {
+      "downloaded": 2,
+      "failed": 2,
+      "datasets": 2
+    },
+    "infrastructure": {
+      "downloaded": 2,
+      "failed": 4,
+      "datasets": 2
+    },
+    "refugees": {
+      "downloaded": 1,
+      "failed": 4,
+      "datasets": 1
+    },
+    "humanitarian": {
+      "downloaded": 3,
+      "failed": 3,
+      "datasets": 3
+    }
+  }
+}

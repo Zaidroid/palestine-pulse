@@ -1,0 +1,86 @@
+{
+  "source": "goodshepherd",
+  "api_base": "https://goodshepherdcollective.org/api",
+  "last_updated": "2025-10-24T18:03:09.581Z",
+  "baseline_date": "2023-10-07",
+  "datasets": {
+    "healthcare": {
+      "name": "Healthcare Attacks",
+      "category": "healthcare",
+      "record_count": 2900,
+      "date_range": {
+        "start": "2023-10-07",
+        "end": "2025-09-04"
+      },
+      "partitioned": true,
+      "partition_count": 8,
+      "partition_strategy": "quarter",
+      "has_recent_file": true
+    },
+    "demolitions": {
+      "name": "Home Demolitions",
+      "category": "demolitions",
+      "record_count": 1000,
+      "date_range": {
+        "start": "2023-10-12",
+        "end": "2025-07-31"
+      },
+      "partitioned": true,
+      "partition_count": 8,
+      "partition_strategy": "quarter",
+      "has_recent_file": true
+    },
+    "ngo": {
+      "name": "NGO Financial Data",
+      "category": "ngo",
+      "record_count": 177,
+      "total_funding": 2117081214,
+      "partitioned": false,
+      "files": [
+        "organizations.json",
+        "funding-by-year.json"
+      ]
+    },
+    "childPrisoners": {
+      "name": "Child Prisoners",
+      "category": "prisoners",
+      "record_count": 206,
+      "date_range": {
+        "start": "2023-10-07T00:00:00.000",
+        "end": "2025-07-24T00:00:00.000"
+      },
+      "partitioned": true,
+      "partition_count": 8,
+      "partition_strategy": "quarter",
+      "has_recent_file": true
+    },
+    "politicalPrisoners": {
+      "name": "Political Prisoners",
+      "category": "prisoners",
+      "record_count": 19,
+      "date_range": {
+        "start": "2024-05-01T00:00:00.000Z",
+        "end": "2025-10-05T12:00:00.000Z"
+      },
+      "partitioned": true,
+      "partition_count": 7,
+      "partition_strategy": "quarter",
+      "has_recent_file": true
+    },
+    "westBankIncidents": {
+      "name": "West Bank Incidents",
+      "category": "westbank",
+      "record_count": 0,
+      "date_range": null,
+      "partitioned": false,
+      "partition_count": 0,
+      "partition_strategy": "quarter",
+      "has_recent_file": false
+    }
+  },
+  "summary": {
+    "total_datasets": 6,
+    "total_records": 4302,
+    "total_partitions": 31
+  }
+}

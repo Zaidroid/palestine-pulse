@@ -1,0 +1,65 @@
+{
+  "metadata": {
+    "source": "tech4palestine",
+    "last_updated": "2025-10-24T18:03:50.360Z"
+  },
+  "data": {
+    "gaza": {
+      "reports": 748,
+      "last_update": "2025-10-23",
+      "massacres": 12000,
+      "killed": {
+        "total": 68280,
+        "children": 20179,
+        "women": 12500,
+        "civil_defence": 140,
+        "press": 255,
+        "medical": 1701
+      },
+      "famine": {
+        "total": 463,
+        "children": 157
+      },
+      "aid_seeker": {
+        "killed": 2615,
+        "injured": 19182
+      },
+      "injured": {
+        "total": 170375
+      }
+    },
+    "west_bank": {
+      "reports": 748,
+      "last_update": "2025-10-23",
+      "settler_attacks": 2786,
+      "killed": {
+        "total": 996,
+        "children": 200
+      },
+      "injured": {
+        "total": 9478,
+        "children": 1672
+      }
+    },
+    "known_killed_in_gaza": {
+      "records": 60199,
+      "pages": 602,
+      "page_size": 100,
+      "male": {
+        "adult": 28543,
+        "senior": 1791,
+        "child": 10656
+      },
+      "female": {
+        "adult": 10271,
+        "senior": 1137,
+        "child": 7801
+      },
+      "last_update": "2025-08-17",
+      "includes_until": "2025-07-31"
+    },
+    "known_press_killed_in_gaza": {
+      "records": 255
+    }
+  }
+}

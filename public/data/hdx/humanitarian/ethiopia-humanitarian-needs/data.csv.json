@@ -1,0 +1,13 @@
+{
+  "source": "hdx-ckan",
+  "downloaded_at": "2025-10-24T18:02:47.504Z",
+  "resource": {
+    "id": "5c049ef4-1dc0-4618-bb7f-a7be0b044137",
+    "name": "eth_hpc_needs_api_2025.csv",
+    "format": "CSV",
+    "url": "https://data.humdata.org/dataset/882d0746-ac2a-4471-b40d-a92dee832ee2/resource/5c049ef4-1dc0-4618-bb7f-a7be0b044137/download/eth_hpc_needs_api_2025.csv"
+  },
+  "data": {
+    "csv": "Description,Cluster,Category,Population,In Need,Targeted,Affected,Reached,Info\r\n#sector+description,#sector+cluster+code,#category,#population,#inneed,#targeted,#affected,#reached,#meta+info\r\nGHO Estimate,ALL,,129700000,,10000000,,,\r\n"
+  }
+}

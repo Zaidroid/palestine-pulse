@@ -1,0 +1,60 @@
+{
+  "dataset": "healthcare-attacks",
+  "date_range": {
+    "start": "2023-10-07",
+    "end": "2025-09-04",
+    "baseline_date": "2023-10-07"
+  },
+  "files": [
+    {
+      "file": "2023-Q4.json",
+      "quarter": "2023-Q4",
+      "records": 1078
+    },
+    {
+      "file": "2024-Q1.json",
+      "quarter": "2024-Q1",
+      "records": 555
+    },
+    {
+      "file": "2024-Q2.json",
+      "quarter": "2024-Q2",
+      "records": 308
+    },
+    {
+      "file": "2024-Q3.json",
+      "quarter": "2024-Q3",
+      "records": 233
+    },
+    {
+      "file": "2024-Q4.json",
+      "quarter": "2024-Q4",
+      "records": 348
+    },
+    {
+      "file": "2025-Q1.json",
+      "quarter": "2025-Q1",
+      "records": 134
+    },
+    {
+      "file": "2025-Q2.json",
+      "quarter": "2025-Q2",
+      "records": 154
+    },
+    {
+      "file": "2025-Q3.json",
+      "quarter": "2025-Q3",
+      "records": 90
+    }
+  ],
+  "validation": {
+    "qualityScore": 0.4,
+    "completeness": 1,
+    "consistency": 0,
+    "accuracy": 0,
+    "meetsThreshold": false,
+    "errorCount": 2900,
+    "warningCount": 5800
+  },
+  "last_updated": "2025-10-24T18:03:09.574Z"
+}
