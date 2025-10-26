@@ -229,8 +229,8 @@ export const WestBankDashboard = () => {
 
                 {/* Right: Animated Years Counter */}
                 <div className="group/duration relative">
-                  <div className="flex items-baseline gap-2 px-4 py-2 rounded-lg bg-gradient-to-br from-muted/40 to-muted/20 border border-border/50 hover:border-secondary/40 hover:shadow-lg hover:shadow-secondary/10 hover:scale-[1.02] transition-all duration-300 cursor-pointer">
-                    <span className="text-2xl md:text-3xl font-bold tabular-nums text-foreground group-hover/duration:text-secondary transition-colors duration-300">
+                  <div className="flex items-baseline gap-2 px-3 py-2 rounded-lg bg-gradient-to-br from-secondary/20 to-secondary/5 border border-secondary/30 hover:border-secondary/50 hover:shadow-lg hover:shadow-secondary/10 hover:scale-[1.02] transition-all duration-300 cursor-pointer">
+                    <span className="text-xl md:text-2xl font-bold tabular-nums text-foreground group-hover/duration:text-secondary transition-colors duration-300">
                       {displayYears}
                     </span>
                     <div className="flex flex-col justify-center">
@@ -238,7 +238,7 @@ export const WestBankDashboard = () => {
                       <span className="text-[8px] text-muted-foreground/60 group-hover/duration:text-secondary/50 transition-colors">since 1948</span>
                     </div>
                   </div>
-                  {/* Hover Popup - Fixed positioning */}
+                  {/* Hover Popup */}
                   <div className="absolute bottom-full right-0 mb-2 opacity-0 invisible group-hover/duration:opacity-100 group-hover/duration:visible scale-95 group-hover/duration:scale-100 transition-all duration-200 z-50">
                     <div className="bg-popover/95 backdrop-blur-sm border border-border shadow-2xl rounded-lg p-3 min-w-[180px]">
                       <div className="text-xs font-semibold mb-2 text-center">Since Nakba</div>

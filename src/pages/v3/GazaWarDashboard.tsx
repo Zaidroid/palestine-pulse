@@ -162,8 +162,14 @@ export const GazaWarDashboard = () => {
   const today = new Date();
   const daysSinceStart = Math.floor((today.getTime() - conflictStartDate.getTime()) / (1000 * 60 * 60 * 24));
 
+  // Calculate years since Nakba (May 15, 1948)
+  const nakbaStartDate = new Date('1948-05-15');
+  const daysSinceNakba = Math.floor((today.getTime() - nakbaStartDate.getTime()) / (1000 * 60 * 60 * 24));
+  const yearsSinceNakba = Math.floor(daysSinceNakba / 365.25);
+
   // Animated counter for days with easing
   const [displayDays, setDisplayDays] = useState(0);
+  const [displayYears, setDisplayYears] = useState(0);
 
   useEffect(() => {
     const duration = 2500; // 2.5 seconds
@@ -178,16 +184,18 @@ export const GazaWarDashboard = () => {
       const easedProgress = easeOutCubic(progress);
 
       setDisplayDays(Math.floor(easedProgress * daysSinceStart));
+      setDisplayYears(Math.floor(easedProgress * yearsSinceNakba));
 
       if (progress < 1) {
         requestAnimationFrame(animate);
       } else {
         setDisplayDays(daysSinceStart);
+        setDisplayYears(yearsSinceNakba);
       }
     };
 
     requestAnimationFrame(animate);
-  }, [daysSinceStart]);
+  }, [daysSinceStart, yearsSinceNakba]);
 
   // Calculate last update time
   const lastUpdateTime = useMemo(() => {
@@ -296,28 +304,53 @@ export const GazaWarDashboard = () => {
                   )}
                 </div>
 
-                {/* Right: Animated Duration Counter */}
-                <div className="group/duration relative">
-                  <div className="flex items-baseline gap-2 px-4 py-2 rounded-lg bg-gradient-to-br from-muted/40 to-muted/20 border border-border/50 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 hover:scale-[1.02] transition-all duration-300 cursor-pointer">
-                    <span className="text-2xl md:text-3xl font-bold tabular-nums text-foreground group-hover/duration:text-primary transition-colors duration-300">
-                      {displayDays}
-                    </span>
-                    <div className="flex flex-col justify-center">
-                      <span className="text-[10px] text-muted-foreground group-hover/duration:text-primary/70 uppercase tracking-wider font-medium leading-tight transition-colors">days</span>
-                      <span className="text-[8px] text-muted-foreground/60 group-hover/duration:text-primary/50 transition-colors">since Oct 7</span>
+                {/* Right: Animated Duration Counters */}
+                <div className="flex items-center gap-2">
+                  {/* Years Counter */}
+                  <div className="group/years relative">
+                    <div className="flex items-baseline gap-2 px-3 py-2 rounded-lg bg-gradient-to-br from-secondary/20 to-secondary/5 border border-secondary/30 hover:border-secondary/50 hover:shadow-lg hover:shadow-secondary/10 hover:scale-[1.02] transition-all duration-300 cursor-pointer">
+                      <span className="text-xl md:text-2xl font-bold tabular-nums text-foreground group-hover/years:text-secondary transition-colors duration-300">
+                        {displayYears}
+                      </span>
+                      <div className="flex flex-col justify-center">
+                        <span className="text-[10px] text-muted-foreground group-hover/years:text-secondary/70 uppercase tracking-wider font-medium leading-tight transition-colors">years</span>
+                        <span className="text-[8px] text-muted-foreground/60 group-hover/years:text-secondary/50 transition-colors">since 1948</span>
+                      </div>
+                    </div>
+                    {/* Hover Popup */}
+                    <div className="absolute bottom-full right-0 mb-2 opacity-0 invisible group-hover/years:opacity-100 group-hover/years:visible scale-95 group-hover/years:scale-100 transition-all duration-200 z-50">
+                      <div className="bg-popover/95 backdrop-blur-sm border border-border shadow-2xl rounded-lg p-3 min-w-[180px]">
+                        <div className="text-xs font-semibold mb-2 text-center">Nakba Context</div>
+                        <div className="text-[10px] text-muted-foreground text-center leading-relaxed">
+                          {yearsSinceNakba} years of occupation since the Nakba (1948)
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  {/* Hover Popup - Fixed positioning */}
-                  <div className="absolute bottom-full right-0 mb-2 opacity-0 invisible group-hover/duration:opacity-100 group-hover/duration:visible scale-95 group-hover/duration:scale-100 transition-all duration-200 z-50">
-                    <div className="bg-popover/95 backdrop-blur-sm border border-border shadow-2xl rounded-lg p-3 min-w-[180px]">
-                      <div className="text-xs font-semibold mb-2 text-center">Time Breakdown</div>
-                      <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs">
-                        <span className="text-muted-foreground">Weeks:</span>
-                        <span className="font-bold text-right">{Math.floor(displayDays / 7)}</span>
-                        <span className="text-muted-foreground">Months:</span>
-                        <span className="font-bold text-right">{Math.floor(displayDays / 30)}</span>
-                        <span className="text-muted-foreground">Hours:</span>
-                        <span className="font-bold text-right">{(displayDays * 24).toLocaleString()}</span>
+
+                  {/* Days Counter */}
+                  <div className="group/duration relative">
+                    <div className="flex items-baseline gap-2 px-3 py-2 rounded-lg bg-gradient-to-br from-secondary/20 to-secondary/5 border border-secondary/30 hover:border-secondary/50 hover:shadow-lg hover:shadow-secondary/10 hover:scale-[1.02] transition-all duration-300 cursor-pointer">
+                      <span className="text-xl md:text-2xl font-bold tabular-nums text-foreground group-hover/duration:text-secondary transition-colors duration-300">
+                        {displayDays}
+                      </span>
+                      <div className="flex flex-col justify-center">
+                        <span className="text-[10px] text-muted-foreground group-hover/duration:text-secondary/70 uppercase tracking-wider font-medium leading-tight transition-colors">days</span>
+                        <span className="text-[8px] text-muted-foreground/60 group-hover/duration:text-secondary/50 transition-colors">since Oct 7</span>
+                      </div>
+                    </div>
+                    {/* Hover Popup */}
+                    <div className="absolute bottom-full right-0 mb-2 opacity-0 invisible group-hover/duration:opacity-100 group-hover/duration:visible scale-95 group-hover/duration:scale-100 transition-all duration-200 z-50">
+                      <div className="bg-popover/95 backdrop-blur-sm border border-border shadow-2xl rounded-lg p-3 min-w-[180px]">
+                        <div className="text-xs font-semibold mb-2 text-center">Time Breakdown</div>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs">
+                          <span className="text-muted-foreground">Weeks:</span>
+                          <span className="font-bold text-right">{Math.floor(displayDays / 7)}</span>
+                          <span className="text-muted-foreground">Months:</span>
+                          <span className="font-bold text-right">{Math.floor(displayDays / 30)}</span>
+                          <span className="text-muted-foreground">Hours:</span>
+                          <span className="font-bold text-right">{(displayDays * 24).toLocaleString()}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
