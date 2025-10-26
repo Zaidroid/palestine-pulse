@@ -4,7 +4,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 import { UnifiedBadge as DataQualityBadge } from "@/components/ui/unified-badge";
-import { useHealthFacilityStats } from "./hooks/useHealthFacilities";
+import { useHealthFacilityStats } from "@/hooks/useHealthFacilities";
 import { Stethoscope, Building2, Activity } from "lucide-react";
 import { EducationImpact } from "./EducationImpact";
 

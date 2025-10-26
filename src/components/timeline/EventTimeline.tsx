@@ -23,7 +23,7 @@ import {
   Flag,
   Filter
 } from 'lucide-react';
-import { TimelineEvent } from './types/data.types';
+import { TimelineEvent } from '@/types/data.types';
 import { format, parseISO } from 'date-fns';
 
 // ============================================

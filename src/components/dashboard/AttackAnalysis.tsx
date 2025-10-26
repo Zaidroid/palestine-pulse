@@ -1,4 +1,4 @@
-import { useWestBankDaily } from "./hooks/useDataFetching";
+import { useWestBankDaily } from "@/hooks/useDataFetching";
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle
 } from "@/components/ui/card";

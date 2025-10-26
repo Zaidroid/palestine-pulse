@@ -22,7 +22,7 @@ import {
   useCasualtiesDaily,
   useWestBankDaily,
   useInfrastructure
-} from "./hooks/useDataFetching";
+} from "@/hooks/useDataFetching";
 import { GazaOverview } from "./components/dashboard/GazaOverview";
 import { WestBankOverview } from "./components/dashboard/WestBankOverview";
 import { GazaHumanitarian } from "./components/dashboard/GazaHumanitarian";

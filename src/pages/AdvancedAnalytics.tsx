@@ -26,7 +26,7 @@ import PredictiveAnalytics from './components/analytics/PredictiveAnalytics';
 import CorrelationMatrix from './components/analytics/CorrelationMatrix';
 import AnomalyDetector from './components/analytics/AnomalyDetector';
 import ComparisonView from './components/analytics/ComparisonView';
-import { useCasualtiesDaily } from './hooks/useDataFetching';
+import { useCasualtiesDaily } from '@/hooks/useDataFetching';
 
 const AdvancedAnalytics = () => {
   const [activeTab, setActiveTab] = useState('predictive');

@@ -8,9 +8,9 @@ import {
   Legend, ResponsiveContainer
 } from "recharts";
 import { UnifiedBadge as DataQualityBadge } from "@/components/ui/unified-badge";
-import { useWFPGazaPrices, useWFPCommodityTrends } from "./hooks/useWFPData";
+import { useWFPGazaPrices, useWFPCommodityTrends } from "@/hooks/useWFPData";
 import { DollarSign, TrendingUp } from "lucide-react";
-import { getCommodityTrends } from "./services/wfpService";
+import { getCommodityTrends } from "@/services/wfpService";
 
 export const FoodSecurity = () => {
   const { data: gazaPrices, isLoading: pricesLoading, error: pricesError } = useWFPGazaPrices();

@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import { UnifiedBadge as DataQualityBadge } from "@/components/ui/unified-badge";
 import { UnifiedBadge as DataLoadingBadge } from "@/components/ui/unified-badge";
-import { useHealthFacilityStats } from "./hooks/useHealthFacilities";
+import { useHealthFacilityStats } from "@/hooks/useHealthFacilities";
 
 interface GazaOverviewProps {
   gazaMetrics: any;

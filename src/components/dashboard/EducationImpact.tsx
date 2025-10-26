@@ -1,4 +1,4 @@
-import { useSchoolStatistics } from "./hooks/useSchools";
+import { useSchoolStatistics } from "@/hooks/useSchools";
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle
 } from "@/components/ui/card";

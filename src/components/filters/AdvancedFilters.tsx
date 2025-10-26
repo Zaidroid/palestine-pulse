@@ -32,8 +32,8 @@ import {
   RotateCcw,
   Calendar
 } from 'lucide-react';
-import { useGlobalStore } from './store/globalStore';
-import { FilterConfig } from './types/data.types';
+import { useGlobalStore } from '@/store/globalStore';
+import { FilterConfig } from '@/types/data.types';
 
 const REGIONS = [
   'Gaza City',

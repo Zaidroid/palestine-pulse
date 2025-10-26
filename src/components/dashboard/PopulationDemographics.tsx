@@ -1,4 +1,4 @@
-import { usePopulationStatistics } from "./hooks/usePopulation";
+import { usePopulationStatistics } from "@/hooks/usePopulation";
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle
 } from "@/components/ui/card";
