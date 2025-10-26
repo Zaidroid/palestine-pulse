@@ -1,13 +1,13 @@
 import { useMemo } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./components/ui/card";
-import { Skeleton } from "./components/ui/skeleton";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   LineChart, Line, ComposedChart, Area
 } from "recharts";
 import { Building2, TrendingDown, Home, Church, School } from "lucide-react";
-import { Badge } from "./components/ui/badge";
-import { UnifiedBadge as DataQualityBadge } from "./components/ui/unified-badge";
+import { Badge } from "@/components/ui/badge";
+import { UnifiedBadge as DataQualityBadge } from "@/components/ui/unified-badge";
 
 interface InfrastructureDamageProps {
   data: any[];

@@ -1,9 +1,9 @@
 import { usePopulationStatistics } from "./hooks/usePopulation";
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle
-} from "./components/ui/card";
-import { Skeleton } from "./components/ui/skeleton";
-import { UnifiedBadge as DataQualityBadge } from "./components/ui/unified-badge";
+} from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { UnifiedBadge as DataQualityBadge } from "@/components/ui/unified-badge";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Users } from "lucide-react";
 

@@ -1,17 +1,17 @@
 import { useMemo } from "react";
 import { ExpandableMetricCard } from "./ExpandableMetricCard";
 import { Users, AlertCircle, Shield, Activity, Home, TrendingUp, DollarSign, Briefcase } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./components/ui/card";
-import { Skeleton } from "./components/ui/skeleton";
-import { Badge } from "./components/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   Legend, ResponsiveContainer, Area, BarChart
 } from "recharts";
 import { useHomeDemolitionsSummary, useWestBankData } from "./hooks/useGoodShepherdData";
 import { getTopN } from "./utils/dataAggregation";
-import { UnifiedBadge as DataQualityBadge } from "./components/ui/unified-badge";
-import { UnifiedBadge as DataLoadingBadge } from "./components/ui/unified-badge";
+import { UnifiedBadge as DataQualityBadge } from "@/components/ui/unified-badge";
+import { UnifiedBadge as DataLoadingBadge } from "@/components/ui/unified-badge";
 import { useEconomicSnapshot, useLatestValue, calculateYoYChange, transformForChart } from "./hooks/useWorldBankData";
 
 interface WestBankOverviewProps {

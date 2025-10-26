@@ -1,8 +1,8 @@
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle
-} from "./components/ui/card";
-import { Skeleton } from "./components/ui/skeleton";
-import { UnifiedBadge as DataQualityBadge } from "./components/ui/unified-badge";
+} from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { UnifiedBadge as DataQualityBadge } from "@/components/ui/unified-badge";
 import { useEconomicSnapshot, useLatestValue, calculateYoYChange } from "./hooks/useWorldBankData";
 import { DollarSign, TrendingUp } from "lucide-react";
 import { PopulationDemographics } from "./PopulationDemographics";

@@ -1,14 +1,14 @@
 import { useMemo } from "react";
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle
-} from "./components/ui/card";
-import { Skeleton } from "./components/ui/skeleton";
-import { Badge } from "./components/ui/badge";
+} from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   Legend, ResponsiveContainer, Area
 } from "recharts";
-import { UnifiedBadge as DataQualityBadge } from "./components/ui/unified-badge";
+import { UnifiedBadge as DataQualityBadge } from "@/components/ui/unified-badge";
 import { Activity, Shield } from "lucide-react";
 import { AttackAnalysis } from "./AttackAnalysis";
 

@@ -5,16 +5,16 @@ import {
   Users, AlertCircle, Newspaper, Flame, Heart, Activity,
   TrendingUp, Baby, UserX, Stethoscope, Building2
 } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./components/ui/card";
-import { Skeleton } from "./components/ui/skeleton";
-import { Badge } from "./components/ui/badge";
-import { Progress } from "./components/ui/progress";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   Legend, ResponsiveContainer, Area, PieChart, Pie, Cell
 } from "recharts";
-import { UnifiedBadge as DataQualityBadge } from "./components/ui/unified-badge";
-import { UnifiedBadge as DataLoadingBadge } from "./components/ui/unified-badge";
+import { UnifiedBadge as DataQualityBadge } from "@/components/ui/unified-badge";
+import { UnifiedBadge as DataLoadingBadge } from "@/components/ui/unified-badge";
 import { useHealthFacilityStats } from "./hooks/useHealthFacilities";
 
 interface GazaOverviewProps {

@@ -6,7 +6,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Map, Clock } from 'lucide-react';
 import { AppLayout } from './components/layout/AppLayout';
 import { InteractiveMap } from './components/maps/InteractiveMap';

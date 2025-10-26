@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle
-} from "./components/ui/card";
-import { Skeleton } from "./components/ui/skeleton";
+} from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   Legend, ResponsiveContainer
 } from "recharts";
-import { UnifiedBadge as DataQualityBadge } from "./components/ui/unified-badge";
+import { UnifiedBadge as DataQualityBadge } from "@/components/ui/unified-badge";
 import { useWFPGazaPrices, useWFPCommodityTrends } from "./hooks/useWFPData";
 import { DollarSign, TrendingUp } from "lucide-react";
 import { getCommodityTrends } from "./services/wfpService";
