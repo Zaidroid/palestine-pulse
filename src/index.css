@@ -4,12 +4,12 @@
 /* Leaflet CSS imports - must be first */
 @import 'leaflet/dist/leaflet.css';
 
+/* RTL Utilities - Import before Tailwind */
+@import './lib/rtl-utils.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* RTL Utilities - Import after Tailwind */
-@import './lib/rtl-utils.css';
 
 /* RTL Support */
 [dir="rtl"] {

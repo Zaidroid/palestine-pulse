@@ -7,7 +7,7 @@
 import { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Button } from './components/ui/button';
+import { Button } from '@/components/ui/button';
 import { 
   AlertCircle, 
   Map, 
@@ -15,10 +15,10 @@ import {
   Brain,
   Home
 } from 'lucide-react';
-import { ThemeToggle } from './components/ThemeToggle';
-import { LanguageSwitcher } from './components/LanguageSwitcher';
-import { AdvancedFilters } from './components/filters/AdvancedFilters';
-import { cn } from './lib/utils';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { AdvancedFilters } from '@/components/filters/AdvancedFilters';
+import { cn } from '@/lib/utils';
 
 interface AppLayoutProps {
   children: ReactNode;
