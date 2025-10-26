@@ -118,6 +118,19 @@ const initialDataSourceStatus = Object.entries(DATA_SOURCES).reduce((acc, [key, 
   return acc;
 }, {} as Record<string, DataSourceState>);
 
+// Add B'Tselem and PCBS manually (web scraping sources)
+initialDataSourceStatus['btselem'] = {
+  name: 'btselem',
+  status: 'active',
+  lastSync: undefined,
+};
+
+initialDataSourceStatus['pcbs'] = {
+  name: 'pcbs',
+  status: 'active',
+  lastSync: undefined,
+};
+
 
 export const useV3Store = create<V3StoreState>()(
   persist(

@@ -3,7 +3,7 @@ import {
   Card, CardContent, CardDescription, CardHeader, CardTitle
 } from "./components/ui/card";
 import { Skeleton } from "./components/ui/skeleton";
-import { DataQualityBadge } from "./components/ui/data-quality-badge";
+import { UnifiedBadge as DataQualityBadge } from "./components/ui/unified-badge";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Users } from "lucide-react";
 

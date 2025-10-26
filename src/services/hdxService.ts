@@ -33,12 +33,52 @@ export interface HDXSearchResult {
 const HDX_API_BASE = 'https://data.humdata.org/api/3/action';
 
 /**
- * Search HDX datasets by query
+ * Load HDX data from local files first, fallback to API
+ */
+const loadLocalHDXData = async (category: string): Promise<any> => {
+  try {
+    const response = await fetch(`/data/hdx/${category}/datasets.json`);
+    if (response.ok) {
+      const data = await response.json();
+      console.log(`Loaded HDX ${category} from local cache`);
+      return data;
+    }
+  } catch (error) {
+    console.log(`Local HDX ${category} not available, will use API`);
+  }
+  return null;
+};
+
+/**
+ * Search HDX datasets by query (with local cache fallback)
  */
 export const searchHDXDatasets = async (
   query: string,
   rows: number = 10
 ): Promise<HDXSearchResult> => {
+  // Try local catalog first
+  try {
+    const catalog = await fetch('/data/hdx/catalog.json');
+    if (catalog.ok) {
+      const data = await catalog.json();
+      console.log(`Using local HDX catalog (${data.total_datasets} datasets)`);
+      
+      // Filter locally
+      const filtered = data.datasets.filter((ds: any) =>
+        ds.title.toLowerCase().includes(query.toLowerCase()) ||
+        ds.name.toLowerCase().includes(query.toLowerCase())
+      ).slice(0, rows);
+      
+      return {
+        count: filtered.length,
+        results: filtered,
+      };
+    }
+  } catch (error) {
+    console.log('Local catalog not available, using API');
+  }
+  
+  // Fallback to API
   try {
     const url = `${HDX_API_BASE}/package_search?q=${encodeURIComponent(query)}&rows=${rows}`;
     const response = await fetch(url);

@@ -7,7 +7,8 @@ import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   Legend, ResponsiveContainer, Area
 } from "recharts";
-import { DataQualityBadge, DataLoadingBadge } from "./components/ui/data-quality-badge";
+import { UnifiedBadge as DataQualityBadge } from "./components/ui/unified-badge";
+import { UnifiedBadge as DataLoadingBadge } from "./components/ui/unified-badge";
 import { TrendingUp } from "lucide-react";
 import { FoodSecurity } from "./FoodSecurity";
 

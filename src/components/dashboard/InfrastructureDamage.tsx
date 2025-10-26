@@ -7,7 +7,7 @@ import {
 } from "recharts";
 import { Building2, TrendingDown, Home, Church, School } from "lucide-react";
 import { Badge } from "./components/ui/badge";
-import { DataQualityBadge } from "./components/ui/data-quality-badge";
+import { UnifiedBadge as DataQualityBadge } from "./components/ui/unified-badge";
 
 interface InfrastructureDamageProps {
   data: any[];

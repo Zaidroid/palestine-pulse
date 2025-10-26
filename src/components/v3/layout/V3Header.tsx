@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  Globe,
   Filter,
   Download,
   Moon,
@@ -12,7 +11,7 @@ import {
   Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useTheme } from "next-themes";
+import { useThemePreference } from "@/hooks/useThemePreference";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ExportDialog } from "@/components/export/ExportDialog";
 import {
@@ -27,9 +26,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+import { AnimatedSwitch } from "@/components/ui/animated-switch";
 import { PillTabs } from "@/components/v3/shared/PillTabs";
 import { Logo } from "./Logo";
+import { animationTokens } from "@/lib/animation/tokens";
+import { useReducedMotion } from "@/lib/animation/hooks";
+import { buttonInteraction } from "@/lib/interaction-polish";
 
 interface V3HeaderProps {
   onFilterClick?: () => void;
@@ -42,10 +44,11 @@ export const V3Header = ({
   showFilters = true,
   exportData,
 }: V3HeaderProps) => {
-  const { theme, setTheme } = useTheme();
+  const { theme, toggleTheme, setThemeMode } = useThemePreference();
   const location = useLocation();
   const navigate = useNavigate();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   const navLinks = [
     {
@@ -77,15 +80,29 @@ export const V3Header = ({
       activeTab={activeTab}
       onTabChange={handleTabChange}
       isMobile={isMobile}
+      variant="main"
     />
   );
 
+  // Animation variants for header (Requirement 1.1)
+  const headerVariants = {
+    hidden: { y: -100, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: {
+        duration: animationTokens.duration.slow / 1000, // 500ms
+        ease: animationTokens.easing.easeOut,
+      },
+    },
+  };
+
   return (
     <motion.header
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-      className="sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur-lg"
+      variants={prefersReducedMotion ? undefined : headerVariants}
+      initial="hidden"
+      animate="visible"
+      className="sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur-lg supports-[backdrop-filter]:bg-background/60"
     >
       <div className="container mx-auto px-4">
         <div className="relative flex h-16 items-center justify-center">
@@ -111,14 +128,16 @@ export const V3Header = ({
               {showFilters && (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={onFilterClick}
-                      className="rounded-full"
-                    >
-                      <Filter className="h-4 w-4" />
-                    </Button>
+                    <motion.div {...buttonInteraction}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={onFilterClick}
+                        className="rounded-full"
+                      >
+                        <Filter className="h-4 w-4" />
+                      </Button>
+                    </motion.div>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Filters</p>
@@ -132,13 +151,15 @@ export const V3Header = ({
                   trigger={
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="rounded-full"
-                        >
-                          <Download className="h-4 w-4" />
-                        </Button>
+                        <motion.div {...buttonInteraction}>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="rounded-full"
+                          >
+                            <Download className="h-4 w-4" />
+                          </Button>
+                        </motion.div>
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>Export Data</p>
@@ -149,15 +170,16 @@ export const V3Header = ({
               )}
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                    className="rounded-full"
-                  >
-                    <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                    <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                  </Button>
+                  <div className="flex items-center gap-2 px-2">
+                    <Sun className="h-4 w-4 text-muted-foreground" />
+                    <AnimatedSwitch
+                      checked={theme === "dark"}
+                      onCheckedChange={(checked) => setThemeMode(checked ? "dark" : "light")}
+                      size="sm"
+                      aria-label="Toggle theme"
+                    />
+                    <Moon className="h-4 w-4 text-muted-foreground" />
+                  </div>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Toggle Theme</p>
@@ -170,13 +192,15 @@ export const V3Header = ({
             <div className="md:hidden">
               <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                 <SheetTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="rounded-full"
-                  >
-                    <Menu className="h-5 w-5" />
-                  </Button>
+                  <motion.div {...buttonInteraction}>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full"
+                    >
+                      <Menu className="h-5 w-5" />
+                    </Button>
+                  </motion.div>
                 </SheetTrigger>
                 <SheetContent>
                   <SheetHeader>
@@ -184,48 +208,54 @@ export const V3Header = ({
                   </SheetHeader>
                   <div className="flex flex-col space-y-4 mt-6">
                     {showFilters && (
-                      <Button
-                        variant="outline"
-                        onClick={() => {
-                          onFilterClick?.();
-                          setIsSheetOpen(false);
-                        }}
-                        className="w-full justify-start gap-2"
-                      >
-                        <Filter className="h-4 w-4" />
-                        Filters
-                      </Button>
+                      <motion.div {...buttonInteraction}>
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            onFilterClick?.();
+                            setIsSheetOpen(false);
+                          }}
+                          className="w-full justify-start gap-2"
+                        >
+                          <Filter className="h-4 w-4" />
+                          Filters
+                        </Button>
+                      </motion.div>
                     )}
                     {exportData && (
                       <ExportDialog
                         data={exportData}
                         dataType="dashboard_data"
                         trigger={
-                          <Button
-                            variant="outline"
-                            className="w-full justify-start gap-2"
-                          >
-                            <Download className="h-4 w-4" />
-                            Export Data
-                          </Button>
+                          <motion.div {...buttonInteraction}>
+                            <Button
+                              variant="outline"
+                              className="w-full justify-start gap-2"
+                            >
+                              <Download className="h-4 w-4" />
+                              Export Data
+                            </Button>
+                          </motion.div>
                         }
                       />
                     )}
-                    <Button
-                      variant="outline"
-                      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                      className="w-full justify-start gap-2"
-                    >
-                      {theme === "dark" ? (
-                        <>
-                          <Sun className="h-4 w-4" /> Light Mode
-                        </>
-                      ) : (
-                        <>
-                          <Moon className="h-4 w-4" /> Dark Mode
-                        </>
-                      )}
-                    </Button>
+                    <motion.div {...buttonInteraction}>
+                      <Button
+                        variant="outline"
+                        onClick={toggleTheme}
+                        className="w-full justify-start gap-2"
+                      >
+                        {theme === "dark" ? (
+                          <>
+                            <Sun className="h-4 w-4" /> Light Mode
+                          </>
+                        ) : (
+                          <>
+                            <Moon className="h-4 w-4" /> Dark Mode
+                          </>
+                        )}
+                      </Button>
+                    </motion.div>
                     <div className="pt-2">
                       <h3 className="text-sm font-medium mb-2">Language</h3>
                       <LanguageSwitcher />

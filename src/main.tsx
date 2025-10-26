@@ -8,10 +8,19 @@ import "./i18n/config"; // Initialize i18n
 
 const queryClient = new QueryClient();
 
+// Prevent transitions on initial page load
+document.documentElement.classList.add('no-transitions');
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+      <ThemeProvider 
+        attribute="class" 
+        defaultTheme="light" 
+        enableSystem
+        storageKey="theme"
+        disableTransitionOnChange={false}
+      >
         <App />
       </ThemeProvider>
     </QueryClientProvider>

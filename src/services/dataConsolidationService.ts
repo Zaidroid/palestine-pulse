@@ -87,12 +87,60 @@ export const V3_DATA_SOURCE_MAPPING: {
 };
 
 // ============================================
+// CACHE TTL CONFIGURATION
+// ============================================
+
+export const CACHE_TTL_CONFIG = {
+  // Real-time data (5 minutes)
+  casualties: 5 * 60 * 1000,
+  pressCasualties: 5 * 60 * 1000,
+  
+  // Frequently updated data (15 minutes)
+  displacement: 15 * 60 * 1000,
+  foodSecurity: 15 * 60 * 1000,
+  aid: 15 * 60 * 1000,
+  
+  // Hourly updated data (1 hour)
+  infrastructure: 60 * 60 * 1000,
+  healthcare: 60 * 60 * 1000,
+  utilities: 60 * 60 * 1000,
+  violence: 60 * 60 * 1000,
+  demolitions: 60 * 60 * 1000,
+  
+  // Daily updated data (24 hours)
+  economic: 24 * 60 * 60 * 1000,
+  settlements: 24 * 60 * 60 * 1000,
+  prisoners: 24 * 60 * 60 * 1000,
+  
+  // Default fallback (30 minutes)
+  default: 30 * 60 * 1000,
+} as const;
+
+// ============================================
+// RETRY CONFIGURATION
+// ============================================
+
+interface RetryConfig {
+  maxAttempts: number;
+  initialDelay: number;
+  maxDelay: number;
+  backoffMultiplier: number;
+}
+
+const DEFAULT_RETRY_CONFIG: RetryConfig = {
+  maxAttempts: 3,
+  initialDelay: 1000, // 1 second
+  maxDelay: 30000, // 30 seconds
+  backoffMultiplier: 2,
+};
+
+// ============================================
 // INDEXEDDB STORAGE MANAGER
 // ============================================
 
 class IndexedDBManager {
   private dbName = 'PalestinePulseV3';
-  private dbVersion = 1;
+  private dbVersion = 2; // Incremented for new schema
   private db: IDBDatabase | null = null;
 
   async init(): Promise<void> {
@@ -124,10 +172,19 @@ class IndexedDBManager {
           db.createObjectStore('westbankData', { keyPath: 'id' });
         }
 
-        // Cache store for API responses
+        // Enhanced cache store for API responses with TTL tracking
         if (!db.objectStoreNames.contains('apiCache')) {
           const cacheStore = db.createObjectStore('apiCache', { keyPath: 'key' });
           cacheStore.createIndex('timestamp', 'timestamp', { unique: false });
+          cacheStore.createIndex('expiresAt', 'expiresAt', { unique: false });
+          cacheStore.createIndex('source', 'source', { unique: false });
+        }
+
+        // Retry tracking store for failed requests
+        if (!db.objectStoreNames.contains('retryTracking')) {
+          const retryStore = db.createObjectStore('retryTracking', { keyPath: 'key' });
+          retryStore.createIndex('attempts', 'attempts', { unique: false });
+          retryStore.createIndex('lastAttempt', 'lastAttempt', { unique: false });
         }
       };
     });
@@ -173,7 +230,7 @@ class IndexedDBManager {
     });
   }
 
-  async storeApiCache(key: string, data: any, ttl: number): Promise<void> {
+  async storeApiCache(key: string, data: any, ttl: number, source?: DataSource): Promise<void> {
     if (!this.db) await this.init();
 
     return new Promise((resolve, reject) => {
@@ -183,6 +240,7 @@ class IndexedDBManager {
       const request = store.put({
         key,
         data,
+        source,
         timestamp: Date.now(),
         expiresAt: Date.now() + ttl,
       });
@@ -215,6 +273,51 @@ class IndexedDBManager {
           resolve(null);
         }
       };
+    });
+  }
+
+  async storeRetryTracking(key: string, attempts: number, lastError?: string): Promise<void> {
+    if (!this.db) await this.init();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction(['retryTracking'], 'readwrite');
+      const store = transaction.objectStore('retryTracking');
+
+      const request = store.put({
+        key,
+        attempts,
+        lastAttempt: Date.now(),
+        lastError,
+      });
+
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => resolve();
+    });
+  }
+
+  async getRetryTracking(key: string): Promise<{ attempts: number; lastAttempt: number; lastError?: string } | null> {
+    if (!this.db) await this.init();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction(['retryTracking'], 'readonly');
+      const store = transaction.objectStore('retryTracking');
+      const request = store.get(key);
+
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => resolve(request.result || null);
+    });
+  }
+
+  async clearRetryTracking(key: string): Promise<void> {
+    if (!this.db) await this.init();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction(['retryTracking'], 'readwrite');
+      const store = transaction.objectStore('retryTracking');
+      const request = store.delete(key);
+
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => resolve();
     });
   }
 
@@ -252,6 +355,7 @@ export class DataConsolidationService {
   private db: IndexedDBManager;
   private consolidationInterval: NodeJS.Timeout | null = null;
   private realTimeCallbacks: Set<(data: V3ConsolidatedData) => void> = new Set();
+  private retryConfig: RetryConfig = DEFAULT_RETRY_CONFIG;
 
   constructor() {
     this.db = new IndexedDBManager();
@@ -263,6 +367,116 @@ export class DataConsolidationService {
   async initialize(): Promise<void> {
     await this.db.init();
     console.log('V3 Data Consolidation Service initialized');
+  }
+
+  /**
+   * Configure retry behavior
+   */
+  setRetryConfig(config: Partial<RetryConfig>): void {
+    this.retryConfig = { ...this.retryConfig, ...config };
+  }
+
+  /**
+   * Calculate exponential backoff delay
+   */
+  private calculateBackoffDelay(attempt: number): number {
+    const delay = this.retryConfig.initialDelay * Math.pow(this.retryConfig.backoffMultiplier, attempt);
+    return Math.min(delay, this.retryConfig.maxDelay);
+  }
+
+  /**
+   * Fetch with automatic retry and exponential backoff
+   */
+  private async fetchWithRetry<T>(
+    fetchFn: () => Promise<T>,
+    key: string,
+    config: Partial<RetryConfig> = {}
+  ): Promise<T> {
+    const retryConfig = { ...this.retryConfig, ...config };
+    const retryTracking = await this.db.getRetryTracking(key);
+    let attempts = retryTracking?.attempts || 0;
+
+    while (attempts < retryConfig.maxAttempts) {
+      try {
+        const result = await fetchFn();
+        
+        // Clear retry tracking on success
+        if (attempts > 0) {
+          await this.db.clearRetryTracking(key);
+        }
+        
+        return result;
+      } catch (error) {
+        attempts++;
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        
+        console.warn(`Fetch attempt ${attempts}/${retryConfig.maxAttempts} failed for ${key}:`, errorMessage);
+        
+        // Store retry tracking
+        await this.db.storeRetryTracking(key, attempts, errorMessage);
+        
+        // If we've exhausted retries, throw the error
+        if (attempts >= retryConfig.maxAttempts) {
+          console.error(`All retry attempts exhausted for ${key}`);
+          throw error;
+        }
+        
+        // Calculate and wait for backoff delay
+        const delay = this.calculateBackoffDelay(attempts - 1);
+        console.log(`Waiting ${delay}ms before retry ${attempts + 1}...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+
+    throw new Error(`Failed to fetch ${key} after ${retryConfig.maxAttempts} attempts`);
+  }
+
+  /**
+   * Get appropriate TTL for a data type
+   */
+  private getTTLForDataType(endpoint: string): number {
+    // Match endpoint to cache TTL configuration
+    if (endpoint.includes('casualties') || endpoint.includes('killed')) {
+      return CACHE_TTL_CONFIG.casualties;
+    }
+    if (endpoint.includes('press')) {
+      return CACHE_TTL_CONFIG.pressCasualties;
+    }
+    if (endpoint.includes('displacement')) {
+      return CACHE_TTL_CONFIG.displacement;
+    }
+    if (endpoint.includes('food')) {
+      return CACHE_TTL_CONFIG.foodSecurity;
+    }
+    if (endpoint.includes('aid')) {
+      return CACHE_TTL_CONFIG.aid;
+    }
+    if (endpoint.includes('infrastructure') || endpoint.includes('building')) {
+      return CACHE_TTL_CONFIG.infrastructure;
+    }
+    if (endpoint.includes('health')) {
+      return CACHE_TTL_CONFIG.healthcare;
+    }
+    if (endpoint.includes('utilities')) {
+      return CACHE_TTL_CONFIG.utilities;
+    }
+    if (endpoint.includes('violence') || endpoint.includes('attack')) {
+      return CACHE_TTL_CONFIG.violence;
+    }
+    if (endpoint.includes('demolition')) {
+      return CACHE_TTL_CONFIG.demolitions;
+    }
+    if (endpoint.includes('economic') || endpoint.includes('world_bank')) {
+      return CACHE_TTL_CONFIG.economic;
+    }
+    if (endpoint.includes('settlement')) {
+      return CACHE_TTL_CONFIG.settlements;
+    }
+    if (endpoint.includes('prisoner')) {
+      return CACHE_TTL_CONFIG.prisoners;
+    }
+    
+    return CACHE_TTL_CONFIG.default;
   }
 
   /**
@@ -470,62 +684,79 @@ export class DataConsolidationService {
   }
 
   /**
-   * Fetch data from a specific source with caching
+   * Fetch data from a specific source with intelligent caching and retry logic
    */
   private async fetchFromSource(source: DataSource, endpoint: string): Promise<any> {
-    // Check cache first
     const cacheKey = `${source}:${endpoint}`;
+    
+    // Check cache first
     const cached = await this.db.getApiCache(cacheKey);
-
     if (cached) {
+      console.log(`Cache hit for ${cacheKey}`);
       return cached;
     }
 
-    // Fetch fresh data based on source and endpoint
-    let data: any;
+    console.log(`Cache miss for ${cacheKey}, fetching fresh data...`);
 
-    switch (source) {
-      case 'tech4palestine':
-        data = await this.fetchTech4PalestineData(endpoint);
-        break;
-      case 'goodshepherd':
-        data = await this.fetchGoodShepherdData(endpoint);
-        break;
-      case 'un_ocha':
-        data = await this.fetchOCHAData(endpoint);
-        break;
-      case 'world_bank':
-        data = await this.fetchWorldBankData(endpoint);
-        break;
-      case 'wfp':
-        data = await this.fetchWFPData(endpoint);
-        break;
-      case 'btselem':
-        data = await this.fetchBtselemData(endpoint);
-        break;
-      case 'who':
-        data = await this.fetchWHOData(endpoint);
-        break;
-      case 'unrwa':
-        data = await this.fetchUNRWAData(endpoint);
-        break;
-      case 'pcbs':
-        data = await this.fetchPCBSData(endpoint);
-        break;
-      default:
-        // Generic fetch for sources without special logic
-        try {
-          data = await apiOrchestrator.fetch(source, endpoint);
-        } catch (error) {
-            console.error(`Generic fetch for source ${source} failed:`, error);
-            data = null;
+    // Fetch fresh data with retry logic
+    const data = await this.fetchWithRetry(
+      async () => {
+        let result: any;
+
+        switch (source) {
+          case 'tech4palestine':
+            result = await this.fetchTech4PalestineData(endpoint);
+            break;
+          case 'goodshepherd':
+            result = await this.fetchGoodShepherdData(endpoint);
+            break;
+          case 'un_ocha':
+            result = await this.fetchOCHAData(endpoint);
+            break;
+          case 'world_bank':
+            result = await this.fetchWorldBankData(endpoint);
+            break;
+          case 'wfp':
+            result = await this.fetchWFPData(endpoint);
+            break;
+          case 'btselem':
+            result = await this.fetchBtselemData(endpoint);
+            break;
+          case 'who':
+            result = await this.fetchWHOData(endpoint);
+            break;
+          case 'unrwa':
+            result = await this.fetchUNRWAData(endpoint);
+            break;
+          case 'pcbs':
+            result = await this.fetchPCBSData(endpoint);
+            break;
+          default:
+            // Generic fetch for sources without special logic
+            try {
+              const response = await apiOrchestrator.fetch(source, endpoint);
+              result = response.data;
+            } catch (error) {
+              console.error(`Generic fetch for source ${source} failed:`, error);
+              throw error;
+            }
+            break;
         }
-        break;
-    }
 
-    // Cache the result (5 minutes TTL for most data)
+        if (!result) {
+          throw new Error(`No data returned from ${source}:${endpoint}`);
+        }
+
+        return result;
+      },
+      cacheKey
+    );
+
+    // Cache the result with appropriate TTL
     if (data) {
-        await this.db.storeApiCache(cacheKey, data, 5 * 60 * 1000);
+      const ttl = this.getTTLForDataType(endpoint);
+      await this.db.storeApiCache(cacheKey, data, ttl, source);
+      console.log(`Cached ${cacheKey} with TTL ${ttl}ms`);
     }
 
     return data;
@@ -535,15 +766,20 @@ export class DataConsolidationService {
    * Fetch data from Tech4Palestine API
    */
   private async fetchTech4PalestineData(endpoint: string): Promise<any> {
+    let response;
     switch (endpoint) {
       case 'casualties':
-        return apiOrchestrator.fetch('tech4palestine', '/v3/killed-in-gaza.min.json');
+        response = await apiOrchestrator.fetch('tech4palestine', '/v3/killed-in-gaza.min.json');
+        return response.data;
       case 'demographics':
-        return apiOrchestrator.fetch('tech4palestine', '/v3/summary.json');
+        response = await apiOrchestrator.fetch('tech4palestine', '/v3/summary.json');
+        return response.data;
       case 'pressCasualties':
-        return apiOrchestrator.fetch('tech4palestine', '/v2/press_killed_in_gaza.json');
+        response = await apiOrchestrator.fetch('tech4palestine', '/v2/press_killed_in_gaza.json');
+        return response.data;
       case 'buildings':
-        return apiOrchestrator.fetch('tech4palestine', '/v3/infrastructure-damaged.json');
+        response = await apiOrchestrator.fetch('tech4palestine', '/v3/infrastructure-damaged.json');
+        return response.data;
       default:
         throw new Error(`Unknown Tech4Palestine endpoint: ${endpoint}`);
     }
@@ -686,11 +922,13 @@ export class DataConsolidationService {
    */
   private async fetchOCHAData(endpoint: string): Promise<any> {
     // This would integrate with the HDX service
+    let response;
     switch (endpoint) {
       case 'utilities':
       case 'displacement':
       case 'aid':
-        return apiOrchestrator.fetch('un_ocha', '/package_search?q=organization:un-ocha');
+        response = await apiOrchestrator.fetch('un_ocha', '/package_search?q=organization:un-ocha');
+        return response.data;
       default:
         throw new Error(`Unknown OCHA endpoint: ${endpoint}`);
     }
@@ -700,10 +938,12 @@ export class DataConsolidationService {
    * Fetch data from World Bank API
    */
   private async fetchWorldBankData(endpoint: string): Promise<any> {
+    let response;
     switch (endpoint) {
       case 'indicators':
       case 'trade':
-        return apiOrchestrator.fetch('world_bank', '/countries/PSE/indicators');
+        response = await apiOrchestrator.fetch('world_bank', '/countries/PSE/indicators');
+        return response.data;
       default:
         throw new Error(`Unknown World Bank endpoint: ${endpoint}`);
     }
@@ -713,9 +953,11 @@ export class DataConsolidationService {
    * Fetch data from WFP API
    */
   private async fetchWFPData(endpoint: string): Promise<any> {
+    let response;
     switch (endpoint) {
       case 'foodSecurity':
-        return apiOrchestrator.fetch('wfp', WFP_ENDPOINTS.foodSecurity);
+        response = await apiOrchestrator.fetch('wfp', WFP_ENDPOINTS.foodSecurity);
+        return response.data;
       default:
         throw new Error(`Unknown WFP endpoint: ${endpoint}`);
     }

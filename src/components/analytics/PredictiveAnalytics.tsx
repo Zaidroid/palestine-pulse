@@ -10,10 +10,10 @@
  */
 
 import { useMemo } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
-import { Badge } from './components/ui/badge';
-import { Skeleton } from './components/ui/skeleton';
-import { Alert, AlertDescription } from './components/ui/alert';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
   TrendingUp, 
   AlertTriangle,
@@ -37,7 +37,7 @@ import {
   forecast,
   confidenceInterval,
   detectTrend
-} from './utils/statistics';
+} from '@/utils/statistics';
 
 interface PredictiveAnalyticsProps {
   historicalData: Array<{ date: string; value: number }>;

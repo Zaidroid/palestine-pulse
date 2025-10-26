@@ -10,10 +10,10 @@
  */
 
 import { useMemo } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
-import { Badge } from './components/ui/badge';
-import { Skeleton } from './components/ui/skeleton';
-import { Progress } from './components/ui/progress';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Progress } from '@/components/ui/progress';
 import {
   Heart,
   Package,
@@ -38,8 +38,9 @@ import {
   Line
 } from 'recharts';
 import { ExpandableMetricCard } from '../dashboard/ExpandableMetricCard';
-import { useHumanitarianData, useAidStatistics } from './hooks/useHDXData';
-import { DataQualityBadge, DataLoadingBadge } from './components/ui/data-quality-badge';
+import { useHumanitarianData, useAidStatistics } from '@/hooks/useHDXData';
+import { UnifiedBadge as DataQualityBadge } from '@/components/ui/unified-badge';
+import { UnifiedBadge as DataLoadingBadge } from '@/components/ui/unified-badge';
 
 // ============================================
 // SAMPLE DATA

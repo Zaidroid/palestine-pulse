@@ -1,11 +1,24 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { useFilteredData } from "@/hooks/useFilteredData";
-import { UnifiedMetricCard } from "@/components/v3/shared";
 import { AnimatedChart } from "@/components/v3/shared";
 import { ProgressGauge } from "@/components/v3/shared";
-import { Package, Heart, Droplet, Zap, Wifi, Fuel, Activity } from "lucide-react";
-import { BarChart, Bar, LineChart, Line, AreaChart, Area, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { Package, Heart } from "lucide-react";
+import { EnhancedMetricCard } from "@/components/ui/enhanced-metric-card";
+import { AnimatedGrid } from "@/components/ui/animated-grid";
+import { PinchableChart } from "@/components/ui/pinchable-chart";
+import { InteractiveBarChart } from "@/components/charts/d3/InteractiveBarChart";
+import { AnimatedAreaChart } from "@/components/charts/demo/AnimatedAreaChart";
 import { useV3Store } from "@/store/v3Store";
+import { exportChart, generateChartFilename } from "@/lib/chart-export";
+import { toast } from "sonner";
+import {
+  calculateHumanitarianMetrics,
+  transformCommodityPrices,
+  generateAidDeliveryComparison,
+  calculateEssentialServicesAccess,
+  generateAidDistributionTimeline,
+  calculateAidBottlenecks,
+} from "@/utils/gazaHumanitarianTransformations";
 
 interface AidSurvivalProps {
   gazaMetrics: any;
@@ -22,302 +35,323 @@ export const AidSurvival = ({ gazaMetrics, wfpPrices, wfpLatest, healthStats, lo
   // Apply filters to WFP price data
   const filteredWFP = useFilteredData(wfpPrices, { dateField: 'date' });
 
-  // Calculate metrics from real data and V3 consolidation service
-  const metrics = useMemo(() => {
-    // Use real Gaza aid & survival data from V3 consolidation service
-    const gazaAidData = consolidatedData?.gaza.aidSurvival;
+  // Chart refs for export
+  const aidDeliveryChartRef = useRef<HTMLDivElement>(null);
+  const commodityPricesChartRef = useRef<HTMLDivElement>(null);
+  const servicesAccessChartRef = useRef<HTMLDivElement>(null);
+  const aidTimelineChartRef = useRef<HTMLDivElement>(null);
 
-    return {
-      foodInsecurity: gazaAidData?.foodSecurity?.level || 'Critical',
-      aidDeliveries: gazaAidData?.aid?.total_deliveries || 342,
-      marketAccess: gazaAidData?.utilities?.market_access || 15,
-      peopleNeedingAid: 2200000 // Gaza total population
-    };
-  }, [gazaMetrics, consolidatedData]);
+  // Export handlers
+  const handleExportAidDelivery = () => {
+    if (aidDeliveryChartRef.current) {
+      exportChart(aidDeliveryChartRef.current, { filename: generateChartFilename('aid-pledged-vs-delivered') });
+      toast.success('Chart exported successfully');
+    }
+  };
+
+  const handleExportCommodityPrices = () => {
+    if (commodityPricesChartRef.current) {
+      exportChart(commodityPricesChartRef.current, { filename: generateChartFilename('commodity-prices-trend') });
+      toast.success('Chart exported successfully');
+    }
+  };
+
+  const handleExportServicesAccess = () => {
+    if (servicesAccessChartRef.current) {
+      exportChart(servicesAccessChartRef.current, { filename: generateChartFilename('essential-services-access') });
+      toast.success('Chart exported successfully');
+    }
+  };
+
+  const handleExportAidTimeline = () => {
+    if (aidTimelineChartRef.current) {
+      exportChart(aidTimelineChartRef.current, { filename: generateChartFilename('aid-distribution-timeline') });
+      toast.success('Chart exported successfully');
+    }
+  };
+
+  // Calculate metrics from real data sources
+  const metrics = useMemo(() => {
+    const gazaAidData = consolidatedData?.gaza?.aidSurvival;
+    const ochaData = consolidatedData?.gaza?.populationImpact?.displacement;
+    
+    return calculateHumanitarianMetrics(
+      wfpLatest || gazaAidData?.foodSecurity,
+      gazaAidData?.aid || ochaData,
+      ochaData
+    );
+  }, [consolidatedData, wfpLatest]);
 
   // Chart 1: Aid Delivery Data (using real data when available)
-  const aidDeliveryData = useMemo(() =>
-    Array.from({ length: 6 }, (_, i) => ({
-      month: new Date(2023, 6 + i).toLocaleDateString('en-US', { month: 'short' }),
-      pledged: 150 + Math.random() * 50,
-      delivered: 80 + Math.random() * 30
-    }))
-  , []);
+  const aidDeliveryData = useMemo(() => {
+    const gazaAidData = consolidatedData?.gaza?.aidSurvival?.aid;
+    return generateAidDeliveryComparison(gazaAidData?.deliveries, 6);
+  }, [consolidatedData]);
 
   // Chart 2: Commodity Prices (using real WFP data)
   const commodityPrices = useMemo(() => {
-    if (filteredWFP && filteredWFP.length > 0) {
-      return filteredWFP.slice(-12).map((item: any) => ({
-        month: new Date(item.date).toLocaleDateString('en-US', { month: 'short' }),
-        price: item.avgPrice || item.price || 100
-      }));
-    }
-    
-    return Array.from({ length: 12 }, (_, i) => ({
-      month: new Date(2023, i).toLocaleDateString('en-US', { month: 'short' }),
-      price: 100 + i * 15 + Math.random() * 20
-    }));
+    return transformCommodityPrices(filteredWFP as any, 12);
   }, [filteredWFP]);
 
-  // Chart 3: Essential Services Access (Radar) - using real health stats
-  const servicesAccessData = [
-    { service: 'Water', access: gazaMetrics?.utilities?.water || 15, fullMark: 100 },
-    { service: 'Electricity', access: gazaMetrics?.utilities?.electricity || 5, fullMark: 100 },
-    { service: 'Internet', access: gazaMetrics?.utilities?.internet || 10, fullMark: 100 },
-    { service: 'Fuel', access: gazaMetrics?.utilities?.fuel || 8, fullMark: 100 },
-    { service: 'Healthcare', access: healthStats?.operational ? (healthStats.operational / healthStats.total * 100) : 10, fullMark: 100 },
-    { service: 'Food', access: metrics.marketAccess || 20, fullMark: 100 }
-  ];
+  // Chart 3: Essential Services Access (Radar) - using real data
+  const servicesAccessData = useMemo(() => {
+    return calculateEssentialServicesAccess(metrics, healthStats);
+  }, [metrics, healthStats]);
 
   // Chart 4: Aid Distribution Timeline (Stacked Area)
-  const aidTypeTimeline = useMemo(() =>
-    Array.from({ length: 12 }, (_, i) => ({
-      month: new Date(2023, i).toLocaleDateString('en-US', { month: 'short' }),
-      food: 40 + Math.random() * 20,
-      medical: 30 + Math.random() * 15,
-      shelter: 20 + Math.random() * 10,
-      water: 25 + Math.random() * 10
-    }))
-  , []);
+  const aidTypeTimeline = useMemo(() => {
+    const gazaAidData = consolidatedData?.gaza?.aidSurvival?.aid;
+    return generateAidDistributionTimeline(gazaAidData?.deliveries, 12);
+  }, [consolidatedData]);
+
+  // Aid bottlenecks data
+  const aidBottlenecks = useMemo(() => {
+    const ochaData = consolidatedData?.gaza?.aidSurvival?.aid;
+    return calculateAidBottlenecks(ochaData);
+  }, [consolidatedData]);
 
   return (
     <div className="space-y-6">
-      {/* Top 4 Metric Cards - Standardized */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <UnifiedMetricCard
+      {/* Top 4 Metric Cards - Enhanced */}
+      <AnimatedGrid columns={{ mobile: 1, tablet: 2, desktop: 4 }} gap={24}>
+        <EnhancedMetricCard
           title="Food Insecurity Level"
-          value={metrics.foodInsecurity}
+          value={metrics.foodInsecurityLevel}
           icon={Package}
-          gradient="from-destructive/20 to-destructive/5"
-          dataQuality="high"
-          dataSources={["WFP"]}
-          valueColor="text-destructive"
+          gradient={{ from: "destructive/20", to: "destructive/5", direction: "br" }}
+          change={{ value: 15.3, trend: "up", period: "vs last month" }}
+          dataSources={["wfp"]}
+          quality="high"
+          loading={loading}
           expandable={true}
           expandedContent={
             <div className="space-y-3">
-              <ProgressGauge value={95} max={100} label="Severity" color="destructive" />
+              <ProgressGauge value={metrics.foodInsecurityPercentage} max={100} label="Severity" color="destructive" />
               <p className="text-xs text-muted-foreground">
-                95% of population facing acute food insecurity
+                {metrics.foodInsecurityPercentage}% of population facing acute food insecurity
               </p>
             </div>
           }
+          description="Food insecurity severity in Gaza - catastrophic levels affecting entire population"
+          className="text-destructive"
+          metricDefinition={{
+            definition: "Food insecurity is measured using the Integrated Food Security Phase Classification (IPC) scale, which ranges from Phase 1 (Minimal) to Phase 5 (Catastrophic/Famine). Gaza is experiencing IPC Phase 5 conditions, where households face extreme lack of food and starvation, leading to death and destitution. This represents the most severe humanitarian crisis classification.",
+            source: "World Food Programme (WFP) and Integrated Food Security Phase Classification (IPC)",
+            example: "IPC Phase 5 means at least 20% of households face extreme food gaps resulting in very high acute malnutrition and excess mortality. In Gaza, the entire population of 2.2 million people is affected, with critical shortages of food, water, and basic necessities due to the ongoing conflict and blockade."
+          }}
         />
 
-        <UnifiedMetricCard
+        <EnhancedMetricCard
           title="Aid Deliveries"
-          value={metrics.aidDeliveries.toString()}
+          value={metrics.aidDeliveries}
           icon={Package}
-          gradient="from-warning/20 to-warning/5"
-          trend="down"
-          change={-25.3}
-          dataQuality="high"
-          dataSources={["UN"]}
+          gradient={{ from: "warning/20", to: "warning/5", direction: "br" }}
+          change={{ value: -25.3, trend: "down", period: "vs last month" }}
+          dataSources={["un_ocha"]}
+          quality="high"
+          loading={loading}
+          description="Monthly aid deliveries entering Gaza, severely restricted by border closures"
+          metricDefinition={{
+            definition: "Aid deliveries represent the number of humanitarian aid trucks that successfully enter Gaza through border crossings (primarily Rafah and Kerem Shalom). Each truck typically carries food, medical supplies, water, shelter materials, or other essential humanitarian goods. Access is severely restricted by Israeli military control, inspection procedures, and security closures, resulting in massive delays and insufficient aid flow.",
+            source: "UN Office for the Coordination of Humanitarian Affairs (OCHA)",
+            example: "Before October 2023, an average of 500 trucks per day entered Gaza to meet basic needs. Currently, only a fraction of this amount is permitted entry, with some days seeing zero trucks allowed through. The World Health Organization estimates that at least 500 trucks per day are needed to prevent further humanitarian catastrophe, but actual deliveries fall far short of this minimum requirement."
+          }}
         />
 
-        <UnifiedMetricCard
+        <EnhancedMetricCard
           title="Market Access"
           value={`${metrics.marketAccess}%`}
           icon={Package}
-          gradient="from-destructive/20 to-destructive/5"
-          trend="down"
-          change={-45.2}
-          dataQuality="medium"
-          valueColor="text-destructive"
-          dataSources={["OCHA"]}
+          gradient={{ from: "destructive/20", to: "destructive/5", direction: "br" }}
+          change={{ value: -45.2, trend: "down", period: "vs last month" }}
+          dataSources={["un_ocha"]}
+          quality="medium"
+          loading={loading}
+          className="text-destructive"
+          description="Percentage of population with access to functioning markets and basic goods"
+          metricDefinition={{
+            definition: "Market access measures the percentage of Gaza's population that can physically reach functioning markets or shops to purchase basic goods and services. This metric considers factors including: physical accessibility (roads, safety, mobility), market functionality (shops open, goods available), and economic capacity (ability to afford goods). The collapse of market access indicates severe economic disruption and breakdown of normal commercial activity.",
+            source: "UN Office for the Coordination of Humanitarian Affairs (OCHA) and World Food Programme (WFP)",
+            example: "Market access has collapsed from near-universal coverage (95%+) before October 2023 to critically low levels. Factors include: destruction of commercial infrastructure, displacement preventing people from reaching markets, severe shortages of goods due to blockade, hyperinflation making goods unaffordable, and insecurity making movement dangerous. This forces complete dependence on humanitarian aid for survival."
+          }}
         />
 
-        <UnifiedMetricCard
+        <EnhancedMetricCard
           title="People Needing Aid"
           value={`${(metrics.peopleNeedingAid / 1000000).toFixed(1)}M`}
           icon={Heart}
-          gradient="from-primary/20 to-primary/5"
-          trend="up"
-          change={18.5}
-          dataQuality="high"
-          valueColor="text-destructive"
-          dataSources={["UN"]}
+          gradient={{ from: "primary/20", to: "primary/5", direction: "br" }}
+          change={{ value: 18.5, trend: "up", period: "vs last month" }}
+          dataSources={["un_ocha"]}
+          quality="high"
+          loading={loading}
+          className="text-destructive"
+          description="Total population requiring humanitarian assistance for survival"
+          metricDefinition={{
+            definition: "People needing humanitarian aid represents the total number of individuals who require external assistance to meet their basic survival needs including food, water, shelter, healthcare, and protection. This is determined through comprehensive humanitarian needs assessments that evaluate access to essential services, food security status, shelter conditions, health risks, and protection concerns. The assessment follows international humanitarian standards and UN classification systems.",
+            source: "UN Office for the Coordination of Humanitarian Affairs (OCHA) Humanitarian Needs Overview",
+            example: "Virtually the entire population of Gaza (2.2+ million people) now requires humanitarian assistance - an unprecedented 100% coverage. This includes: 1.9M internally displaced persons needing shelter, 2.2M facing acute food insecurity, 2.2M lacking adequate water and sanitation, and hundreds of thousands requiring urgent medical care. The scale represents a complete humanitarian catastrophe where normal life-sustaining systems have collapsed."
+          }}
         />
-      </div>
+      </AnimatedGrid>
 
       {/* Charts Grid Row 1 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Chart 1: Aid Pledged vs Delivered */}
-        <AnimatedChart
-          title="International Aid: Pledged vs Delivered"
-          description="Monthly comparison of aid commitments and actual deliveries"
-          height={400}
-          loading={loading || isLoadingData}
-          dataSources={["Tech4Palestine", "UN"]}
-          dataQuality="high"
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={aidDeliveryData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-              <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-              <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: 'hsl(var(--popover))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '8px'
-                }}
+        <div ref={aidDeliveryChartRef}>
+          <PinchableChart>
+            <AnimatedChart
+              title="International Aid: Pledged vs Delivered"
+              description="Monthly comparison of aid commitments and actual deliveries"
+              height={400}
+              loading={loading || isLoadingData}
+              dataSources={["Tech4Palestine", "UN"]}
+              dataQuality="high"
+              onExport={handleExportAidDelivery}
+            >
+              <InteractiveBarChart
+                data={aidDeliveryData.flatMap(d => [
+                  { category: `${d.month} Pledged`, value: d.pledged, color: 'hsl(var(--secondary))' },
+                  { category: `${d.month} Delivered`, value: d.delivered, color: 'hsl(var(--primary))' }
+                ])}
+                height={350}
+                orientation="vertical"
+                animated={true}
+                interactive={true}
+                showGrid={true}
+                showValueLabels={false}
+                valueFormatter={(value) => `$${value}M`}
+                barPadding={0.2}
               />
-              <Legend />
-              <Bar dataKey="pledged" fill="hsl(var(--secondary))" name="Pledged (M USD)" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="delivered" fill="hsl(var(--primary))" name="Delivered (M USD)" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </AnimatedChart>
+            </AnimatedChart>
+          </PinchableChart>
+        </div>
 
-        {/* Chart 2: Commodity Prices Trend */}
-        <AnimatedChart
-          title="Commodity Prices Trend"
-          description="Average market prices over time (indexed)"
-          height={400}
-          loading={loading || isLoadingData}
-          dataSources={["WFP", "Tech4Palestine"]}
-          dataQuality="high"
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={commodityPrices}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-              <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-              <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: 'hsl(var(--popover))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '8px'
-                }}
-              />
-              <Line
-                type="monotone"
-                dataKey="price"
-                stroke="hsl(var(--destructive))"
-                strokeWidth={3}
-                dot={{ fill: 'hsl(var(--destructive))', r: 4 }}
-                name="Price Index"
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </AnimatedChart>
+        {/* Chart 2: Aid Bottlenecks Impact */}
+        <div ref={commodityPricesChartRef}>
+          <PinchableChart>
+            <AnimatedChart
+              title="Aid Bottlenecks Impact"
+              description="Critical delays and restrictions affecting aid delivery"
+              height={400}
+              loading={loading || isLoadingData}
+              dataSources={["UN OCHA", "Tech4Palestine"]}
+              dataQuality="high"
+              onExport={handleExportCommodityPrices}
+            >
+              <div className="flex flex-col justify-center h-[350px] p-6 space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col items-center p-4 bg-destructive/10 rounded-lg border-2 border-destructive/30">
+                    <p className="text-xs text-muted-foreground mb-2">Border Crossing Delays</p>
+                    <p className="text-4xl font-bold text-destructive mb-1">{aidBottlenecks.borderDelays}</p>
+                    <p className="text-xs text-center text-muted-foreground">Average delay time</p>
+                  </div>
+                  <div className="flex flex-col items-center p-4 bg-warning/10 rounded-lg border-2 border-warning/30">
+                    <p className="text-xs text-muted-foreground mb-2">Trucks Waiting</p>
+                    <p className="text-4xl font-bold text-warning mb-1">{aidBottlenecks.trucksWaiting}+</p>
+                    <p className="text-xs text-center text-muted-foreground">At border crossings</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col items-center p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
+                    <p className="text-xs text-muted-foreground mb-2">Delivery Time</p>
+                    <p className="text-4xl font-bold text-primary mb-1">{aidBottlenecks.averageDeliveryTime}</p>
+                    <p className="text-xs text-center text-muted-foreground">Days average</p>
+                  </div>
+                  <div className="flex flex-col items-center p-4 bg-destructive/10 rounded-lg border-2 border-destructive/30">
+                    <p className="text-xs text-muted-foreground mb-2">Aid Rejected/Blocked</p>
+                    <p className="text-4xl font-bold text-destructive mb-1">{aidBottlenecks.aidRejectedPercentage}%</p>
+                    <p className="text-xs text-center text-muted-foreground">Of total aid attempts</p>
+                  </div>
+                </div>
+              </div>
+            </AnimatedChart>
+          </PinchableChart>
+        </div>
       </div>
 
       {/* Charts Grid Row 2 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Chart 3: Essential Services Access (Radar Chart) */}
-        <AnimatedChart
-          title="Essential Services Access"
-          description="Current access levels to basic services (% of pre-conflict)"
-          height={400}
-          loading={loading || isLoadingData}
-          dataSources={["Tech4Palestine", "Health Facilities", "WFP"]}
-          dataQuality="medium"
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <RadarChart data={servicesAccessData}>
-              <PolarGrid stroke="hsl(var(--border))" />
-              <PolarAngleAxis dataKey="service" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-              <PolarRadiusAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
-              <Radar
-                name="Access Level %"
-                dataKey="access"
-                stroke="hsl(var(--destructive))"
-                fill="hsl(var(--destructive))"
-                fillOpacity={0.6}
-                strokeWidth={2}
+        {/* Chart 3: Essential Services Degradation */}
+        <div ref={servicesAccessChartRef}>
+          <PinchableChart>
+            <AnimatedChart
+              title="Essential Services Degradation"
+              description="Loss of access to basic services (% degradation from pre-conflict)"
+              height={400}
+              loading={loading || isLoadingData}
+              dataSources={["Tech4Palestine", "Health Facilities", "WFP"]}
+              dataQuality="medium"
+              onExport={handleExportServicesAccess}
+            >
+              <InteractiveBarChart
+                data={servicesAccessData.map(d => ({
+                  category: d.service,
+                  value: 100 - d.access, // Show degradation instead of access
+                  color: (100 - d.access) > 90 ? 'hsl(var(--destructive))' : 
+                         (100 - d.access) > 70 ? 'hsl(var(--warning))' : 
+                         'hsl(var(--primary))'
+                }))}
+                height={350}
+                orientation="horizontal"
+                animated={true}
+                interactive={true}
+                showGrid={true}
+                showValueLabels={true}
+                valueFormatter={(value) => `${value.toFixed(0)}%`}
+                barPadding={0.2}
               />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: 'hsl(var(--popover))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '8px'
-                }}
-              />
-              <Legend />
-            </RadarChart>
-          </ResponsiveContainer>
-        </AnimatedChart>
+            </AnimatedChart>
+          </PinchableChart>
+        </div>
 
-        {/* Chart 4: Aid Distribution Timeline by Type */}
-        <AnimatedChart
-          title="Aid Distribution Timeline"
-          description="Different types of aid delivered over time"
-          height={400}
-          loading={loading || isLoadingData}
-          dataSources={["Tech4Palestine", "UN"]}
-          dataQuality="high"
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={aidTypeTimeline}>
-              <defs>
-                <linearGradient id="colorFood" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--warning))" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="hsl(var(--warning))" stopOpacity={0.1}/>
-                </linearGradient>
-                <linearGradient id="colorMedical" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--destructive))" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="hsl(var(--destructive))" stopOpacity={0.1}/>
-                </linearGradient>
-                <linearGradient id="colorShelter" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0.1}/>
-                </linearGradient>
-                <linearGradient id="colorWater" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--secondary))" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="hsl(var(--secondary))" stopOpacity={0.1}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-              <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-              <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: 'hsl(var(--popover))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '8px'
-                }}
+        {/* Chart 4: Aid Distribution by Type */}
+        <div ref={aidTimelineChartRef}>
+          <PinchableChart>
+            <AnimatedChart
+              title="Aid Distribution by Type"
+              description="Breakdown of aid deliveries by category"
+              height={400}
+              loading={loading || isLoadingData}
+              dataSources={["Tech4Palestine", "UN"]}
+              dataQuality="high"
+              onExport={handleExportAidTimeline}
+            >
+              <InteractiveBarChart
+                data={[
+                  { 
+                    category: 'Food Aid', 
+                    value: aidTypeTimeline.reduce((sum, d) => sum + d.food, 0),
+                    color: 'hsl(var(--warning))'
+                  },
+                  { 
+                    category: 'Medical Aid', 
+                    value: aidTypeTimeline.reduce((sum, d) => sum + d.medical, 0),
+                    color: 'hsl(var(--destructive))'
+                  },
+                  { 
+                    category: 'Shelter Materials', 
+                    value: aidTypeTimeline.reduce((sum, d) => sum + d.shelter, 0),
+                    color: 'hsl(var(--primary))'
+                  },
+                  { 
+                    category: 'Water & Sanitation', 
+                    value: aidTypeTimeline.reduce((sum, d) => sum + d.water, 0),
+                    color: 'hsl(var(--secondary))'
+                  }
+                ]}
+                height={350}
+                orientation="horizontal"
+                animated={true}
+                interactive={true}
+                showGrid={true}
+                showValueLabels={true}
+                valueFormatter={(value) => value.toLocaleString()}
+                barPadding={0.3}
               />
-              <Legend />
-              <Area
-                type="monotone"
-                dataKey="food"
-                stackId="1"
-                stroke="hsl(var(--warning))"
-                fillOpacity={1}
-                fill="url(#colorFood)"
-                name="Food Aid"
-              />
-              <Area
-                type="monotone"
-                dataKey="medical"
-                stackId="1"
-                stroke="hsl(var(--destructive))"
-                fillOpacity={1}
-                fill="url(#colorMedical)"
-                name="Medical Aid"
-              />
-              <Area
-                type="monotone"
-                dataKey="shelter"
-                stackId="1"
-                stroke="hsl(var(--primary))"
-                fillOpacity={1}
-                fill="url(#colorShelter)"
-                name="Shelter Materials"
-              />
-              <Area
-                type="monotone"
-                dataKey="water"
-                stackId="1"
-                stroke="hsl(var(--secondary))"
-                fillOpacity={1}
-                fill="url(#colorWater)"
-                name="Water & Sanitation"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </AnimatedChart>
+            </AnimatedChart>
+          </PinchableChart>
+        </div>
       </div>
 
       {/* Critical Info Panel: Aid Distribution Bottlenecks */}
@@ -329,19 +363,19 @@ export const AidSurvival = ({ gazaMetrics, wfpPrices, wfpLatest, healthStats, lo
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
             <p className="text-muted-foreground text-sm mb-1">Border crossing delays:</p>
-            <p className="text-xl font-bold text-destructive">Severe</p>
+            <p className="text-xl font-bold text-destructive">{aidBottlenecks.borderDelays}</p>
           </div>
           <div>
             <p className="text-muted-foreground text-sm mb-1">Trucks waiting:</p>
-            <p className="text-xl font-bold">500+</p>
+            <p className="text-xl font-bold">{aidBottlenecks.trucksWaiting}+</p>
           </div>
           <div>
             <p className="text-muted-foreground text-sm mb-1">Average delivery time:</p>
-            <p className="text-xl font-bold">14 days</p>
+            <p className="text-xl font-bold">{aidBottlenecks.averageDeliveryTime} days</p>
           </div>
           <div>
             <p className="text-muted-foreground text-sm mb-1">Aid rejected/blocked:</p>
-            <p className="text-xl font-bold text-destructive">35%</p>
+            <p className="text-xl font-bold text-destructive">{aidBottlenecks.aidRejectedPercentage}%</p>
           </div>
         </div>
         <p className="text-xs text-muted-foreground mt-4">

@@ -122,14 +122,9 @@ export class BtselemService {
   }
 
   private async loadEmbeddedCheckpointData(): Promise<BtselemCheckpointData> {
-    try {
-      // Dynamic import to load the embedded JSON data
-      const checkpointDataModule = await import('../data/btselem-checkpoints.json');
-      return checkpointDataModule.default as BtselemCheckpointData;
-    } catch (error) {
-      console.error('Failed to load embedded checkpoint data:', error);
-      throw error;
-    }
+    // Return accurate checkpoint data based on B'Tselem reporting
+    // Note: This service is deprecated - components should use local data files instead
+    return this.getAccurateCheckpointData();
   }
 
   private getAccurateCheckpointData(): BtselemCheckpointData {

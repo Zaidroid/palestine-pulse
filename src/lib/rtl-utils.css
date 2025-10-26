@@ -1,0 +1,470 @@
+/**
+ * RTL (Right-to-Left) Utilities
+ * 
+ * Comprehensive RTL support using CSS logical properties
+ * for seamless Arabic language support
+ */
+
+/* ============================================================================
+   BASE RTL CONFIGURATION
+   ============================================================================ */
+
+[dir="rtl"] {
+  direction: rtl;
+  text-align: start;
+}
+
+[dir="ltr"] {
+  direction: ltr;
+  text-align: start;
+}
+
+/* ============================================================================
+   LOGICAL PROPERTIES - SPACING
+   Use these instead of left/right for automatic RTL support
+   ============================================================================ */
+
+/* Margin Inline (horizontal) */
+.ms-0 { margin-inline-start: 0; }
+.ms-1 { margin-inline-start: 0.25rem; }
+.ms-2 { margin-inline-start: 0.5rem; }
+.ms-3 { margin-inline-start: 0.75rem; }
+.ms-4 { margin-inline-start: 1rem; }
+.ms-6 { margin-inline-start: 1.5rem; }
+.ms-8 { margin-inline-start: 2rem; }
+.ms-auto { margin-inline-start: auto; }
+
+.me-0 { margin-inline-end: 0; }
+.me-1 { margin-inline-end: 0.25rem; }
+.me-2 { margin-inline-end: 0.5rem; }
+.me-3 { margin-inline-end: 0.75rem; }
+.me-4 { margin-inline-end: 1rem; }
+.me-6 { margin-inline-end: 1.5rem; }
+.me-8 { margin-inline-end: 2rem; }
+.me-auto { margin-inline-end: auto; }
+
+/* Padding Inline (horizontal) */
+.ps-0 { padding-inline-start: 0; }
+.ps-1 { padding-inline-start: 0.25rem; }
+.ps-2 { padding-inline-start: 0.5rem; }
+.ps-3 { padding-inline-start: 0.75rem; }
+.ps-4 { padding-inline-start: 1rem; }
+.ps-6 { padding-inline-start: 1.5rem; }
+.ps-8 { padding-inline-start: 2rem; }
+
+.pe-0 { padding-inline-end: 0; }
+.pe-1 { padding-inline-end: 0.25rem; }
+.pe-2 { padding-inline-end: 0.5rem; }
+.pe-3 { padding-inline-end: 0.75rem; }
+.pe-4 { padding-inline-end: 1rem; }
+.pe-6 { padding-inline-end: 1.5rem; }
+.pe-8 { padding-inline-end: 2rem; }
+
+/* ============================================================================
+   TEXT ALIGNMENT
+   ============================================================================ */
+
+.text-start { text-align: start; }
+.text-end { text-align: end; }
+.text-center { text-align: center; }
+
+/* ============================================================================
+   FLEXBOX RTL SUPPORT
+   ============================================================================ */
+
+[dir="rtl"] .flex-row {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .flex-row-reverse {
+  flex-direction: row;
+}
+
+/* Space between items - RTL aware */
+.space-x-reverse > * + * {
+  margin-inline-start: 0;
+  margin-inline-end: var(--space-x-reverse-value, 0);
+}
+
+[dir="rtl"] .space-x-1 > * + * {
+  --space-x-reverse-value: 0.25rem;
+}
+
+[dir="rtl"] .space-x-2 > * + * {
+  --space-x-reverse-value: 0.5rem;
+}
+
+[dir="rtl"] .space-x-3 > * + * {
+  --space-x-reverse-value: 0.75rem;
+}
+
+[dir="rtl"] .space-x-4 > * + * {
+  --space-x-reverse-value: 1rem;
+}
+
+/* ============================================================================
+   POSITIONING
+   ============================================================================ */
+
+.inset-inline-start-0 { inset-inline-start: 0; }
+.inset-inline-end-0 { inset-inline-end: 0; }
+
+.start-0 { inset-inline-start: 0; }
+.start-4 { inset-inline-start: 1rem; }
+.start-8 { inset-inline-start: 2rem; }
+
+.end-0 { inset-inline-end: 0; }
+.end-4 { inset-inline-end: 1rem; }
+.end-8 { inset-inline-end: 2rem; }
+
+/* ============================================================================
+   BORDER RADIUS - RTL AWARE
+   ============================================================================ */
+
+.rounded-s { border-start-start-radius: var(--radius); border-end-start-radius: var(--radius); }
+.rounded-e { border-start-end-radius: var(--radius); border-end-end-radius: var(--radius); }
+.rounded-ss { border-start-start-radius: var(--radius); }
+.rounded-se { border-start-end-radius: var(--radius); }
+.rounded-es { border-end-start-radius: var(--radius); }
+.rounded-ee { border-end-end-radius: var(--radius); }
+
+/* ============================================================================
+   TRANSFORMS - RTL AWARE
+   ============================================================================ */
+
+[dir="rtl"] .scale-x-100 {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .rotate-0 {
+  transform: rotate(0deg);
+}
+
+/* Flip icons that point in a direction */
+[dir="rtl"] .flip-rtl {
+  transform: scaleX(-1);
+}
+
+/* ============================================================================
+   CHART-SPECIFIC RTL ADJUSTMENTS
+   ============================================================================ */
+
+/* D3 Chart Container */
+[dir="rtl"] .chart-container {
+  direction: ltr; /* Keep charts LTR for data consistency */
+}
+
+/* Chart Labels - RTL */
+[dir="rtl"] .chart-label {
+  text-anchor: end;
+}
+
+[dir="rtl"] .chart-label-start {
+  text-anchor: end;
+}
+
+[dir="rtl"] .chart-label-end {
+  text-anchor: start;
+}
+
+/* Chart Legend - RTL */
+[dir="rtl"] .chart-legend {
+  direction: rtl;
+}
+
+[dir="rtl"] .chart-legend-item {
+  flex-direction: row-reverse;
+}
+
+/* Chart Tooltip - RTL */
+[dir="rtl"] .chart-tooltip {
+  text-align: right;
+}
+
+/* Chart Axis - RTL */
+[dir="rtl"] .chart-axis-x text {
+  text-anchor: middle;
+}
+
+[dir="rtl"] .chart-axis-y text {
+  text-anchor: end;
+}
+
+/* ============================================================================
+   DROPDOWN & MENU RTL
+   ============================================================================ */
+
+[dir="rtl"] .dropdown-menu {
+  text-align: right;
+}
+
+[dir="rtl"] .dropdown-item {
+  padding-inline-start: 1rem;
+  padding-inline-end: 0.5rem;
+}
+
+/* ============================================================================
+   FORM ELEMENTS RTL
+   ============================================================================ */
+
+[dir="rtl"] input[type="search"]::-webkit-search-cancel-button {
+  margin-inline-start: 0.5rem;
+  margin-inline-end: 0;
+}
+
+[dir="rtl"] .input-icon-start {
+  inset-inline-start: auto;
+  inset-inline-end: 0.75rem;
+}
+
+[dir="rtl"] .input-icon-end {
+  inset-inline-end: auto;
+  inset-inline-start: 0.75rem;
+}
+
+/* ============================================================================
+   BADGE & TAG RTL
+   ============================================================================ */
+
+[dir="rtl"] .badge {
+  padding-inline-start: 0.5rem;
+  padding-inline-end: 0.5rem;
+}
+
+[dir="rtl"] .badge-icon {
+  margin-inline-end: 0.25rem;
+  margin-inline-start: 0;
+}
+
+/* ============================================================================
+   CARD RTL
+   ============================================================================ */
+
+[dir="rtl"] .card-header {
+  text-align: start;
+}
+
+[dir="rtl"] .card-actions {
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+}
+
+/* ============================================================================
+   NAVIGATION RTL
+   ============================================================================ */
+
+[dir="rtl"] .nav-item {
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
+}
+
+[dir="rtl"] .nav-icon {
+  margin-inline-end: 0.5rem;
+  margin-inline-start: 0;
+}
+
+/* ============================================================================
+   BREADCRUMB RTL
+   ============================================================================ */
+
+[dir="rtl"] .breadcrumb-separator {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .breadcrumb-item {
+  padding-inline-start: 0.5rem;
+  padding-inline-end: 0;
+}
+
+/* ============================================================================
+   TABLE RTL
+   ============================================================================ */
+
+[dir="rtl"] table {
+  text-align: start;
+}
+
+[dir="rtl"] th,
+[dir="rtl"] td {
+  text-align: start;
+}
+
+[dir="rtl"] .table-actions {
+  text-align: end;
+}
+
+/* ============================================================================
+   MODAL & DIALOG RTL
+   ============================================================================ */
+
+[dir="rtl"] .modal-header {
+  text-align: start;
+}
+
+[dir="rtl"] .modal-close {
+  inset-inline-end: auto;
+  inset-inline-start: 1rem;
+}
+
+/* ============================================================================
+   TOAST & NOTIFICATION RTL
+   ============================================================================ */
+
+[dir="rtl"] .toast {
+  text-align: start;
+}
+
+[dir="rtl"] .toast-icon {
+  margin-inline-end: 0.75rem;
+  margin-inline-start: 0;
+}
+
+[dir="rtl"] .toast-close {
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+}
+
+/* ============================================================================
+   SIDEBAR RTL
+   ============================================================================ */
+
+[dir="rtl"] .sidebar {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
+[dir="rtl"] .sidebar-item {
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
+/* Float */
+.float-start { float: inline-start; }
+.float-end { float: inline-end; }
+
+/* Clear */
+.clear-start { clear: inline-start; }
+.clear-end { clear: inline-end; }
+
+/* ============================================================================
+   ANIMATION RTL ADJUSTMENTS
+   ============================================================================ */
+
+[dir="rtl"] .slide-in-right {
+  animation-name: slide-in-left;
+}
+
+[dir="rtl"] .slide-in-left {
+  animation-name: slide-in-right;
+}
+
+@keyframes slide-in-start {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-end {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+[dir="rtl"] @keyframes slide-in-start {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+[dir="rtl"] @keyframes slide-in-end {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* ============================================================================
+   SCROLLBAR RTL
+   ============================================================================ */
+
+[dir="rtl"] ::-webkit-scrollbar {
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+}
+
+/* ============================================================================
+   PRINT RTL
+   ============================================================================ */
+
+@media print {
+  [dir="rtl"] {
+    direction: rtl;
+  }
+  
+  [dir="rtl"] .print-text-start {
+    text-align: start;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY - RTL
+   ============================================================================ */
+
+[dir="rtl"] .sr-only {
+  direction: rtl;
+}
+
+/* ============================================================================
+   RESPONSIVE RTL UTILITIES
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  [dir="rtl"] .mobile-text-start {
+    text-align: start;
+  }
+  
+  [dir="rtl"] .mobile-ps-4 {
+    padding-inline-start: 1rem;
+  }
+  
+  [dir="rtl"] .mobile-pe-4 {
+    padding-inline-end: 1rem;
+  }
+}
+
+/* ============================================================================
+   FONT OPTIMIZATION FOR ARABIC
+   ============================================================================ */
+
+[dir="rtl"] {
+  font-family: 'Tajawal', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Optimize Arabic text rendering */
+  font-feature-settings: 'liga' 1, 'calt' 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure numbers remain LTR in RTL context */
+[dir="rtl"] .number,
+[dir="rtl"] .metric-value,
+[dir="rtl"] .chart-value {
+  direction: ltr;
+  display: inline-block;
+  unicode-bidi: embed;
+}

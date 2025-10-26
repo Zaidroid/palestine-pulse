@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useV3Store } from "@/store/v3Store";
+import { buttonInteraction } from "@/lib/interaction-polish";
 
 const presets = [
   { label: 'Last 7 days', value: '7d' as const },

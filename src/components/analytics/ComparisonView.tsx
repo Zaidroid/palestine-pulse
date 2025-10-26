@@ -10,11 +10,11 @@
  */
 
 import { useState, useMemo } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
-import { Badge } from './components/ui/badge';
-import { Button } from './components/ui/button';
-import { Skeleton } from './components/ui/skeleton';
-import { Alert, AlertDescription } from './components/ui/alert';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
   ArrowUpDown,
   TrendingUp,
@@ -32,7 +32,7 @@ import {
   Legend, 
   ResponsiveContainer
 } from 'recharts';
-import { periodComparison, percentageChange } from './utils/statistics';
+import { periodComparison, percentageChange } from '@/utils/statistics';
 
 // ============================================
 // SAMPLE DATA

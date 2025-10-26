@@ -10,7 +10,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   DollarSign,
   TrendingUp,
@@ -24,18 +24,18 @@ import {
   Apple,
   Flag
 } from 'lucide-react';
-import { AppLayout } from './components/layout/AppLayout';
-import EconomicImpact from './components/dashboards/EconomicImpact';
-import AidTracker from './components/dashboards/AidTracker';
-import HealthcareStatus from './components/dashboards/HealthcareStatus';
-import DisplacementStats from './components/dashboards/DisplacementStats';
-import EducationImpact from './components/dashboards/EducationImpact';
-import UtilitiesStatus from './components/dashboards/UtilitiesStatus';
-import PrisonersStats from './components/dashboards/PrisonersStats';
-import SettlementExpansion from './components/dashboards/SettlementExpansion';
-import FoodSecurity from './components/dashboards/FoodSecurity';
-import InternationalResponse from './components/dashboards/InternationalResponse';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
+import { AppLayout } from '@/components/layout/AppLayout';
+import EconomicImpact from '@/components/dashboards/EconomicImpact';
+import AidTrackerPlaceholder from '@/components/dashboards/AidTrackerPlaceholder';
+import HealthcareStatus from '@/components/dashboards/HealthcareStatus';
+import DisplacementStats from '@/components/dashboards/DisplacementStats';
+import EducationImpact from '@/components/dashboards/EducationImpact';
+import UtilitiesStatus from '@/components/dashboards/UtilitiesStatus';
+import PrisonersStats from '@/components/dashboards/PrisonersStats';
+import SettlementExpansionPlaceholder from '@/components/dashboards/SettlementExpansionPlaceholder';
+import FoodSecurity from '@/components/dashboards/FoodSecurity';
+import InternationalResponse from '@/components/dashboards/InternationalResponse';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Analytics = () => {
   const { t } = useTranslation();
@@ -120,7 +120,7 @@ const Analytics = () => {
 
           {/* Aid Tracker Tab */}
           <TabsContent value="aid" className="space-y-6">
-            <AidTracker dateRange={dateRange} loading={false} />
+            <AidTrackerPlaceholder />
           </TabsContent>
 
           {/* Healthcare Status Tab */}
@@ -175,7 +175,7 @@ const Analytics = () => {
 
               {/* Settlements Tab */}
               <TabsContent value="settlements" className="space-y-6">
-                <SettlementExpansion loading={false} />
+                <SettlementExpansionPlaceholder />
               </TabsContent>
 
               {/* International Response Tab */}

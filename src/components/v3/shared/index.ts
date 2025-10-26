@@ -7,7 +7,27 @@ export { ComparisonCard } from './ComparisonCard';
 export { StatisticsPanel } from './StatisticsPanel';
 export { AlertBanner, CriticalAlert } from './AlertBanner';
 export { DataSourceBadge } from './DataSourceBadge';
+export { EnhancedDataSourceBadge } from './EnhancedDataSourceBadge';
 export { DataQualityIndicator, FreshnessIndicator } from './DataQualityIndicator';
+export { EnhancedDataSourceAttribution } from './EnhancedDataSourceAttribution';
+export { 
+  EnhancedDataQualityBadge, 
+  UnavailableBadge, 
+  CompositeQualityIndicator 
+} from './EnhancedDataQualityBadge';
+export { 
+  DataEducationTooltip, 
+  QuickHelpIcon, 
+  InlineHelpText, 
+  HelpBadge, 
+  EducationPanel,
+  EDUCATION_TOPICS 
+} from './DataEducationTooltip';
+export { 
+  DataFeedbackSystem, 
+  QuickFeedbackButton, 
+  InlineFeedbackLink 
+} from './DataFeedbackSystem';
 export { ErrorBoundary, ErrorFallback } from './ErrorBoundary';
 export { TimelineWidget } from './TimelineWidget';
 export { HeatmapCalendar } from './HeatmapCalendar';
@@ -18,3 +38,5 @@ export { AnalyticsPanel } from './AnalyticsPanel';
 export { CorrelationMatrix } from './CorrelationMatrix';
 export { PredictionCard } from './PredictionCard';
 export { FoodSecurityAlert } from './FoodSecurityAlert';
+export { Breadcrumbs } from './Breadcrumbs';
+export type { BreadcrumbItem } from './Breadcrumbs';

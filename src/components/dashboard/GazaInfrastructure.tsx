@@ -3,7 +3,7 @@ import {
 } from "./components/ui/card";
 import { Skeleton } from "./components/ui/skeleton";
 import { Progress } from "./components/ui/progress";
-import { DataQualityBadge } from "./components/ui/data-quality-badge";
+import { UnifiedBadge as DataQualityBadge } from "./components/ui/unified-badge";
 import { useHealthFacilityStats } from "./hooks/useHealthFacilities";
 import { Stethoscope, Building2, Activity } from "lucide-react";
 import { EducationImpact } from "./EducationImpact";

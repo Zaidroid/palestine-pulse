@@ -9,10 +9,10 @@
  * - Fuel availability
  */
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
-import { Badge } from './components/ui/badge';
-import { Skeleton } from './components/ui/skeleton';
-import { Progress } from './components/ui/progress';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Progress } from '@/components/ui/progress';
 import {
   Droplet,
   Zap,
@@ -37,7 +37,7 @@ import {
   Line
 } from 'recharts';
 import { ExpandableMetricCard } from '../dashboard/ExpandableMetricCard';
-import { DataQualityBadge } from './components/ui/data-quality-badge';
+import { UnifiedBadge as DataQualityBadge } from '@/components/ui/unified-badge';
 
 // ============================================
 // SAMPLE DATA

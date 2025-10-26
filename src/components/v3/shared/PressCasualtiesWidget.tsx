@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { UnifiedMetricCard } from "@/components/v3/shared";
+import { EnhancedMetricCard } from "@/components/ui/enhanced-metric-card";
 import { Newspaper, Search, Calendar, User, Eye } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
@@ -51,24 +51,18 @@ export const PressCasualtiesWidget = ({ pressData, loading }: PressCasualtiesWid
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="cursor-pointer">
-          <UnifiedMetricCard
+        <div>
+          <EnhancedMetricCard
             title="Press/Journalists Killed"
             value={pressKilled}
             icon={Newspaper}
-            gradient="from-secondary/20 to-secondary/5"
-            trend="up"
-            change={3.2}
-            dataQuality="high"
-            dataSources={["T4P"]}
-            valueColor="text-secondary"
-            expandable={true}
-            expandedContent={
-              <div className="flex items-center justify-center text-sm text-secondary group-hover:text-white transition-colors">
-                <Eye className="mr-2 h-4 w-4" />
-                View Details
-              </div>
-            }
+            gradient={{ from: "secondary/20", to: "secondary/5", direction: "br" }}
+            change={{ value: 3.2, trend: "up", period: "vs last month" }}
+            dataSources={["tech4palestine"]}
+            quality="high"
+            loading={loading}
+            className="text-secondary cursor-pointer"
+            description="Journalists and media workers killed"
           />
         </div>
       </DialogTrigger>

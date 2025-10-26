@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useV3Store } from "@/store/v3Store";
+import { buttonInteraction, badgeInteraction, iconButtonInteraction } from "@/lib/interaction-polish";
 
 interface AdvancedFilterPanelProps {
   onClose?: () => void;

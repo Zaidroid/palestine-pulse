@@ -13,7 +13,8 @@ import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   Legend, ResponsiveContainer, Area, PieChart, Pie, Cell
 } from "recharts";
-import { DataQualityBadge, DataLoadingBadge } from "./components/ui/data-quality-badge";
+import { UnifiedBadge as DataQualityBadge } from "./components/ui/unified-badge";
+import { UnifiedBadge as DataLoadingBadge } from "./components/ui/unified-badge";
 import { useHealthFacilityStats } from "./hooks/useHealthFacilities";
 
 interface GazaOverviewProps {

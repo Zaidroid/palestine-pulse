@@ -20,6 +20,8 @@ import {
   ApiResponse, 
   ApiError 
 } from '../types/data.types';
+import { rateLimitManager } from './rateLimitManager';
+import { performanceMonitor } from './performanceMonitor';
 
 // ============================================
 // DATA SOURCE CONFIGURATIONS
@@ -77,7 +79,7 @@ export const DATA_SOURCES: Record<DataSource, DataSourceConfig> = {
   btselem: {
     name: 'btselem',
     baseUrl: '/api/btselem',
-    enabled: true,
+    enabled: false, // Disabled due to rate limiting
     priority: 7,
     cache_ttl: 60 * 60 * 1000, // 1 hour
     retry_attempts: 2,
@@ -92,7 +94,7 @@ export const DATA_SOURCES: Record<DataSource, DataSourceConfig> = {
   },
   goodshepherd: {
     name: 'goodshepherd',
-    baseUrl: '/api/goodshepherd',
+    baseUrl: '/api/goodshepherd', // Proxied to https://goodshepherdcollective.org/api
     enabled: true,
     priority: 2,
     cache_ttl: 60 * 60 * 1000, // 1 hour (data doesn't change frequently)
@@ -272,16 +274,22 @@ async function fetchWithRetry(
 
 export class ApiOrchestrator {
   private sources: Map<DataSource, DataSourceConfig> = new Map();
+  private useRateLimiting: boolean = true;
 
   constructor() {
     // Initialize with configured sources
     Object.entries(DATA_SOURCES).forEach(([key, config]) => {
       this.sources.set(key as DataSource, config);
     });
+
+    // Initialize rate limit manager
+    if (this.useRateLimiting) {
+      rateLimitManager.initialize();
+    }
   }
 
   /**
-   * Fetch data from a specific source
+   * Fetch data from a specific source with rate limiting
    */
   async fetch<T>(
     source: DataSource,
@@ -290,6 +298,8 @@ export class ApiOrchestrator {
       useCache?: boolean;
       cacheKey?: string;
       params?: Record<string, string>;
+      priority?: number;
+      bypassRateLimit?: boolean;
     } = {}
   ): Promise<ApiResponse<T>> {
     const config = this.sources.get(source);
@@ -308,7 +318,7 @@ export class ApiOrchestrator {
       );
     }
 
-    const { useCache = true, cacheKey, params } = options;
+    const { useCache = true, cacheKey, params, priority = 0, bypassRateLimit = false } = options;
     const finalCacheKey = cacheKey || `${source}:${endpoint}`;
 
     // Check cache first
@@ -324,50 +334,97 @@ export class ApiOrchestrator {
       }
     }
 
-    try {
-      // Build URL with params
-      const url = new URL(endpoint, config.baseUrl);
-      if (params) {
-        Object.entries(params).forEach(([key, value]) => {
-          url.searchParams.append(key, value);
-        });
+    // Execute fetch with or without rate limiting
+    const executeFetch = async (): Promise<ApiResponse<T>> => {
+      const startTime = Date.now();
+      
+      try {
+        // Build URL - handle both absolute and relative base URLs
+        let urlString: string;
+        if (config.baseUrl.startsWith('http://') || config.baseUrl.startsWith('https://')) {
+          // Absolute URL
+          const url = new URL(endpoint, config.baseUrl);
+          if (params) {
+            Object.entries(params).forEach(([key, value]) => {
+              url.searchParams.append(key, value);
+            });
+          }
+          urlString = url.toString();
+        } else {
+          // Relative URL (like /api/goodshepherd)
+          urlString = `${config.baseUrl}/${endpoint}`;
+          if (params) {
+            const searchParams = new URLSearchParams();
+            Object.entries(params).forEach(([key, value]) => {
+              searchParams.append(key, value);
+            });
+            urlString += `?${searchParams.toString()}`;
+          }
+        }
+
+        // Fetch with retry
+        const response = await fetchWithRetry(
+          urlString,
+          {},
+          config.retry_attempts
+        );
+
+        const data = await response.json();
+
+        // Record successful request
+        const responseTime = Date.now() - startTime;
+        performanceMonitor.recordRequest(
+          source,
+          endpoint,
+          responseTime,
+          true
+        );
+
+        // Cache the result
+        if (useCache) {
+          cache.set(finalCacheKey, data, source);
+        }
+
+        return {
+          data,
+          success: true,
+          timestamp: new Date().toISOString(),
+          source,
+        };
+      } catch (error) {
+        // Record failed request
+        const responseTime = Date.now() - startTime;
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        performanceMonitor.recordRequest(
+          source,
+          endpoint,
+          responseTime,
+          false,
+          errorMessage
+        );
+
+        const apiError: ApiError = {
+          message: errorMessage,
+          code: 'FETCH_ERROR',
+          status: 0,
+          source,
+          timestamp: new Date().toISOString(),
+        };
+
+        throw new ApiOrchestratorError(
+          apiError.message,
+          source,
+          apiError.status,
+          error as Error
+        );
       }
+    };
 
-      // Fetch with retry
-      const response = await fetchWithRetry(
-        url.toString(),
-        {},
-        config.retry_attempts
-      );
-
-      const data = await response.json();
-
-      // Cache the result
-      if (useCache) {
-        cache.set(finalCacheKey, data, source);
-      }
-
-      return {
-        data,
-        success: true,
-        timestamp: new Date().toISOString(),
-        source,
-      };
-    } catch (error) {
-      const apiError: ApiError = {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        code: 'FETCH_ERROR',
-        status: 0,
-        source,
-        timestamp: new Date().toISOString(),
-      };
-
-      throw new ApiOrchestratorError(
-        apiError.message,
-        source,
-        apiError.status,
-        error as Error
-      );
+    // Use rate limiting if enabled and not bypassed
+    if (this.useRateLimiting && !bypassRateLimit) {
+      return rateLimitManager.enqueueRequest(source, executeFetch, priority);
+    } else {
+      return executeFetch();
     }
   }
 
@@ -451,12 +508,59 @@ export class ApiOrchestrator {
   }
 
   /**
+   * Get rate limit statistics
+   */
+  getRateLimitStats() {
+    return rateLimitManager.getAllSourcesStatus();
+  }
+
+  /**
+   * Get rate limit status for a specific source
+   */
+  getRateLimitStatus(source: DataSource) {
+    return rateLimitManager.getSourceStatus(source);
+  }
+
+  /**
+   * Get performance metrics
+   */
+  getPerformanceMetrics() {
+    return performanceMonitor.getAllSourcesMetrics();
+  }
+
+  /**
+   * Get performance summary
+   */
+  getPerformanceSummary() {
+    return performanceMonitor.getSummary();
+  }
+
+  /**
+   * Get performance alerts
+   */
+  getPerformanceAlerts() {
+    return performanceMonitor.getAlerts();
+  }
+
+  /**
    * Enable/disable a data source
    */
   setSourceEnabled(source: DataSource, enabled: boolean): void {
     const config = this.sources.get(source);
     if (config) {
       config.enabled = enabled;
+    }
+  }
+
+  /**
+   * Enable/disable rate limiting
+   */
+  setRateLimitingEnabled(enabled: boolean): void {
+    this.useRateLimiting = enabled;
+    if (enabled) {
+      rateLimitManager.initialize();
+    } else {
+      rateLimitManager.shutdown();
     }
   }
 

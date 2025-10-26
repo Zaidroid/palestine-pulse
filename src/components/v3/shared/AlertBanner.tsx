@@ -4,6 +4,7 @@ import { AlertCircle, AlertTriangle, Info, CheckCircle2, X } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { buttonInteraction, iconButtonInteraction } from "@/lib/interaction-polish";
 
 interface AlertBannerProps {
   type?: 'info' | 'warning' | 'error' | 'success';

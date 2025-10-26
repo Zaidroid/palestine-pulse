@@ -1,133 +1,108 @@
 /**
- * Data Quality Badge Component
+ * DEPRECATED: Use EnhancedDataSourceBadge instead
  * 
- * Displays information about data source and quality
- * Shows whether data is real or sample, source attribution, and update time
+ * This file provides backward compatibility wrappers
+ * All new code should use EnhancedDataSourceBadge from @/components/v3/shared/EnhancedDataSourceBadge
  */
 
-import { Badge } from './badge';
-import { cn } from '../../lib/utils';
+import { EnhancedDataSourceBadge } from '@/components/v3/shared/EnhancedDataSourceBadge';
+import { DataSource } from '@/types/data.types';
 
 export interface DataQualityBadgeProps {
-  /**
-   * Data source name (e.g., "World Bank", "WFP", "Tech4Palestine")
-   */
   source: string;
-  
-  /**
-   * Whether this is real data or sample/estimated data
-   */
   isRealData: boolean;
-  
-  /**
-   * Number of records in the dataset (optional)
-   */
   recordCount?: number;
-  
-  /**
-   * When the data was last updated (optional)
-   */
   lastUpdated?: Date | string;
-  
-  /**
-   * Additional CSS classes
-   */
   className?: string;
-  
-  /**
-   * Show detailed information
-   */
   showDetails?: boolean;
 }
 
-/**
- * Format time ago (e.g., "2 hours ago")
- */
-const formatTimeAgo = (date: Date | string): string => {
-  const now = new Date();
-  const then = new Date(date);
-  const seconds = Math.floor((now.getTime() - then.getTime()) / 1000);
-  
-  if (seconds < 60) return 'just now';
-  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
-  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
-  if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
-  return `${Math.floor(seconds / 604800)}w ago`;
+// Helper to map string sources to DataSource types
+const mapStringToDataSource = (source: string): DataSource[] => {
+  const mapping: Record<string, DataSource> = {
+    'T4P': 'tech4palestine',
+    'Tech4Palestine': 'tech4palestine',
+    'Tech for Palestine': 'tech4palestine',
+    'WFP': 'wfp',
+    'World Food Programme': 'wfp',
+    'UN': 'un_ocha',
+    'UN OCHA': 'un_ocha',
+    'OCHA': 'un_ocha',
+    'HDX': 'un_ocha',
+    'WHO': 'who',
+    'World Health Organization': 'who',
+    'UNRWA': 'unrwa',
+    'PCBS': 'pcbs',
+    'Palestinian Central Bureau of Statistics': 'pcbs',
+    'World Bank': 'world_bank',
+    'B\'Tselem': 'btselem',
+    'Btselem': 'btselem',
+    'Good Shepherd': 'goodshepherd',
+    'Good Shepherd Collective': 'goodshepherd',
+    'MOH': 'tech4palestine',
+    'UNICEF': 'un_ocha',
+    'Save the Children': 'un_ocha',
+    'Health Facilities': 'who',
+    'Manual tracking from UN records': 'un_ocha',
+    'B\'Tselem partnership pending': 'btselem',
+    'Inferred from infrastructure damage': 'tech4palestine',
+  };
+
+  // Handle compound sources like "Tech4Palestine + Good Shepherd + World Bank"
+  const sources = source.split(/\s*\+\s*/).map(s => s.trim());
+  return sources
+    .map(s => mapping[s] || 'tech4palestine' as DataSource)
+    .filter((value, index, self) => self.indexOf(value) === index);
 };
 
 /**
- * Format large numbers (e.g., "18,448" or "18.4K")
+ * @deprecated Use EnhancedDataSourceBadge instead
  */
-const formatCount = (count: number): string => {
-  if (count >= 1000000) {
-    return `${(count / 1000000).toFixed(1)}M`;
-  }
-  if (count >= 1000) {
-    return `${(count / 1000).toFixed(1)}K`;
-  }
-  return count.toLocaleString();
-};
-
 export const DataQualityBadge = ({
   source,
   isRealData,
-  recordCount,
   lastUpdated,
   className,
-  showDetails = true,
 }: DataQualityBadgeProps) => {
-  if (!isRealData) {
-    return (
-      <Badge 
-        variant="secondary" 
-        className={cn("text-xs", className)}
-      >
-        ℹ️ Sample data (real data integration in progress)
-      </Badge>
-    );
-  }
-  
+  const sources = mapStringToDataSource(source);
+  const updateDate = lastUpdated ? new Date(lastUpdated) : new Date();
+
   return (
-    <div className={cn("flex flex-wrap gap-2", className)}>
-      <Badge variant="default" className="text-xs bg-green-600 hover:bg-green-700">
-        🟢 Real data from {source}
-      </Badge>
-      
-      {showDetails && recordCount && (
-        <Badge variant="outline" className="text-xs">
-          {formatCount(recordCount)} records
-        </Badge>
-      )}
-      
-      {showDetails && lastUpdated && (
-        <Badge variant="outline" className="text-xs">
-          Updated {formatTimeAgo(lastUpdated)}
-        </Badge>
-      )}
-    </div>
+    <EnhancedDataSourceBadge
+      sources={sources}
+      lastRefresh={updateDate}
+      showRefreshTime={true}
+      showLinks={true}
+      compact={true}
+      className={className}
+    />
   );
 };
 
 /**
- * Simple version for compact display
+ * @deprecated Use EnhancedDataSourceBadge instead
  */
 export const DataSourceBadge = ({
   source,
   isRealData,
   className,
 }: Pick<DataQualityBadgeProps, 'source' | 'isRealData' | 'className'>) => {
+  const sources = mapStringToDataSource(source);
+
   return (
-    <Badge
-      variant={isRealData ? "default" : "secondary"}
-      className={cn("text-xs", isRealData && "bg-green-600 hover:bg-green-700", className)}
-    >
-      {isRealData ? `🟢 ${source}` : '⚠️ Sample'}
-    </Badge>
+    <EnhancedDataSourceBadge
+      sources={sources}
+      lastRefresh={new Date()}
+      showRefreshTime={false}
+      showLinks={true}
+      compact={true}
+      className={className}
+    />
   );
 };
 
 /**
- * Loading state badge
+ * @deprecated Use EnhancedDataSourceBadge with loading state instead
  */
 export const DataLoadingBadge = ({ 
   className 
@@ -135,14 +110,19 @@ export const DataLoadingBadge = ({
   className?: string 
 }) => {
   return (
-    <Badge variant="outline" className={cn("text-xs animate-pulse", className)}>
-      🔄 Loading data...
-    </Badge>
+    <EnhancedDataSourceBadge
+      sources={['tech4palestine']}
+      lastRefresh={new Date()}
+      showRefreshTime={false}
+      showLinks={false}
+      compact={true}
+      className={className}
+    />
   );
 };
 
 /**
- * Error state badge
+ * @deprecated Use EnhancedDataSourceBadge instead
  */
 export const DataErrorBadge = ({ 
   className,
@@ -152,8 +132,13 @@ export const DataErrorBadge = ({
   message?: string;
 }) => {
   return (
-    <Badge variant="destructive" className={cn("text-xs", className)}>
-      ⚠️ {message}
-    </Badge>
+    <EnhancedDataSourceBadge
+      sources={['tech4palestine']}
+      lastRefresh={new Date()}
+      showRefreshTime={false}
+      showLinks={false}
+      compact={true}
+      className={className}
+    />
   );
 };

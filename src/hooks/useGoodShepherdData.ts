@@ -12,11 +12,11 @@ import {
   fetchHomeDemolitions,
   fetchNGOData,
   fetchPrisonerData,
-} from './services/apiOrchestrator';
+} from '@/services/apiOrchestrator';
 import {
   aggregateHealthcareAttacks,
   aggregateHomeDemolitions,
-} from './utils/dataAggregation';
+} from '@/utils/dataAggregation';
 import {
   ChildPrisonerData,
   WestBankData,
@@ -26,7 +26,7 @@ import {
   HomeDemolitionSummary,
   NGOData,
   PrisonerData,
-} from './types/goodshepherd.types';
+} from '@/types/goodshepherd.types';
 
 // ============================================================================
 // CHILD PRISONERS HOOK
@@ -36,10 +36,72 @@ export const useChildPrisoners = () => {
   return useQuery<ChildPrisonerData>({
     queryKey: ['goodshepherd', 'childPrisoners'],
     queryFn: async () => {
+      // Try local data first
+      try {
+        const response = await fetch('/data/goodshepherd/prisoners/statistics/child-age-groups.json');
+        if (response.ok) {
+          const localData = await response.json();
+          const childData = localData.data?.childPrisonersData;
+          
+          if (childData) {
+            // Get latest year's data for total count
+            let total = 0;
+            if (childData.Detention) {
+              const detentionData = childData.Detention;
+              const latestYear = detentionData[detentionData.length - 1];
+              const months = latestYear.months;
+              for (const month in months) {
+                const value = parseInt(months[month]);
+                if (!isNaN(value) && value > 0) {
+                  total = Math.max(total, value);
+                }
+              }
+            }
+            
+            console.log('✅ Loaded child prisoner statistics from local data:', total);
+            return {
+              total,
+              lastUpdated: localData.metadata.last_updated,
+              rawData: childData,
+            } as any;
+          }
+        }
+      } catch (error) {
+        console.log('⚠️ Local child prisoner statistics not available, using API fallback');
+      }
+      
+      // Fallback to API
+      console.log('📡 Fetching child prisoner statistics from API');
       const response = await fetchChildPrisoners();
       if (!response.success) {
         throw new Error('Failed to fetch child prisoners data');
       }
+      
+      const data = response.data as any;
+      if (data?.childPrisonersData) {
+        const childData = data.childPrisonersData;
+        
+        let total = 0;
+        if (childData.Detention) {
+          const detentionData = childData.Detention;
+          const latestYear = detentionData[detentionData.length - 1];
+          const months = latestYear.months;
+          for (const month in months) {
+            const value = parseInt(months[month]);
+            if (!isNaN(value) && value > 0) {
+              total = Math.max(total, value);
+            }
+          }
+        }
+        
+        console.log('✅ Loaded child prisoner statistics from API:', total);
+        return {
+          total,
+          lastUpdated: new Date().toISOString(),
+          rawData: childData,
+        } as any;
+      }
+      
       return response.data as ChildPrisonerData;
     },
     staleTime: 1000 * 60 * 60, // 1 hour
@@ -160,16 +222,54 @@ export const usePrisonerData = () => {
   return useQuery<PrisonerData>({
     queryKey: ['goodshepherd', 'prisonerData'],
     queryFn: async () => {
+      // Try local data first
+      try {
+        const response = await fetch('/data/goodshepherd/prisoners/statistics/monthly-totals.json');
+        if (response.ok) {
+          const localData = await response.json();
+          const data = localData.data;
+          if (Array.isArray(data) && data.length > 0) {
+            const latest = data[0];
+            console.log('✅ Loaded prisoner statistics from local data:', latest);
+            return {
+              totalPrisoners: latest['Total Number of Political Prisoners'] || 0,
+              administrative: latest['Administrative Detainees'] || 0,
+              women: latest['Female prisoners'] || 0,
+              lastUpdated: latest.date,
+              rawData: data,
+            } as any;
+          }
+        }
+      } catch (error) {
+        console.log('⚠️ Local prisoner statistics not available, using API fallback');
+      }
+      
+      // Fallback to API
+      console.log('📡 Fetching prisoner statistics from API');
       const response = await fetchPrisonerData();
       if (!response.success) {
         throw new Error('Failed to fetch prisoner data');
       }
+      
+      const data = response.data as any[];
+      if (Array.isArray(data) && data.length > 0) {
+        const latest = data[0];
+        console.log('✅ Loaded prisoner statistics from API:', latest);
+        return {
+          totalPrisoners: latest['Total Number of Political Prisoners'] || 0,
+          administrative: latest['Administrative Detainees'] || 0,
+          women: latest['Female prisoners'] || 0,
+          lastUpdated: latest.date,
+          rawData: data,
+        } as any;
+      }
+      
       return response.data as PrisonerData;
     },
     staleTime: 1000 * 60 * 60, // 1 hour
     gcTime: 1000 * 60 * 60 * 2, // 2 hours
     retry: 1,
-    enabled: true, // ✅ VERIFIED: Endpoint working (6.2KB, HTTP 200)
+    enabled: true,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,

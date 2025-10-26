@@ -1,35 +1,103 @@
-import { useState, useEffect } from "react";
+/**
+ * V3 Footer Component - Compact Version
+ * 
+ * Minimal footer showing only essential information:
+ * - Active data sources (Tech4Palestine, Good Shepherd, UN OCHA)
+ * - GitHub Actions update schedule (every 6 hours)
+ * - Last update time
+ * - Essential links
+ */
+
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { 
   Database, 
-  RefreshCw, 
-  Download, 
-  Share2, 
-  FileText, 
-  Settings,
+  RefreshCw,
   Clock,
   CheckCircle2,
-  Info
+  XCircle,
+  Loader2,
+  Github,
+  Heart
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import {
- HoverCard,
- HoverCardContent,
- HoverCardTrigger,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import { useV3Store, DataSourceState } from "@/store/v3Store";
 
 interface V3FooterProps {
-  autoRefreshInterval?: number;
   onExport?: () => void;
   className?: string;
 }
 
+// GitHub Actions runs every 6 hours (0 */6 * * *)
+const GITHUB_ACTIONS_INTERVAL = 6 * 60 * 60 * 1000;
+
+// Data source descriptions
+const DATA_SOURCE_INFO: Record<string, { description: string; updateMethod: string; updateFrequency: string }> = {
+  'tech4palestine': {
+    description: 'Comprehensive casualty data, infrastructure damage, and daily reports from Gaza and West Bank',
+    updateMethod: 'GitHub Actions',
+    updateFrequency: 'Every 6 hours'
+  },
+  'goodshepherd': {
+    description: 'Good Shepherd Collective - Detailed incident reports, settler violence, and occupation metrics',
+    updateMethod: 'GitHub Actions',
+    updateFrequency: 'Every 6 hours'
+  },
+  'un_ocha': {
+    description: 'UN OCHA Humanitarian Data Exchange - Displacement, food security, and humanitarian needs',
+    updateMethod: 'GitHub Actions',
+    updateFrequency: 'Every 6 hours'
+  },
+  'btselem': {
+    description: 'B\'Tselem - Israeli human rights organization tracking violations, detentions, and settlements',
+    updateMethod: 'Scheduled Web Scraping',
+    updateFrequency: 'Daily'
+  },
+  'pcbs': {
+    description: 'Palestinian Central Bureau of Statistics - Population data, demographics, and economic indicators',
+    updateMethod: 'Scheduled Web Scraping',
+    updateFrequency: 'Weekly'
+  },
+  'wfp': {
+    description: 'World Food Programme - Food prices, market data, and food security assessments',
+    updateMethod: 'GitHub Actions',
+    updateFrequency: 'Daily'
+  },
+  'world_bank': {
+    description: 'World Bank Open Data - Economic indicators, GDP, poverty rates, and development metrics',
+    updateMethod: 'API Integration',
+    updateFrequency: 'Monthly'
+  }
+};
+
+// Helper functions
+const getStatusColor = (status: DataSourceState['status']) => {
+  switch (status) {
+    case 'active': return "bg-green-500";
+    case "syncing": return "bg-yellow-500";
+    case "error": return "bg-red-500";
+    case "disabled": return "bg-gray-400";
+  }
+};
+
+const getStatusIcon = (status: DataSourceState['status']) => {
+  switch (status) {
+    case 'active': return <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />;
+    case "syncing": return <Loader2 className="h-3.5 w-3.5 text-yellow-500 animate-spin" />;
+    case "error": return <XCircle className="h-3.5 w-3.5 text-red-500" />;
+    case "disabled": return null;
+  }
+};
+
 export const V3Footer = ({
-  autoRefreshInterval = 300000, // 5 minutes
   onExport,
   className
 }: V3FooterProps) => {
@@ -39,211 +107,182 @@ export const V3Footer = ({
     fetchConsolidatedData: state.fetchConsolidatedData,
   }));
   
-  const [timeUntilRefresh, setTimeUntilRefresh] = useState(autoRefreshInterval / 1000);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const dataSources = Object.values(dataSourceStatus);
+  const activeSources = dataSources.filter(s => s.status !== 'disabled');
 
-  const handleRefresh = async () => {
+  const handleRefresh = useCallback(async () => {
+    if (isRefreshing) return;
     setIsRefreshing(true);
-    await fetchConsolidatedData(true);
-    setTimeUntilRefresh(autoRefreshInterval / 1000);
-    setIsRefreshing(false);
-  };
-
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: 'Palestine Pulse Dashboard',
-        text: 'Check out this dashboard for real-time data on Palestine.',
-        url: window.location.href,
-      })
-      .then(() => console.log('Successful share'))
-      .catch((error) => console.log('Error sharing', error));
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      // You might want to add a toast notification here to inform the user
-      console.log('URL copied to clipboard');
+    try {
+      await fetchConsolidatedData(true);
+    } finally {
+      setIsRefreshing(false);
     }
-  };
+  }, [isRefreshing, fetchConsolidatedData]);
 
-  const handleDocs = () => {
-    window.open('https://github.com/Zaidroid/palestine-pulse/blob/main/docs/README.md', '_blank');
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeUntilRefresh((prev) => {
-        if (prev <= 1) {
-          handleRefresh();
-          return autoRefreshInterval / 1000;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [autoRefreshInterval]);
-
-  const getStatusColor = (status: DataSourceState['status']) => {
-    switch (status) {
-      case 'active':
-        return "bg-green-500";
-      case "syncing":
-        return "bg-yellow-500";
-      case "error":
-        return "bg-red-500";
-      case "disabled":
-        return "bg-gray-500";
-    }
-  };
-
-  const getStatusIcon = (status: DataSourceState['status']) => {
-    switch (status) {
-      case 'active':
-        return <CheckCircle2 className="h-4 w-4 text-green-400" />;
-      case "syncing":
-        return <RefreshCw className="h-4 w-4 text-yellow-400 animate-spin" />;
-      case "error":
-        return <Clock className="h-4 w-4 text-red-400" />;
-      case "disabled":
-        return <Info className="h-4 w-4 text-gray-400" />;
-    }
-  };
-
-  const formatRefreshTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  // Calculate next GitHub Actions run (every 6 hours)
+  const getNextGitHubActionsRun = () => {
+    const now = new Date();
+    const lastRun = new Date(lastUpdated);
+    const nextRun = new Date(lastRun.getTime() + GITHUB_ACTIONS_INTERVAL);
+    const timeUntil = nextRun.getTime() - now.getTime();
+    
+    if (timeUntil <= 0) return 'Due now';
+    
+    const hours = Math.floor(timeUntil / (60 * 60 * 1000));
+    const minutes = Math.floor((timeUntil % (60 * 60 * 1000)) / (60 * 1000));
+    
+    if (hours > 0) return `${hours}h ${minutes}m`;
+    return `${minutes}m`;
   };
 
   return (
     <motion.footer
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-      className={cn(
-        "border-t bg-gradient-to-t from-background/80 to-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
-        className
-      )}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className={cn("border-t bg-card/20 backdrop-blur-sm", className)}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-5">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Side: Data Sources & Status */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <Database className="h-5 w-5 text-muted-foreground" />
-              <h3 className="text-md font-semibold text-foreground">Data Sources</h3>
+      <div className="container mx-auto px-4 py-4">
+        {/* Two-line layout */}
+        <div className="space-y-3">
+          
+          {/* Top Line: Data Sources */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 shrink-0">
+              <Database className="h-4 w-4 text-primary" />
+              <span className="text-xs font-semibold text-foreground">Data Sources</span>
+              <Badge variant="outline" className="text-[10px] px-1.5 py-0.5">
+                {activeSources.length}
+              </Badge>
             </div>
-            <div className="flex flex-wrap gap-2">
-              {dataSources.map((source, idx) => (
-                <HoverCard key={source.name} openDelay={100} closeDelay={100}>
-                  <HoverCardTrigger asChild>
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: idx * 0.05 }}
+            
+            <Separator orientation="vertical" className="h-4" />
+            
+            {/* Source badges */}
+            <div className="flex items-center gap-2 flex-wrap flex-1">
+              {activeSources.map((source) => {
+                const sourceInfo = DATA_SOURCE_INFO[source.name.toLowerCase()] || DATA_SOURCE_INFO[source.name];
+                return (
+                  <HoverCard key={source.name} openDelay={150} closeDelay={100}>
+                    <HoverCardTrigger asChild>
+                      <div className="relative">
+                        <Badge 
+                          variant="outline" 
+                          className={cn(
+                            "cursor-pointer transition-all hover:bg-accent hover:border-primary/50 hover:shadow-sm",
+                            source.status === 'syncing' && "border-yellow-500/50 animate-pulse"
+                          )}
+                        >
+                          <span className={cn(
+                            "h-1.5 w-1.5 rounded-full mr-1.5",
+                            getStatusColor(source.status)
+                          )} />
+                          <span className="text-xs">{source.name}</span>
+                        </Badge>
+                      </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent 
+                      className="w-80 p-4 z-50" 
+                      side="top" 
+                      align="start"
+                      sideOffset={5}
+                      alignOffset={0}
                     >
-                      <Badge
-                        variant="outline"
-                        className={cn(
-                          "group/badge relative flex items-center gap-2.5 pl-3 pr-4 py-1.5 cursor-pointer",
-                          "border-border/50 hover:border-primary/80 transition-all duration-300",
-                          "bg-background/50 hover:bg-muted/50",
-                          source.status === 'syncing' && "animate-pulse"
-                        )}
-                      >
-                        <span className={cn("h-2 w-2 rounded-full", getStatusColor(source.status))} />
-                        <span className="font-semibold text-sm text-foreground/90">{source.name}</span>
-                      </Badge>
-                    </motion.div>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="w-auto max-w-xs" side="top">
-                    <div className="flex items-start gap-4">
-                      {getStatusIcon(source.status)}
-                      <div className="space-y-1">
-                        <h4 className="text-sm font-semibold">{source.name}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          Status: <span className="capitalize font-medium">{source.status}</span>
-                        </p>
-                        {source.lastSync && (
-                          <p className="text-xs text-muted-foreground">
-                            Last sync: {formatDistanceToNow(new Date(source.lastSync), { addSuffix: true })}
+                      <div className="space-y-3">
+                        {/* Header */}
+                        <div className="flex items-start gap-2.5">
+                          <div className="mt-0.5">
+                            {getStatusIcon(source.status)}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-sm font-semibold leading-tight">{source.name}</h4>
+                            <p className="text-xs text-muted-foreground capitalize mt-0.5">
+                              {source.status}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Description */}
+                        {sourceInfo && (
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            {sourceInfo.description}
                           </p>
                         )}
+
+                        {/* Update Info */}
+                        <div className="space-y-1.5 pt-2 border-t">
+                          {sourceInfo && (
+                            <>
+                              <div className="flex items-center justify-between text-xs">
+                                <span className="text-muted-foreground">Update Method:</span>
+                                <span className="font-medium text-foreground">{sourceInfo.updateMethod}</span>
+                              </div>
+                              <div className="flex items-center justify-between text-xs">
+                                <span className="text-muted-foreground">Frequency:</span>
+                                <span className="font-medium text-foreground">{sourceInfo.updateFrequency}</span>
+                              </div>
+                            </>
+                          )}
+                          {source.lastSync && (
+                            <div className="flex items-center justify-between text-xs">
+                              <span className="text-muted-foreground">Last Sync:</span>
+                              <span className="font-medium text-foreground">
+                                {formatDistanceToNow(new Date(source.lastSync), { addSuffix: true })}
+                              </span>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
-              ))}
-            </div>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
-              <div className="flex items-center gap-2">
-                <RefreshCw className={cn("h-4 w-4", isRefreshing && "animate-spin")} />
-                <span>
-                  Updated: <span className="font-semibold text-foreground">{formatDistanceToNow(lastUpdated, { addSuffix: true })}</span>
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>
-                  Next in:
-                  <motion.span
-                    key={timeUntilRefresh}
-                    initial={{ opacity: 0.5, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="font-mono font-semibold text-foreground ml-1"
-                  >
-                    {formatRefreshTime(timeUntilRefresh)}
-                  </motion.span>
-                </span>
-              </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                );
+              })}
             </div>
           </div>
 
-          {/* Right Side: Actions & Copyright */}
-          <div className="space-y-4 lg:text-right">
-            <div className="flex items-center gap-3 justify-end">
-              <Settings className="h-5 w-5 text-muted-foreground" />
-              <h3 className="text-md font-semibold text-foreground">Quick Actions</h3>
-            </div>
-            <div className="flex items-center justify-end gap-2 flex-wrap">
-              {onExport && (
-                <Button variant="outline" size="sm" onClick={onExport} className="gap-2">
-                  <Download className="h-4 w-4" />
-                  Export
-                </Button>
-              )}
-              <Button variant="outline" size="sm" className="gap-2" onClick={handleShare}>
-                <Share2 className="h-4 w-4" />
-                Share
-              </Button>
-              <Button variant="outline" size="sm" className="gap-2" onClick={handleDocs}>
-                <FileText className="h-4 w-4" />
-                Docs
-              </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleRefresh}
-                  disabled={isRefreshing}
-                  className="gap-2"
-                >
-                  <RefreshCw className={cn("h-4 w-4", isRefreshing && "animate-spin")} />
-                  Refresh
-                </Button>
-            </div>
-            <div className="pt-2 text-xs text-muted-foreground">
-              <p>
-                © {new Date().getFullYear()} Palestine Pulse | Made by Zaid Salem
-              </p>
-              <div className="mt-1 flex items-center justify-end gap-x-3">
-                <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
-                <span>•</span>
-                <a href="#" className="hover:text-foreground transition-colors">Terms</a>
-                <span>•</span>
-                <a href="#" className="hover:text-foreground transition-colors">Contact</a>
+          <Separator />
+
+          {/* Bottom Line: Update Info & Links */}
+          <div className="flex items-center justify-between gap-4 text-xs">
+            
+            {/* Left: Update Info */}
+            <div className="flex items-center gap-4 text-muted-foreground">
+              <div className="flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5" />
+                <span>Updated <span className="font-medium text-foreground">{formatDistanceToNow(lastUpdated, { addSuffix: true })}</span></span>
               </div>
+              <Separator orientation="vertical" className="h-3" />
+              <div className="flex items-center gap-1.5">
+                <span>Next update in <span className="font-medium text-foreground">{getNextGitHubActionsRun()}</span></span>
+              </div>
+              <Separator orientation="vertical" className="h-3" />
+              <button
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                className="flex items-center gap-1.5 hover:text-foreground transition-colors disabled:opacity-50 font-medium"
+              >
+                <RefreshCw className={cn("h-3.5 w-3.5", isRefreshing && "animate-spin")} />
+                <span>Refresh Now</span>
+              </button>
+            </div>
+
+            {/* Right: Footer Links */}
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <a 
+                href="https://github.com/Zaidroid/palestine-pulse" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 hover:text-foreground transition-colors"
+              >
+                <Github className="h-3.5 w-3.5" />
+                <span>GitHub</span>
+              </a>
+              <Separator orientation="vertical" className="h-3" />
+              <span className="flex items-center gap-1">
+                Made with <Heart className="h-3 w-3 text-red-500" /> by Zaid Salem
+              </span>
             </div>
           </div>
         </div>

@@ -1,13 +1,24 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { motion } from 'framer-motion';
+import { EnhancedDataSourceAttribution } from '@/components/v3/shared/EnhancedDataSourceAttribution';
+import { QuickHelpIcon, InlineFeedbackLink } from '@/components/v3/shared';
+import { DataSource } from '@/types/data.types';
 
 interface CasualtyDetailsProps {
   total: number;
   breakdown: { name: string; value: number; color: string }[];
   description: string;
+  dataSources?: DataSource[];
+  lastUpdated?: Date;
 }
 
-export const CasualtyDetails = ({ total, breakdown, description }: CasualtyDetailsProps) => {
+export const CasualtyDetails = ({ 
+  total, 
+  breakdown, 
+  description,
+  dataSources = ['tech4palestine', 'goodshepherd'],
+  lastUpdated = new Date(),
+}: CasualtyDetailsProps) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -33,8 +44,22 @@ export const CasualtyDetails = ({ total, breakdown, description }: CasualtyDetai
           </BarChart>
         </ResponsiveContainer>
       </div>
-      <div className="text-xs text-muted-foreground text-center">
-        Represents a significant portion of the total casualties.
+      <div className="flex items-center justify-between pt-2 border-t">
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">Data Sources:</span>
+          <EnhancedDataSourceAttribution
+            sources={dataSources}
+            lastUpdated={lastUpdated}
+            showQuality={true}
+            showFreshness={true}
+          />
+          <QuickHelpIcon topic="dataSources" size="sm" />
+        </div>
+        <InlineFeedbackLink 
+          metricName="Casualty Breakdown"
+          source={dataSources[0]}
+          value={total}
+        />
       </div>
     </motion.div>
   );

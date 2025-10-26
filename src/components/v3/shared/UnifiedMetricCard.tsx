@@ -6,8 +6,43 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CardModal } from "./CardModal";
 import { cn } from "@/lib/utils";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
-import { DataSourceBadge } from "./DataSourceBadge";
+import { EnhancedDataSourceBadge } from "./EnhancedDataSourceBadge";
+import { EnhancedDataSourceAttribution } from "./EnhancedDataSourceAttribution";
 import { useCountUp } from "@/hooks/use-count-up";
+import { DataSource } from "@/types/data.types";
+
+// Helper function to map old string source names to DataSource types
+const mapStringToDataSource = (sources: string[]): DataSource[] => {
+  const mapping: Record<string, DataSource> = {
+    'T4P': 'tech4palestine',
+    'Tech4Palestine': 'tech4palestine',
+    'Tech for Palestine': 'tech4palestine',
+    'WFP': 'wfp',
+    'World Food Programme': 'wfp',
+    'UN': 'un_ocha',
+    'UN OCHA': 'un_ocha',
+    'OCHA': 'un_ocha',
+    'HDX': 'un_ocha',
+    'WHO': 'who',
+    'World Health Organization': 'who',
+    'UNRWA': 'unrwa',
+    'PCBS': 'pcbs',
+    'Palestinian Central Bureau of Statistics': 'pcbs',
+    'World Bank': 'world_bank',
+    'B\'Tselem': 'btselem',
+    'Btselem': 'btselem',
+    'Good Shepherd': 'goodshepherd',
+    'Good Shepherd Collective': 'goodshepherd',
+    'MOH': 'tech4palestine', // Ministry of Health data comes through Tech4Palestine
+    'UNICEF': 'un_ocha', // UNICEF data typically through UN OCHA
+    'Save the Children': 'un_ocha',
+    'Health Facilities': 'who',
+  };
+
+  return sources
+    .map(source => mapping[source] || 'tech4palestine' as DataSource)
+    .filter((value, index, self) => self.indexOf(value) === index); // Remove duplicates
+};
 
 interface AnimatedCounterProps {
   value: number;
@@ -39,6 +74,8 @@ interface UnifiedMetricCardProps {
   onClick?: () => void;
   dataQuality?: 'high' | 'medium' | 'low';
   dataSources?: string[];
+  dataSourcesTyped?: DataSource[];
+  useEnhancedAttribution?: boolean;
   className?: string;
   valueColor?: string;
   loading?: boolean;
@@ -59,7 +96,9 @@ export const UnifiedMetricCard = ({
   onClick,
   dataQuality = 'high',
   dataSources = [],
-className,
+  dataSourcesTyped = [],
+  useEnhancedAttribution = false,
+  className,
   valueColor,
   loading = false,
 }: UnifiedMetricCardProps) => {
@@ -181,17 +220,23 @@ className,
             )}
 
             <div className="flex items-center justify-between text-xs pt-2">
-              {lastUpdated && (
-                <div className="flex items-center gap-1.5 text-muted-foreground">
-                  <Clock className="h-3 w-3" />
-                  <span>{new Date(lastUpdated).toLocaleTimeString()}</span>
-                </div>
+              {useEnhancedAttribution ? (
+                <EnhancedDataSourceAttribution
+                  sources={dataSourcesTyped.length > 0 ? dataSourcesTyped : mapStringToDataSource(dataSources)}
+                  lastUpdated={lastUpdated ? new Date(lastUpdated) : new Date()}
+                  compact={true}
+                  showQuality={true}
+                  showFreshness={true}
+                />
+              ) : (
+                <EnhancedDataSourceBadge
+                  sources={dataSourcesTyped.length > 0 ? dataSourcesTyped : mapStringToDataSource(dataSources)}
+                  lastRefresh={lastUpdated ? new Date(lastUpdated) : new Date()}
+                  showRefreshTime={true}
+                  showLinks={true}
+                  compact={false}
+                />
               )}
-              <DataSourceBadge
-                sources={dataSources.length > 0 ? dataSources : ["Tech4Palestine"]}
-                quality={dataQuality}
-                lastUpdated={lastUpdated ? new Date(lastUpdated).toLocaleString() : undefined}
-              />
             </div>
           </div>
         </CardContent>

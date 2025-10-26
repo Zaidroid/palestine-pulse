@@ -166,6 +166,22 @@ export interface Notification {
 }
 
 // ============================================
+// FILTER TYPES
+// ============================================
+
+export interface FilterConfig {
+  dateRange: {
+    start: string;
+    end: string;
+  };
+  regions?: string[];
+  demographics?: string[];
+  eventTypes?: string[];
+  minCasualties?: number;
+  maxCasualties?: number;
+}
+
+// ============================================
 // USER PREFERENCES TYPES
 // ============================================
 

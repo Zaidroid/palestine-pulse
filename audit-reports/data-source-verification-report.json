@@ -1,0 +1,468 @@
+{
+  "timestamp": "2025-10-22T18:22:25.448Z",
+  "totalSources": 4,
+  "workingSources": 0,
+  "failingSources": [
+    "tech4palestine",
+    "un_ocha",
+    "goodshepherd",
+    "world_bank"
+  ],
+  "sourceResults": {
+    "tech4palestine": {
+      "source": "tech4palestine",
+      "enabled": true,
+      "connectivity": [
+        {
+          "source": "tech4palestine",
+          "endpoint": "/v3/killed-in-gaza.min.json",
+          "success": false,
+          "responseTime": 0,
+          "error": "Invalid URL",
+          "timestamp": "2025-10-22T18:22:25.448Z"
+        },
+        {
+          "source": "tech4palestine",
+          "endpoint": "/v2/press_killed_in_gaza.json",
+          "success": false,
+          "responseTime": 0,
+          "error": "Invalid URL",
+          "timestamp": "2025-10-22T18:22:25.448Z"
+        },
+        {
+          "source": "tech4palestine",
+          "endpoint": "/v3/summary.json",
+          "success": false,
+          "responseTime": 0,
+          "error": "Invalid URL",
+          "timestamp": "2025-10-22T18:22:25.448Z"
+        },
+        {
+          "source": "tech4palestine",
+          "endpoint": "/v2/casualties_daily.json",
+          "success": false,
+          "responseTime": 0,
+          "error": "Invalid URL",
+          "timestamp": "2025-10-22T18:22:25.448Z"
+        },
+        {
+          "source": "tech4palestine",
+          "endpoint": "/v2/west_bank_daily.json",
+          "success": false,
+          "responseTime": 0,
+          "error": "Invalid URL",
+          "timestamp": "2025-10-22T18:22:25.448Z"
+        },
+        {
+          "source": "tech4palestine",
+          "endpoint": "/v3/infrastructure-damaged.json",
+          "success": false,
+          "responseTime": 0,
+          "error": "Invalid URL",
+          "timestamp": "2025-10-22T18:22:25.448Z"
+        }
+      ],
+      "structureValidations": [],
+      "qualityMetrics": {
+        "completeness": 0,
+        "freshness": 0.8,
+        "consistency": 1,
+        "reliability": 0,
+        "overallScore": 0.45,
+        "issues": [
+          "Data structure completeness is low: 0%",
+          "Connection reliability is low: 0%"
+        ]
+      },
+      "availableEndpoints": [
+        {
+          "path": "/v3/killed-in-gaza.min.json",
+          "method": "GET",
+          "dataFormat": "json",
+          "updateFrequency": "daily",
+          "lastTested": "2025-10-22T18:22:25.448Z",
+          "status": "failed"
+        },
+        {
+          "path": "/v2/press_killed_in_gaza.json",
+          "method": "GET",
+          "dataFormat": "json",
+          "updateFrequency": "daily",
+          "lastTested": "2025-10-22T18:22:25.448Z",
+          "status": "failed"
+        },
+        {
+          "path": "/v3/summary.json",
+          "method": "GET",
+          "dataFormat": "json",
+          "updateFrequency": "daily",
+          "lastTested": "2025-10-22T18:22:25.448Z",
+          "status": "failed"
+        },
+        {
+          "path": "/v2/casualties_daily.json",
+          "method": "GET",
+          "dataFormat": "json",
+          "updateFrequency": "daily",
+          "lastTested": "2025-10-22T18:22:25.448Z",
+          "status": "failed"
+        },
+        {
+          "path": "/v2/west_bank_daily.json",
+          "method": "GET",
+          "dataFormat": "json",
+          "updateFrequency": "daily",
+          "lastTested": "2025-10-22T18:22:25.448Z",
+          "status": "failed"
+        },
+        {
+          "path": "/v3/infrastructure-damaged.json",
+          "method": "GET",
+          "dataFormat": "json",
+          "updateFrequency": "daily",
+          "lastTested": "2025-10-22T18:22:25.448Z",
+          "status": "failed"
+        }
+      ],
+      "overallStatus": "failed"
+    },
+    "un_ocha": {
+      "source": "un_ocha",
+      "enabled": true,
+      "connectivity": [
+        {
+          "source": "un_ocha",
+          "endpoint": "/package_search?q=organization:un-ocha",
+          "success": false,
+          "responseTime": 1911,
+          "error": "HTTP 404: Not Found",
+          "timestamp": "2025-10-22T18:22:27.359Z"
+        }
+      ],
+      "structureValidations": [],
+      "qualityMetrics": {
+        "completeness": 0,
+        "freshness": 0.8,
+        "consistency": 1,
+        "reliability": 0,
+        "overallScore": 0.45,
+        "issues": [
+          "Data structure completeness is low: 0%",
+          "Connection reliability is low: 0%"
+        ]
+      },
+      "availableEndpoints": [
+        {
+          "path": "/package_search?q=organization:un-ocha",
+          "method": "GET",
+          "dataFormat": "json",
+          "updateFrequency": "daily",
+          "lastTested": "2025-10-22T18:22:27.359Z",
+          "status": "failed"
+        }
+      ],
+      "overallStatus": "failed"
+    },
+    "goodshepherd": {
+      "source": "goodshepherd",
+      "enabled": true,
+      "connectivity": [
+        {
+          "source": "goodshepherd",
+          "endpoint": "child_prisoners.json",
+          "success": false,
+          "responseTime": 0,
+          "error": "Invalid URL",
+          "timestamp": "2025-10-22T18:22:27.359Z"
+        },
+        {
+          "source": "goodshepherd",
+          "endpoint": "wb_data.json",
+          "success": false,
+          "responseTime": 0,
+          "error": "Invalid URL",
+          "timestamp": "2025-10-22T18:22:27.359Z"
+        },
+        {
+          "source": "goodshepherd",
+          "endpoint": "healthcare_attacks.json",
+          "success": false,
+          "responseTime": 0,
+          "error": "Invalid URL",
+          "timestamp": "2025-10-22T18:22:27.359Z"
+        },
+        {
+          "source": "goodshepherd",
+          "endpoint": "home_demolitions.json",
+          "success": false,
+          "responseTime": 1,
+          "error": "Invalid URL",
+          "timestamp": "2025-10-22T18:22:27.360Z"
+        },
+        {
+          "source": "goodshepherd",
+          "endpoint": "ngo_data.json",
+          "success": false,
+          "responseTime": 0,
+          "error": "Invalid URL",
+          "timestamp": "2025-10-22T18:22:27.360Z"
+        },
+        {
+          "source": "goodshepherd",
+          "endpoint": "prisoner_data.json",
+          "success": false,
+          "responseTime": 0,
+          "error": "Invalid URL",
+          "timestamp": "2025-10-22T18:22:27.360Z"
+        }
+      ],
+      "structureValidations": [],
+      "qualityMetrics": {
+        "completeness": 0,
+        "freshness": 0.8,
+        "consistency": 1,
+        "reliability": 0,
+        "overallScore": 0.45,
+        "issues": [
+          "Data structure completeness is low: 0%",
+          "Connection reliability is low: 0%"
+        ]
+      },
+      "availableEndpoints": [
+        {
+          "path": "child_prisoners.json",
+          "method": "GET",
+          "dataFormat": "json",
+          "updateFrequency": "weekly",
+          "lastTested": "2025-10-22T18:22:27.359Z",
+          "status": "failed"
+        },
+        {
+          "path": "wb_data.json",
+          "method": "GET",
+          "dataFormat": "json",
+          "updateFrequency": "weekly",
+          "lastTested": "2025-10-22T18:22:27.359Z",
+          "status": "failed"
+        },
+        {
+          "path": "healthcare_attacks.json",
+          "method": "GET",
+          "dataFormat": "json",
+          "updateFrequency": "weekly",
+          "lastTested": "2025-10-22T18:22:27.359Z",
+          "status": "failed"
+        },
+        {
+          "path": "home_demolitions.json",
+          "method": "GET",
+          "dataFormat": "json",
+          "updateFrequency": "weekly",
+          "lastTested": "2025-10-22T18:22:27.360Z",
+          "status": "failed"
+        },
+        {
+          "path": "ngo_data.json",
+          "method": "GET",
+          "dataFormat": "json",
+          "updateFrequency": "weekly",
+          "lastTested": "2025-10-22T18:22:27.360Z",
+          "status": "failed"
+        },
+        {
+          "path": "prisoner_data.json",
+          "method": "GET",
+          "dataFormat": "json",
+          "updateFrequency": "weekly",
+          "lastTested": "2025-10-22T18:22:27.360Z",
+          "status": "failed"
+        }
+      ],
+      "overallStatus": "failed"
+    },
+    "world_bank": {
+      "source": "world_bank",
+      "enabled": true,
+      "connectivity": [
+        {
+          "source": "world_bank",
+          "endpoint": "/countries/PSE/indicators",
+          "success": false,
+          "responseTime": 0,
+          "error": "Invalid URL",
+          "timestamp": "2025-10-22T18:22:27.360Z"
+        }
+      ],
+      "structureValidations": [],
+      "qualityMetrics": {
+        "completeness": 0,
+        "freshness": 0.8,
+        "consistency": 1,
+        "reliability": 0,
+        "overallScore": 0.45,
+        "issues": [
+          "Data structure completeness is low: 0%",
+          "Connection reliability is low: 0%"
+        ]
+      },
+      "availableEndpoints": [
+        {
+          "path": "/countries/PSE/indicators",
+          "method": "GET",
+          "dataFormat": "json",
+          "updateFrequency": "daily",
+          "lastTested": "2025-10-22T18:22:27.360Z",
+          "status": "failed"
+        }
+      ],
+      "overallStatus": "failed"
+    }
+  },
+  "dataGaps": [
+    {
+      "requiredData": "Gaza Casualties",
+      "description": "No working sources available for Gaza Casualties",
+      "availableSources": [],
+      "alternativeSources": [
+        "tech4palestine"
+      ],
+      "severity": "blocking",
+      "recommendation": "Enable and fix tech4palestine or find alternative data source"
+    },
+    {
+      "requiredData": "Gaza Infrastructure Damage",
+      "description": "No working sources available for Gaza Infrastructure Damage",
+      "availableSources": [],
+      "alternativeSources": [
+        "tech4palestine",
+        "goodshepherd"
+      ],
+      "severity": "blocking",
+      "recommendation": "Enable and fix tech4palestine or find alternative data source"
+    },
+    {
+      "requiredData": "Gaza Displacement",
+      "description": "No working sources available for Gaza Displacement",
+      "availableSources": [],
+      "alternativeSources": [
+        "un_ocha"
+      ],
+      "severity": "blocking",
+      "recommendation": "Enable and fix un_ocha or find alternative data source"
+    },
+    {
+      "requiredData": "Gaza Food Security",
+      "description": "No working sources available for Gaza Food Security",
+      "availableSources": [],
+      "alternativeSources": [
+        "wfp"
+      ],
+      "severity": "blocking",
+      "recommendation": "Enable and fix wfp or find alternative data source"
+    },
+    {
+      "requiredData": "Gaza Healthcare Status",
+      "description": "No working sources available for Gaza Healthcare Status",
+      "availableSources": [],
+      "alternativeSources": [
+        "who"
+      ],
+      "severity": "blocking",
+      "recommendation": "Enable and fix who or find alternative data source"
+    },
+    {
+      "requiredData": "West Bank Violence",
+      "description": "No working sources available for West Bank Violence",
+      "availableSources": [],
+      "alternativeSources": [
+        "goodshepherd",
+        "btselem"
+      ],
+      "severity": "blocking",
+      "recommendation": "Enable and fix goodshepherd or find alternative data source"
+    },
+    {
+      "requiredData": "West Bank Settlements",
+      "description": "No working sources available for West Bank Settlements",
+      "availableSources": [],
+      "alternativeSources": [
+        "goodshepherd",
+        "un_ocha"
+      ],
+      "severity": "blocking",
+      "recommendation": "Enable and fix goodshepherd or find alternative data source"
+    },
+    {
+      "requiredData": "West Bank Prisoners",
+      "description": "No working sources available for West Bank Prisoners",
+      "availableSources": [],
+      "alternativeSources": [
+        "goodshepherd",
+        "btselem"
+      ],
+      "severity": "blocking",
+      "recommendation": "Enable and fix goodshepherd or find alternative data source"
+    },
+    {
+      "requiredData": "West Bank Economic Data",
+      "description": "No working sources available for West Bank Economic Data",
+      "availableSources": [],
+      "alternativeSources": [
+        "world_bank"
+      ],
+      "severity": "blocking",
+      "recommendation": "Enable and fix world_bank or find alternative data source"
+    }
+  ],
+  "qualityAssessment": {
+    "tech4palestine": {
+      "completeness": 0,
+      "freshness": 0.8,
+      "consistency": 1,
+      "reliability": 0,
+      "overallScore": 0.45,
+      "issues": [
+        "Data structure completeness is low: 0%",
+        "Connection reliability is low: 0%"
+      ]
+    },
+    "un_ocha": {
+      "completeness": 0,
+      "freshness": 0.8,
+      "consistency": 1,
+      "reliability": 0,
+      "overallScore": 0.45,
+      "issues": [
+        "Data structure completeness is low: 0%",
+        "Connection reliability is low: 0%"
+      ]
+    },
+    "goodshepherd": {
+      "completeness": 0,
+      "freshness": 0.8,
+      "consistency": 1,
+      "reliability": 0,
+      "overallScore": 0.45,
+      "issues": [
+        "Data structure completeness is low: 0%",
+        "Connection reliability is low: 0%"
+      ]
+    },
+    "world_bank": {
+      "completeness": 0,
+      "freshness": 0.8,
+      "consistency": 1,
+      "reliability": 0,
+      "overallScore": 0.45,
+      "issues": [
+        "Data structure completeness is low: 0%",
+        "Connection reliability is low: 0%"
+      ]
+    }
+  },
+  "recommendations": [
+    "Fix connectivity issues with: tech4palestine, un_ocha, goodshepherd, world_bank",
+    "Critical: Resolve blocking data gaps for: Gaza Casualties, Gaza Infrastructure Damage, Gaza Displacement, Gaza Food Security, Gaza Healthcare Status, West Bank Violence, West Bank Settlements, West Bank Prisoners, West Bank Economic Data",
+    "Improve data quality for: tech4palestine, un_ocha, goodshepherd, world_bank"
+  ]
+}

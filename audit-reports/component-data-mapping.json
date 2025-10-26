@@ -1,0 +1,920 @@
+{
+  "timestamp": "2025-10-22T18:22:27.361Z",
+  "totalComponents": 12,
+  "totalMetrics": 24,
+  "gazaMappings": [
+    {
+      "componentPath": "src/components/v3/gaza/HumanitarianCrisis.tsx",
+      "componentName": "HumanitarianCrisis",
+      "dashboardSection": "gaza",
+      "metrics": [
+        {
+          "metricName": "totalKilled",
+          "displayName": "Total Killed",
+          "currentImplementation": "mixed",
+          "targetDataSource": "tech4palestine",
+          "fallbackDataSources": [
+            "goodshepherd"
+          ],
+          "transformationRequired": false,
+          "replacementPriority": 10,
+          "estimatedEffort": "1-2 hours",
+          "dataPath": "data[data.length - 1].ext_killed_cum"
+        },
+        {
+          "metricName": "childrenKilled",
+          "displayName": "Children Killed",
+          "currentImplementation": "mixed",
+          "targetDataSource": "tech4palestine",
+          "fallbackDataSources": [],
+          "transformationRequired": true,
+          "transformationDescription": "Calculate from demographic breakdown in API response",
+          "replacementPriority": 10,
+          "estimatedEffort": "2-3 hours",
+          "dataPath": "data.filter(d => d.age < 18).length"
+        },
+        {
+          "metricName": "womenKilled",
+          "displayName": "Women Killed",
+          "currentImplementation": "mixed",
+          "targetDataSource": "tech4palestine",
+          "fallbackDataSources": [],
+          "transformationRequired": true,
+          "transformationDescription": "Calculate from gender breakdown in API response",
+          "replacementPriority": 9,
+          "estimatedEffort": "2-3 hours",
+          "dataPath": "data.filter(d => d.sex === \"female\").length"
+        },
+        {
+          "metricName": "pressKilled",
+          "displayName": "Press Casualties",
+          "currentImplementation": "real",
+          "targetDataSource": "tech4palestine",
+          "fallbackDataSources": [],
+          "transformationRequired": false,
+          "replacementPriority": 8,
+          "estimatedEffort": "1 hour",
+          "dataPath": "data.length"
+        }
+      ],
+      "dataDependencies": [
+        {
+          "dependsOn": "dataConsolidationService",
+          "reason": "Provides consolidated data from multiple sources",
+          "type": "service",
+          "critical": true
+        },
+        {
+          "dependsOn": "apiOrchestrator",
+          "reason": "Handles API calls and caching",
+          "type": "service",
+          "critical": true
+        },
+        {
+          "dependsOn": "CasualtyDetails",
+          "reason": "Displays detailed casualty breakdowns",
+          "type": "component",
+          "critical": false
+        }
+      ],
+      "transformationRequirements": [
+        {
+          "inputFormat": "API Response JSON",
+          "outputFormat": "Component Metric Value",
+          "transformationSteps": [
+            "Fetch data from API",
+            "Calculate from demographic breakdown in API response",
+            "Validate transformed data",
+            "Apply to component state"
+          ],
+          "validationRules": [
+            "Value must be a number",
+            "Value must be non-negative",
+            "Value must be within expected range"
+          ]
+        },
+        {
+          "inputFormat": "API Response JSON",
+          "outputFormat": "Component Metric Value",
+          "transformationSteps": [
+            "Fetch data from API",
+            "Calculate from gender breakdown in API response",
+            "Validate transformed data",
+            "Apply to component state"
+          ],
+          "validationRules": [
+            "Value must be a number",
+            "Value must be non-negative",
+            "Value must be within expected range"
+          ]
+        }
+      ],
+      "overallPriority": 9,
+      "estimatedTotalEffort": "1 day"
+    },
+    {
+      "componentPath": "src/components/v3/gaza/InfrastructureDestruction.tsx",
+      "componentName": "InfrastructureDestruction",
+      "dashboardSection": "gaza",
+      "metrics": [
+        {
+          "metricName": "residentialDestroyed",
+          "displayName": "Residential Units Destroyed",
+          "currentImplementation": "fake",
+          "targetDataSource": "goodshepherd",
+          "fallbackDataSources": [
+            "tech4palestine",
+            "un_ocha"
+          ],
+          "transformationRequired": true,
+          "transformationDescription": "Aggregate destruction data from Good Shepherd API",
+          "replacementPriority": 9,
+          "estimatedEffort": "3-4 hours"
+        },
+        {
+          "metricName": "hospitalsAffected",
+          "displayName": "Hospitals Affected",
+          "currentImplementation": "fake",
+          "targetDataSource": "who",
+          "fallbackDataSources": [
+            "goodshepherd",
+            "un_ocha"
+          ],
+          "transformationRequired": true,
+          "transformationDescription": "Count unique healthcare facilities from attacks data",
+          "replacementPriority": 9,
+          "estimatedEffort": "2-3 hours"
+        },
+        {
+          "metricName": "schoolsAffected",
+          "displayName": "Schools Damaged",
+          "currentImplementation": "fake",
+          "targetDataSource": "un_ocha",
+          "fallbackDataSources": [
+            "goodshepherd"
+          ],
+          "transformationRequired": true,
+          "replacementPriority": 8,
+          "estimatedEffort": "2-3 hours"
+        },
+        {
+          "metricName": "healthWorkersKilled",
+          "displayName": "Healthcare Workers Killed",
+          "currentImplementation": "fake",
+          "targetDataSource": "goodshepherd",
+          "fallbackDataSources": [
+            "who"
+          ],
+          "transformationRequired": true,
+          "transformationDescription": "Extract healthcare worker casualties from attacks data",
+          "replacementPriority": 8,
+          "estimatedEffort": "2-3 hours"
+        }
+      ],
+      "dataDependencies": [
+        {
+          "dependsOn": "dataConsolidationService",
+          "reason": "Provides consolidated data from multiple sources",
+          "type": "service",
+          "critical": true
+        },
+        {
+          "dependsOn": "apiOrchestrator",
+          "reason": "Handles API calls and caching",
+          "type": "service",
+          "critical": true
+        }
+      ],
+      "transformationRequirements": [
+        {
+          "inputFormat": "API Response JSON",
+          "outputFormat": "Component Metric Value",
+          "transformationSteps": [
+            "Fetch data from API",
+            "Aggregate destruction data from Good Shepherd API",
+            "Validate transformed data",
+            "Apply to component state"
+          ],
+          "validationRules": [
+            "Value must be a number",
+            "Value must be non-negative",
+            "Value must be within expected range"
+          ]
+        },
+        {
+          "inputFormat": "API Response JSON",
+          "outputFormat": "Component Metric Value",
+          "transformationSteps": [
+            "Fetch data from API",
+            "Count unique healthcare facilities from attacks data",
+            "Validate transformed data",
+            "Apply to component state"
+          ],
+          "validationRules": [
+            "Value must be a number",
+            "Value must be non-negative",
+            "Value must be within expected range"
+          ]
+        },
+        {
+          "inputFormat": "API Response JSON",
+          "outputFormat": "Component Metric Value",
+          "transformationSteps": [
+            "Fetch data from API",
+            "Extract healthcare worker casualties from attacks data",
+            "Validate transformed data",
+            "Apply to component state"
+          ],
+          "validationRules": [
+            "Value must be a number",
+            "Value must be non-negative",
+            "Value must be within expected range"
+          ]
+        }
+      ],
+      "overallPriority": 13,
+      "estimatedTotalEffort": "2 days"
+    },
+    {
+      "componentPath": "src/components/v3/gaza/PopulationImpact.tsx",
+      "componentName": "PopulationImpact",
+      "dashboardSection": "gaza",
+      "metrics": [
+        {
+          "metricName": "displaced",
+          "displayName": "Internally Displaced",
+          "currentImplementation": "fake",
+          "targetDataSource": "un_ocha",
+          "fallbackDataSources": [],
+          "transformationRequired": true,
+          "replacementPriority": 9,
+          "estimatedEffort": "3-4 hours"
+        },
+        {
+          "metricName": "orphanedChildren",
+          "displayName": "Orphaned Children",
+          "currentImplementation": "fake",
+          "targetDataSource": "un_ocha",
+          "fallbackDataSources": [
+            "goodshepherd"
+          ],
+          "transformationRequired": true,
+          "transformationDescription": "Estimate based on casualty data and family size",
+          "replacementPriority": 7,
+          "estimatedEffort": "4-5 hours"
+        },
+        {
+          "metricName": "studentCasualties",
+          "displayName": "Student Casualties",
+          "currentImplementation": "fake",
+          "targetDataSource": "tech4palestine",
+          "fallbackDataSources": [
+            "un_ocha"
+          ],
+          "transformationRequired": true,
+          "transformationDescription": "Filter casualties by age range (5-18)",
+          "replacementPriority": 7,
+          "estimatedEffort": "2-3 hours"
+        }
+      ],
+      "dataDependencies": [
+        {
+          "dependsOn": "dataConsolidationService",
+          "reason": "Provides consolidated data from multiple sources",
+          "type": "service",
+          "critical": true
+        },
+        {
+          "dependsOn": "apiOrchestrator",
+          "reason": "Handles API calls and caching",
+          "type": "service",
+          "critical": true
+        }
+      ],
+      "transformationRequirements": [
+        {
+          "inputFormat": "API Response JSON",
+          "outputFormat": "Component Metric Value",
+          "transformationSteps": [
+            "Fetch data from API",
+            "Estimate based on casualty data and family size",
+            "Validate transformed data",
+            "Apply to component state"
+          ],
+          "validationRules": [
+            "Value must be a number",
+            "Value must be non-negative",
+            "Value must be within expected range"
+          ]
+        },
+        {
+          "inputFormat": "API Response JSON",
+          "outputFormat": "Component Metric Value",
+          "transformationSteps": [
+            "Fetch data from API",
+            "Filter casualties by age range (5-18)",
+            "Validate transformed data",
+            "Apply to component state"
+          ],
+          "validationRules": [
+            "Value must be a number",
+            "Value must be non-negative",
+            "Value must be within expected range"
+          ]
+        }
+      ],
+      "overallPriority": 12,
+      "estimatedTotalEffort": "2 days"
+    },
+    {
+      "componentPath": "src/components/v3/gaza/AidSurvival.tsx",
+      "componentName": "AidSurvival",
+      "dashboardSection": "gaza",
+      "metrics": [
+        {
+          "metricName": "foodPrices",
+          "displayName": "Food Prices",
+          "currentImplementation": "fake",
+          "targetDataSource": "wfp",
+          "fallbackDataSources": [],
+          "transformationRequired": true,
+          "replacementPriority": 8,
+          "estimatedEffort": "3-4 hours"
+        },
+        {
+          "metricName": "aidDeliveries",
+          "displayName": "Aid Deliveries",
+          "currentImplementation": "fake",
+          "targetDataSource": "un_ocha",
+          "fallbackDataSources": [
+            "wfp"
+          ],
+          "transformationRequired": true,
+          "replacementPriority": 7,
+          "estimatedEffort": "3-4 hours"
+        }
+      ],
+      "dataDependencies": [
+        {
+          "dependsOn": "dataConsolidationService",
+          "reason": "Provides consolidated data from multiple sources",
+          "type": "service",
+          "critical": true
+        },
+        {
+          "dependsOn": "apiOrchestrator",
+          "reason": "Handles API calls and caching",
+          "type": "service",
+          "critical": true
+        }
+      ],
+      "transformationRequirements": [],
+      "overallPriority": 11,
+      "estimatedTotalEffort": "1 day"
+    },
+    {
+      "componentPath": "src/components/v3/gaza/CasualtyDetails.tsx",
+      "componentName": "CasualtyDetails",
+      "dashboardSection": "gaza",
+      "metrics": [],
+      "dataDependencies": [
+        {
+          "dependsOn": "dataConsolidationService",
+          "reason": "Provides consolidated data from multiple sources",
+          "type": "service",
+          "critical": true
+        },
+        {
+          "dependsOn": "apiOrchestrator",
+          "reason": "Handles API calls and caching",
+          "type": "service",
+          "critical": true
+        }
+      ],
+      "transformationRequirements": [],
+      "overallPriority": 0,
+      "estimatedTotalEffort": "0 hours"
+    }
+  ],
+  "westBankMappings": [
+    {
+      "componentPath": "src/components/v3/westbank/OccupationMetrics.tsx",
+      "componentName": "OccupationMetrics",
+      "dashboardSection": "westbank",
+      "metrics": [
+        {
+          "metricName": "settlements",
+          "displayName": "Israeli Settlements",
+          "currentImplementation": "fake",
+          "targetDataSource": "goodshepherd",
+          "fallbackDataSources": [
+            "un_ocha",
+            "btselem"
+          ],
+          "transformationRequired": true,
+          "replacementPriority": 9,
+          "estimatedEffort": "3-4 hours"
+        },
+        {
+          "metricName": "settlerPopulation",
+          "displayName": "Settler Population",
+          "currentImplementation": "fake",
+          "targetDataSource": "goodshepherd",
+          "fallbackDataSources": [
+            "un_ocha"
+          ],
+          "transformationRequired": true,
+          "replacementPriority": 8,
+          "estimatedEffort": "2-3 hours"
+        },
+        {
+          "metricName": "checkpoints",
+          "displayName": "Checkpoints & Barriers",
+          "currentImplementation": "mixed",
+          "targetDataSource": "btselem",
+          "fallbackDataSources": [
+            "un_ocha",
+            "goodshepherd"
+          ],
+          "transformationRequired": false,
+          "replacementPriority": 9,
+          "estimatedEffort": "2 hours"
+        }
+      ],
+      "dataDependencies": [
+        {
+          "dependsOn": "dataConsolidationService",
+          "reason": "Provides consolidated data from multiple sources",
+          "type": "service",
+          "critical": true
+        },
+        {
+          "dependsOn": "apiOrchestrator",
+          "reason": "Handles API calls and caching",
+          "type": "service",
+          "critical": true
+        }
+      ],
+      "transformationRequirements": [],
+      "overallPriority": 12,
+      "estimatedTotalEffort": "1 day"
+    },
+    {
+      "componentPath": "src/components/v3/westbank/SettlerViolence.tsx",
+      "componentName": "SettlerViolence",
+      "dashboardSection": "westbank",
+      "metrics": [
+        {
+          "metricName": "killedBySettlers",
+          "displayName": "Palestinians Killed by Settlers",
+          "currentImplementation": "fake",
+          "targetDataSource": "goodshepherd",
+          "fallbackDataSources": [
+            "btselem"
+          ],
+          "transformationRequired": true,
+          "transformationDescription": "Filter casualties by perpetrator type",
+          "replacementPriority": 10,
+          "estimatedEffort": "3-4 hours"
+        },
+        {
+          "metricName": "settlerAttacks",
+          "displayName": "Settler Attacks",
+          "currentImplementation": "fake",
+          "targetDataSource": "goodshepherd",
+          "fallbackDataSources": [
+            "un_ocha",
+            "btselem"
+          ],
+          "transformationRequired": true,
+          "replacementPriority": 10,
+          "estimatedEffort": "3-4 hours"
+        },
+        {
+          "metricName": "demolitions",
+          "displayName": "Home Demolitions",
+          "currentImplementation": "fake",
+          "targetDataSource": "goodshepherd",
+          "fallbackDataSources": [
+            "btselem"
+          ],
+          "transformationRequired": true,
+          "replacementPriority": 9,
+          "estimatedEffort": "3-4 hours"
+        }
+      ],
+      "dataDependencies": [
+        {
+          "dependsOn": "dataConsolidationService",
+          "reason": "Provides consolidated data from multiple sources",
+          "type": "service",
+          "critical": true
+        },
+        {
+          "dependsOn": "apiOrchestrator",
+          "reason": "Handles API calls and caching",
+          "type": "service",
+          "critical": true
+        }
+      ],
+      "transformationRequirements": [
+        {
+          "inputFormat": "API Response JSON",
+          "outputFormat": "Component Metric Value",
+          "transformationSteps": [
+            "Fetch data from API",
+            "Filter casualties by perpetrator type",
+            "Validate transformed data",
+            "Apply to component state"
+          ],
+          "validationRules": [
+            "Value must be a number",
+            "Value must be non-negative",
+            "Value must be within expected range"
+          ]
+        }
+      ],
+      "overallPriority": 15,
+      "estimatedTotalEffort": "2 days"
+    },
+    {
+      "componentPath": "src/components/v3/westbank/EconomicStrangulation.tsx",
+      "componentName": "EconomicStrangulation",
+      "dashboardSection": "westbank",
+      "metrics": [
+        {
+          "metricName": "gdpDecline",
+          "displayName": "GDP Decline",
+          "currentImplementation": "fake",
+          "targetDataSource": "world_bank",
+          "fallbackDataSources": [
+            "pcbs"
+          ],
+          "transformationRequired": true,
+          "transformationDescription": "Calculate percentage change from World Bank GDP data",
+          "replacementPriority": 8,
+          "estimatedEffort": "4-5 hours"
+        },
+        {
+          "metricName": "unemployment",
+          "displayName": "Unemployment Rate",
+          "currentImplementation": "fake",
+          "targetDataSource": "world_bank",
+          "fallbackDataSources": [
+            "pcbs"
+          ],
+          "transformationRequired": true,
+          "replacementPriority": 8,
+          "estimatedEffort": "3-4 hours"
+        },
+        {
+          "metricName": "poverty",
+          "displayName": "Poverty Rate",
+          "currentImplementation": "fake",
+          "targetDataSource": "world_bank",
+          "fallbackDataSources": [
+            "pcbs"
+          ],
+          "transformationRequired": true,
+          "replacementPriority": 7,
+          "estimatedEffort": "3-4 hours"
+        }
+      ],
+      "dataDependencies": [
+        {
+          "dependsOn": "dataConsolidationService",
+          "reason": "Provides consolidated data from multiple sources",
+          "type": "service",
+          "critical": true
+        },
+        {
+          "dependsOn": "apiOrchestrator",
+          "reason": "Handles API calls and caching",
+          "type": "service",
+          "critical": true
+        }
+      ],
+      "transformationRequirements": [
+        {
+          "inputFormat": "API Response JSON",
+          "outputFormat": "Component Metric Value",
+          "transformationSteps": [
+            "Fetch data from API",
+            "Calculate percentage change from World Bank GDP data",
+            "Validate transformed data",
+            "Apply to component state"
+          ],
+          "validationRules": [
+            "Value must be a number",
+            "Value must be non-negative",
+            "Value must be within expected range"
+          ]
+        }
+      ],
+      "overallPriority": 12,
+      "estimatedTotalEffort": "2 days"
+    },
+    {
+      "componentPath": "src/components/v3/westbank/PrisonersDetention.tsx",
+      "componentName": "PrisonersDetention",
+      "dashboardSection": "westbank",
+      "metrics": [
+        {
+          "metricName": "totalPrisoners",
+          "displayName": "Total Political Prisoners",
+          "currentImplementation": "fake",
+          "targetDataSource": "goodshepherd",
+          "fallbackDataSources": [
+            "btselem"
+          ],
+          "transformationRequired": true,
+          "replacementPriority": 9,
+          "estimatedEffort": "3-4 hours"
+        },
+        {
+          "metricName": "childPrisoners",
+          "displayName": "Child Prisoners",
+          "currentImplementation": "fake",
+          "targetDataSource": "goodshepherd",
+          "fallbackDataSources": [
+            "btselem"
+          ],
+          "transformationRequired": false,
+          "replacementPriority": 9,
+          "estimatedEffort": "2-3 hours"
+        }
+      ],
+      "dataDependencies": [
+        {
+          "dependsOn": "dataConsolidationService",
+          "reason": "Provides consolidated data from multiple sources",
+          "type": "service",
+          "critical": true
+        },
+        {
+          "dependsOn": "apiOrchestrator",
+          "reason": "Handles API calls and caching",
+          "type": "service",
+          "critical": true
+        }
+      ],
+      "transformationRequirements": [],
+      "overallPriority": 14,
+      "estimatedTotalEffort": "1 day"
+    }
+  ],
+  "sharedMappings": [
+    {
+      "componentPath": "src/components/v3/shared/UnifiedMetricCard.tsx",
+      "componentName": "UnifiedMetricCard",
+      "dashboardSection": "shared",
+      "metrics": [],
+      "dataDependencies": [
+        {
+          "dependsOn": "dataConsolidationService",
+          "reason": "Provides consolidated data from multiple sources",
+          "type": "service",
+          "critical": true
+        },
+        {
+          "dependsOn": "apiOrchestrator",
+          "reason": "Handles API calls and caching",
+          "type": "service",
+          "critical": true
+        }
+      ],
+      "transformationRequirements": [],
+      "overallPriority": 0,
+      "estimatedTotalEffort": "0 hours"
+    },
+    {
+      "componentPath": "src/components/v3/shared/AnimatedChart.tsx",
+      "componentName": "AnimatedChart",
+      "dashboardSection": "shared",
+      "metrics": [],
+      "dataDependencies": [
+        {
+          "dependsOn": "dataConsolidationService",
+          "reason": "Provides consolidated data from multiple sources",
+          "type": "service",
+          "critical": true
+        },
+        {
+          "dependsOn": "apiOrchestrator",
+          "reason": "Handles API calls and caching",
+          "type": "service",
+          "critical": true
+        }
+      ],
+      "transformationRequirements": [],
+      "overallPriority": 0,
+      "estimatedTotalEffort": "0 hours"
+    },
+    {
+      "componentPath": "src/components/v3/shared/PressCasualtiesWidget.tsx",
+      "componentName": "PressCasualtiesWidget",
+      "dashboardSection": "shared",
+      "metrics": [],
+      "dataDependencies": [
+        {
+          "dependsOn": "dataConsolidationService",
+          "reason": "Provides consolidated data from multiple sources",
+          "type": "service",
+          "critical": true
+        },
+        {
+          "dependsOn": "apiOrchestrator",
+          "reason": "Handles API calls and caching",
+          "type": "service",
+          "critical": true
+        }
+      ],
+      "transformationRequirements": [],
+      "overallPriority": 0,
+      "estimatedTotalEffort": "0 hours"
+    }
+  ],
+  "prioritizedComponents": [
+    "src/components/v3/westbank/SettlerViolence.tsx",
+    "src/components/v3/westbank/PrisonersDetention.tsx",
+    "src/components/v3/gaza/InfrastructureDestruction.tsx",
+    "src/components/v3/gaza/PopulationImpact.tsx",
+    "src/components/v3/westbank/OccupationMetrics.tsx",
+    "src/components/v3/westbank/EconomicStrangulation.tsx",
+    "src/components/v3/gaza/AidSurvival.tsx",
+    "src/components/v3/gaza/HumanitarianCrisis.tsx",
+    "src/components/v3/gaza/CasualtyDetails.tsx",
+    "src/components/v3/shared/UnifiedMetricCard.tsx",
+    "src/components/v3/shared/AnimatedChart.tsx",
+    "src/components/v3/shared/PressCasualtiesWidget.tsx"
+  ],
+  "dataFlowDiagram": [
+    {
+      "id": "tech4palestine",
+      "type": "source",
+      "name": "tech4palestine",
+      "connections": [
+        "apiOrchestrator"
+      ],
+      "status": "operational"
+    },
+    {
+      "id": "goodshepherd",
+      "type": "source",
+      "name": "goodshepherd",
+      "connections": [
+        "apiOrchestrator"
+      ],
+      "status": "operational"
+    },
+    {
+      "id": "un_ocha",
+      "type": "source",
+      "name": "un_ocha",
+      "connections": [
+        "apiOrchestrator"
+      ],
+      "status": "operational"
+    },
+    {
+      "id": "world_bank",
+      "type": "source",
+      "name": "world_bank",
+      "connections": [
+        "apiOrchestrator"
+      ],
+      "status": "operational"
+    },
+    {
+      "id": "wfp",
+      "type": "source",
+      "name": "wfp",
+      "connections": [
+        "apiOrchestrator"
+      ],
+      "status": "operational"
+    },
+    {
+      "id": "btselem",
+      "type": "source",
+      "name": "btselem",
+      "connections": [
+        "apiOrchestrator"
+      ],
+      "status": "operational"
+    },
+    {
+      "id": "apiOrchestrator",
+      "type": "service",
+      "name": "API Orchestrator",
+      "connections": [
+        "dataConsolidationService"
+      ],
+      "status": "operational"
+    },
+    {
+      "id": "dataConsolidationService",
+      "type": "service",
+      "name": "Data Consolidation Service",
+      "connections": [
+        "SettlerViolence",
+        "PrisonersDetention",
+        "InfrastructureDestruction",
+        "PopulationImpact",
+        "OccupationMetrics",
+        "EconomicStrangulation",
+        "AidSurvival",
+        "HumanitarianCrisis",
+        "CasualtyDetails",
+        "UnifiedMetricCard",
+        "AnimatedChart",
+        "PressCasualtiesWidget"
+      ],
+      "status": "operational"
+    },
+    {
+      "id": "SettlerViolence",
+      "type": "component",
+      "name": "SettlerViolence",
+      "connections": [],
+      "status": "needs_work"
+    },
+    {
+      "id": "PrisonersDetention",
+      "type": "component",
+      "name": "PrisonersDetention",
+      "connections": [],
+      "status": "needs_work"
+    },
+    {
+      "id": "InfrastructureDestruction",
+      "type": "component",
+      "name": "InfrastructureDestruction",
+      "connections": [],
+      "status": "needs_work"
+    },
+    {
+      "id": "PopulationImpact",
+      "type": "component",
+      "name": "PopulationImpact",
+      "connections": [],
+      "status": "needs_work"
+    },
+    {
+      "id": "OccupationMetrics",
+      "type": "component",
+      "name": "OccupationMetrics",
+      "connections": [],
+      "status": "needs_work"
+    },
+    {
+      "id": "EconomicStrangulation",
+      "type": "component",
+      "name": "EconomicStrangulation",
+      "connections": [],
+      "status": "needs_work"
+    },
+    {
+      "id": "AidSurvival",
+      "type": "component",
+      "name": "AidSurvival",
+      "connections": [],
+      "status": "needs_work"
+    },
+    {
+      "id": "HumanitarianCrisis",
+      "type": "component",
+      "name": "HumanitarianCrisis",
+      "connections": [],
+      "status": "operational"
+    },
+    {
+      "id": "CasualtyDetails",
+      "type": "component",
+      "name": "CasualtyDetails",
+      "connections": [],
+      "status": "operational"
+    },
+    {
+      "id": "UnifiedMetricCard",
+      "type": "component",
+      "name": "UnifiedMetricCard",
+      "connections": [],
+      "status": "operational"
+    },
+    {
+      "id": "AnimatedChart",
+      "type": "component",
+      "name": "AnimatedChart",
+      "connections": [],
+      "status": "operational"
+    },
+    {
+      "id": "PressCasualtiesWidget",
+      "type": "component",
+      "name": "PressCasualtiesWidget",
+      "connections": [],
+      "status": "operational"
+    }
+  ]
+}

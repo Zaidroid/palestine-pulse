@@ -9,9 +9,9 @@
  * - Prison conditions
  */
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
-import { Badge } from './components/ui/badge';
-import { Skeleton } from './components/ui/skeleton';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Users,
   Baby,
@@ -35,9 +35,10 @@ import {
   Line
 } from 'recharts';
 import { ExpandableMetricCard } from '../dashboard/ExpandableMetricCard';
-import { useChildPrisoners, usePrisonerData, useNGOData } from './hooks/useGoodShepherdData';
-import { calculateChildPrisonerTrend, getLatestChildPrisonerStats } from './utils/dataAggregation';
-import { DataQualityBadge, DataLoadingBadge } from './components/ui/data-quality-badge';
+import { useChildPrisoners, usePrisonerData, useNGOData } from '@/hooks/useGoodShepherdData';
+import { calculateChildPrisonerTrend, getLatestChildPrisonerStats } from '@/utils/dataAggregation';
+import { UnifiedBadge as DataQualityBadge } from '@/components/ui/unified-badge';
+import { UnifiedBadge as DataLoadingBadge } from '@/components/ui/unified-badge';
 
 // ============================================
 // SAMPLE DATA

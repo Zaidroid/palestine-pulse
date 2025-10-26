@@ -1,0 +1,1192 @@
+{
+  "timestamp": "2025-10-22T18:22:25.446Z",
+  "totalComponents": 38,
+  "componentsWithFakeData": 10,
+  "totalFakeDataInstances": 73,
+  "severityBreakdown": {
+    "critical": 3,
+    "high": 4,
+    "medium": 0,
+    "low": 3
+  },
+  "componentReports": [
+    {
+      "componentPath": "src/components/v3/gaza/AidSurvival.tsx",
+      "componentName": "AidSurvival",
+      "fakeDataInstances": [
+        {
+          "location": "src/components/v3/gaza/AidSurvival.tsx:32",
+          "lineNumber": 32,
+          "type": "fallback_value",
+          "currentValue": 342,
+          "context": "aidDeliveries: gazaAidData?.aid?.total_deliveries || 342,",
+          "suggestedReplacement": "Use data from: wfp, who, un_ocha",
+          "dataSourceMapping": [
+            "wfp",
+            "who",
+            "un_ocha"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/gaza/AidSurvival.tsx:40",
+          "lineNumber": 40,
+          "type": "fake_array",
+          "currentValue": "Array.from({ length: 6 }, (_, i) => ({",
+          "context": "Array.from({ length: 6 }, (_, i) => ({",
+          "suggestedReplacement": "Use real data from API instead of generating fake arrays",
+          "dataSourceMapping": [
+            "wfp",
+            "who",
+            "un_ocha"
+          ],
+          "confidence": 0.95
+        },
+        {
+          "location": "src/components/v3/gaza/AidSurvival.tsx:56",
+          "lineNumber": 56,
+          "type": "fake_array",
+          "currentValue": "return Array.from({ length: 12 }, (_, i) => ({",
+          "context": "return Array.from({ length: 12 }, (_, i) => ({",
+          "suggestedReplacement": "Use real data from API instead of generating fake arrays",
+          "dataSourceMapping": [
+            "wfp",
+            "who",
+            "un_ocha"
+          ],
+          "confidence": 0.95
+        },
+        {
+          "location": "src/components/v3/gaza/AidSurvival.tsx:74",
+          "lineNumber": 74,
+          "type": "fake_array",
+          "currentValue": "Array.from({ length: 12 }, (_, i) => ({",
+          "context": "Array.from({ length: 12 }, (_, i) => ({",
+          "suggestedReplacement": "Use real data from API instead of generating fake arrays",
+          "dataSourceMapping": [
+            "wfp",
+            "who",
+            "un_ocha"
+          ],
+          "confidence": 0.95
+        }
+      ],
+      "severity": "high",
+      "replacementComplexity": 4,
+      "totalIssues": 4,
+      "criticalIssues": 4,
+      "estimatedEffort": "2-4 hours"
+    },
+    {
+      "componentPath": "src/components/v3/gaza/HumanitarianCrisis.tsx",
+      "componentName": "HumanitarianCrisis",
+      "fakeDataInstances": [
+        {
+          "location": "src/components/v3/gaza/HumanitarianCrisis.tsx:55",
+          "lineNumber": 55,
+          "type": "fallback_value",
+          "currentValue": 43000,
+          "context": "const totalKilled = latest?.ext_killed_cum || 43000;",
+          "suggestedReplacement": "Use Tech4Palestine API: /v3/killed-in-gaza.min.json",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "goodshepherd",
+            "un_ocha"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/gaza/HumanitarianCrisis.tsx:56",
+          "lineNumber": 56,
+          "type": "fallback_value",
+          "currentValue": 13000,
+          "context": "const childrenKilled = gazaHumanitarianData?.demographics?.children_killed || 13000;",
+          "suggestedReplacement": "Use Tech4Palestine API: /v3/killed-in-gaza.min.json",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "goodshepherd",
+            "un_ocha"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/gaza/HumanitarianCrisis.tsx:57",
+          "lineNumber": 57,
+          "type": "fallback_value",
+          "currentValue": 9000,
+          "context": "const womenKilled = gazaHumanitarianData?.demographics?.women_killed || 9000;",
+          "suggestedReplacement": "Use Tech4Palestine API: /v3/killed-in-gaza.min.json",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "goodshepherd",
+            "un_ocha"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/gaza/HumanitarianCrisis.tsx:58",
+          "lineNumber": 58,
+          "type": "fallback_value",
+          "currentValue": 150,
+          "context": "const pressKilled = gazaHumanitarianData?.pressCasualties?.length || filteredPress?.length || 150;",
+          "suggestedReplacement": "Use data from: tech4palestine, goodshepherd, un_ocha",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "goodshepherd",
+            "un_ocha"
+          ],
+          "confidence": 0.9
+        }
+      ],
+      "severity": "high",
+      "replacementComplexity": 4,
+      "totalIssues": 4,
+      "criticalIssues": 4,
+      "estimatedEffort": "2-4 hours"
+    },
+    {
+      "componentPath": "src/components/v3/gaza/InfrastructureDestruction.tsx",
+      "componentName": "InfrastructureDestruction",
+      "fakeDataInstances": [
+        {
+          "location": "src/components/v3/gaza/InfrastructureDestruction.tsx:40",
+          "lineNumber": 40,
+          "type": "fallback_value",
+          "currentValue": 139000,
+          "context": "const residentialDestroyed = infrastructure?.residential?.destroyed || 139000;",
+          "suggestedReplacement": "Use Good Shepherd Collective or Tech4Palestine infrastructure data",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "goodshepherd",
+            "who",
+            "un_ocha"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/gaza/InfrastructureDestruction.tsx:41",
+          "lineNumber": 41,
+          "type": "fallback_value",
+          "currentValue": 51000,
+          "context": "const residentialDamaged = infrastructure?.residential?.damaged || 51000;",
+          "suggestedReplacement": "Use Good Shepherd Collective or Tech4Palestine infrastructure data",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "goodshepherd",
+            "who",
+            "un_ocha"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/gaza/InfrastructureDestruction.tsx:43",
+          "lineNumber": 43,
+          "type": "fallback_value",
+          "currentValue": 286,
+          "context": "const schoolsAffected = infrastructure?.education?.schools_damaged || 286;",
+          "suggestedReplacement": "Use Good Shepherd Collective or Tech4Palestine infrastructure data",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "goodshepherd",
+            "who",
+            "un_ocha"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/gaza/InfrastructureDestruction.tsx:44",
+          "lineNumber": 44,
+          "type": "fallback_value",
+          "currentValue": 500,
+          "context": "const healthWorkersKilled = gazaInfrastructureData?.healthcare?.workers_killed || 500;",
+          "suggestedReplacement": "Use Tech4Palestine API: /v3/killed-in-gaza.min.json",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "goodshepherd",
+            "who",
+            "un_ocha"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/gaza/InfrastructureDestruction.tsx:64",
+          "lineNumber": 64,
+          "type": "static_data",
+          "currentValue": "{ name: 'Mosques', value: 650, icon: 'Mosque' }, // Updated with realistic Gaza data",
+          "context": "{ name: 'Mosques', value: 650, icon: 'Mosque' }, // Updated with realistic Gaza data",
+          "suggestedReplacement": "Replace with dynamic data from API",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "goodshepherd",
+            "who",
+            "un_ocha"
+          ],
+          "confidence": 0.8
+        }
+      ],
+      "severity": "high",
+      "replacementComplexity": 5,
+      "totalIssues": 5,
+      "criticalIssues": 4,
+      "estimatedEffort": "2-4 hours"
+    },
+    {
+      "componentPath": "src/components/v3/gaza/PopulationImpact.tsx",
+      "componentName": "PopulationImpact",
+      "fakeDataInstances": [
+        {
+          "location": "src/components/v3/gaza/PopulationImpact.tsx:56",
+          "lineNumber": 56,
+          "type": "fallback_value",
+          "currentValue": 1700000,
+          "context": "const displaced = populationData?.displacement?.internally_displaced || 1700000; // ~77% displaced",
+          "suggestedReplacement": "Use data from: tech4palestine, un_ocha, pcbs, unicef",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "un_ocha",
+            "pcbs",
+            "unicef"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/gaza/PopulationImpact.tsx:60",
+          "lineNumber": 60,
+          "type": "fallback_value",
+          "currentValue": 8500,
+          "context": "const studentCasualties = populationData?.education?.student_casualties || 8500;",
+          "suggestedReplacement": "Use Tech4Palestine API: /v3/killed-in-gaza.min.json",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "un_ocha",
+            "pcbs",
+            "unicef"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/gaza/PopulationImpact.tsx:63",
+          "lineNumber": 63,
+          "type": "fallback_value",
+          "currentValue": 19000,
+          "context": "const orphanedChildren = populationData?.demographics?.orphaned_children || 19000;",
+          "suggestedReplacement": "Use data from: tech4palestine, un_ocha, pcbs, unicef",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "un_ocha",
+            "pcbs",
+            "unicef"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/gaza/PopulationImpact.tsx:75",
+          "lineNumber": 75,
+          "type": "static_data",
+          "currentValue": "{ name: 'Disabled', value: 65000 }, // Updated with realistic Gaza data",
+          "context": "{ name: 'Disabled', value: 65000 }, // Updated with realistic Gaza data",
+          "suggestedReplacement": "Replace with dynamic data from API",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "un_ocha",
+            "pcbs",
+            "unicef"
+          ],
+          "confidence": 0.8
+        },
+        {
+          "location": "src/components/v3/gaza/PopulationImpact.tsx:76",
+          "lineNumber": 76,
+          "type": "static_data",
+          "currentValue": "{ name: 'Pregnant', value: 50000 }, // Updated with realistic Gaza data",
+          "context": "{ name: 'Pregnant', value: 50000 }, // Updated with realistic Gaza data",
+          "suggestedReplacement": "Replace with dynamic data from API",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "un_ocha",
+            "pcbs",
+            "unicef"
+          ],
+          "confidence": 0.8
+        },
+        {
+          "location": "src/components/v3/gaza/PopulationImpact.tsx:77",
+          "lineNumber": 77,
+          "type": "static_data",
+          "currentValue": "{ name: 'Elderly', value: 48000 }, // Updated with realistic Gaza data",
+          "context": "{ name: 'Elderly', value: 48000 }, // Updated with realistic Gaza data",
+          "suggestedReplacement": "Replace with dynamic data from API",
+          "dataSourceMapping": [
+            "tech4palestine",
+            "un_ocha",
+            "pcbs",
+            "unicef"
+          ],
+          "confidence": 0.8
+        }
+      ],
+      "severity": "high",
+      "replacementComplexity": 5,
+      "totalIssues": 6,
+      "criticalIssues": 3,
+      "estimatedEffort": "2-4 hours"
+    },
+    {
+      "componentPath": "src/components/v3/westbank/EconomicStrangulation.tsx",
+      "componentName": "EconomicStrangulation",
+      "fakeDataInstances": [
+        {
+          "location": "src/components/v3/westbank/EconomicStrangulation.tsx:51",
+          "lineNumber": 51,
+          "type": "fake_array",
+          "currentValue": "return Array.from({ length: 10 }, (_, i) => ({",
+          "context": "return Array.from({ length: 10 }, (_, i) => ({",
+          "suggestedReplacement": "Use real data from API instead of generating fake arrays",
+          "dataSourceMapping": [
+            "world_bank",
+            "pcbs",
+            "goodshepherd"
+          ],
+          "confidence": 0.95
+        },
+        {
+          "location": "src/components/v3/westbank/EconomicStrangulation.tsx:70",
+          "lineNumber": 70,
+          "type": "fake_array",
+          "currentValue": "return Array.from({ length: 12 }, (_, i) => ({",
+          "context": "return Array.from({ length: 12 }, (_, i) => ({",
+          "suggestedReplacement": "Use real data from API instead of generating fake arrays",
+          "dataSourceMapping": [
+            "world_bank",
+            "pcbs",
+            "goodshepherd"
+          ],
+          "confidence": 0.95
+        }
+      ],
+      "severity": "low",
+      "replacementComplexity": 2,
+      "totalIssues": 2,
+      "criticalIssues": 2,
+      "estimatedEffort": "1-2 hours"
+    },
+    {
+      "componentPath": "src/components/v3/westbank/OccupationMetrics.tsx",
+      "componentName": "OccupationMetrics",
+      "fakeDataInstances": [
+        {
+          "location": "src/components/v3/westbank/OccupationMetrics.tsx:56",
+          "lineNumber": 56,
+          "type": "fallback_value",
+          "currentValue": 279,
+          "context": "settlements: westBankOccupationData?.settlements?.total || 279,",
+          "suggestedReplacement": "Use Good Shepherd Collective West Bank data",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/OccupationMetrics.tsx:57",
+          "lineNumber": 57,
+          "type": "fallback_value",
+          "currentValue": 700000,
+          "context": "settlerPopulation: westBankOccupationData?.settlements?.population || 700000,",
+          "suggestedReplacement": "Use Good Shepherd Collective West Bank data",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/OccupationMetrics.tsx:89",
+          "lineNumber": 89,
+          "type": "fake_array",
+          "currentValue": "return Array.from({ length: 6 }, (_, i) => {",
+          "context": "return Array.from({ length: 6 }, (_, i) => {",
+          "suggestedReplacement": "Use real data from API instead of generating fake arrays",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.95
+        },
+        {
+          "location": "src/components/v3/westbank/OccupationMetrics.tsx:91",
+          "lineNumber": 91,
+          "type": "fallback_value",
+          "currentValue": 279,
+          "context": "const baseSettlements = metrics.settlements || 279;",
+          "suggestedReplacement": "Use Good Shepherd Collective West Bank data",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/OccupationMetrics.tsx:92",
+          "lineNumber": 92,
+          "type": "fallback_value",
+          "currentValue": 700000,
+          "context": "const basePopulation = metrics.settlerPopulation || 700000;",
+          "suggestedReplacement": "Use data from: goodshepherd, un_ocha, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/OccupationMetrics.tsx:128",
+          "lineNumber": 128,
+          "type": "fake_array",
+          "currentValue": "return Array.from({ length: 6 }, (_, i) => {",
+          "context": "return Array.from({ length: 6 }, (_, i) => {",
+          "suggestedReplacement": "Use real data from API instead of generating fake arrays",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.95
+        },
+        {
+          "location": "src/components/v3/westbank/OccupationMetrics.tsx:130",
+          "lineNumber": 130,
+          "type": "fallback_value",
+          "currentValue": 140,
+          "context": "const baseCheckpoints = metrics.checkpoints || 140;",
+          "suggestedReplacement": "Use data from: goodshepherd, un_ocha, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/OccupationMetrics.tsx:163",
+          "lineNumber": 163,
+          "type": "fake_array",
+          "currentValue": "return Array.from({ length: 6 }, (_, i) => {",
+          "context": "return Array.from({ length: 6 }, (_, i) => {",
+          "suggestedReplacement": "Use real data from API instead of generating fake arrays",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.95
+        },
+        {
+          "location": "src/components/v3/westbank/OccupationMetrics.tsx:165",
+          "lineNumber": 165,
+          "type": "fallback_value",
+          "currentValue": 700000,
+          "context": "const basePopulation = metrics.settlerPopulation || 700000;",
+          "suggestedReplacement": "Use data from: goodshepherd, un_ocha, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/OccupationMetrics.tsx:200",
+          "lineNumber": 200,
+          "type": "fallback_value",
+          "currentValue": 147,
+          "context": "<span className=\"font-bold\">{settlementsData?.outposts_count || 147}</span>",
+          "suggestedReplacement": "Use Good Shepherd Collective West Bank data",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.9
+        }
+      ],
+      "severity": "critical",
+      "replacementComplexity": 9,
+      "totalIssues": 10,
+      "criticalIssues": 10,
+      "estimatedEffort": "4-8 hours"
+    },
+    {
+      "componentPath": "src/components/v3/westbank/OsloPact.tsx",
+      "componentName": "OsloPact",
+      "fakeDataInstances": [
+        {
+          "location": "src/components/v3/westbank/OsloPact.tsx:7",
+          "lineNumber": 7,
+          "type": "static_data",
+          "currentValue": "{ name: \"Area A\", value: 18, color: \"hsl(var(--primary))\", description: \"Full Palestinian Authority civil and security control.\", population: \"60%\" },",
+          "context": "{ name: \"Area A\", value: 18, color: \"hsl(var(--primary))\", description: \"Full Palestinian Authority civil and security control.\", population: \"60%\" },",
+          "suggestedReplacement": "Replace with dynamic data from API",
+          "dataSourceMapping": [],
+          "confidence": 0.8
+        },
+        {
+          "location": "src/components/v3/westbank/OsloPact.tsx:8",
+          "lineNumber": 8,
+          "type": "static_data",
+          "currentValue": "{ name: \"Area B\", value: 22, color: \"hsl(var(--secondary))\", description: \"PA civil control, joint Israeli-PA security control.\", population: \"20%\" },",
+          "context": "{ name: \"Area B\", value: 22, color: \"hsl(var(--secondary))\", description: \"PA civil control, joint Israeli-PA security control.\", population: \"20%\" },",
+          "suggestedReplacement": "Replace with dynamic data from API",
+          "dataSourceMapping": [],
+          "confidence": 0.8
+        },
+        {
+          "location": "src/components/v3/westbank/OsloPact.tsx:9",
+          "lineNumber": 9,
+          "type": "static_data",
+          "currentValue": "{ name: \"Area C\", value: 60, color: \"hsl(var(--destructive))\", description: \"Full Israeli civil and security control.\", population: \"10%\" },",
+          "context": "{ name: \"Area C\", value: 60, color: \"hsl(var(--destructive))\", description: \"Full Israeli civil and security control.\", population: \"10%\" },",
+          "suggestedReplacement": "Replace with dynamic data from API",
+          "dataSourceMapping": [],
+          "confidence": 0.8
+        }
+      ],
+      "severity": "low",
+      "replacementComplexity": 2,
+      "totalIssues": 3,
+      "criticalIssues": 0,
+      "estimatedEffort": "1-2 hours"
+    },
+    {
+      "componentPath": "src/components/v3/westbank/PrisonersDetention.tsx",
+      "componentName": "PrisonersDetention",
+      "fakeDataInstances": [
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:25",
+          "lineNumber": 25,
+          "type": "fallback_value",
+          "currentValue": 9500,
+          "context": "totalPrisoners: westBankPrisonerData?.statistics?.total_prisoners || 9500,",
+          "suggestedReplacement": "Use data from: goodshepherd, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:26",
+          "lineNumber": 26,
+          "type": "fallback_value",
+          "currentValue": 250,
+          "context": "children: westBankPrisonerData?.statistics?.children || 250,",
+          "suggestedReplacement": "Use data from: goodshepherd, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:28",
+          "lineNumber": 28,
+          "type": "fallback_value",
+          "currentValue": 3500,
+          "context": "administrative: westBankPrisonerData?.statistics?.administrative_detention || 3500",
+          "suggestedReplacement": "Use data from: goodshepherd, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:47",
+          "lineNumber": 47,
+          "type": "fallback_value",
+          "currentValue": 9500,
+          "context": "const baseTotal = metrics.totalPrisoners || 9500;",
+          "suggestedReplacement": "Use data from: goodshepherd, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:48",
+          "lineNumber": 48,
+          "type": "fallback_value",
+          "currentValue": 3500,
+          "context": "const baseAdmin = metrics.administrative || 3500;",
+          "suggestedReplacement": "Use data from: goodshepherd, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:51",
+          "lineNumber": 51,
+          "type": "fake_array",
+          "currentValue": "return Array.from({ length: 6 }, (_, i) => {",
+          "context": "return Array.from({ length: 6 }, (_, i) => {",
+          "suggestedReplacement": "Use real data from API instead of generating fake arrays",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.95
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:76",
+          "lineNumber": 76,
+          "type": "fallback_value",
+          "currentValue": 9500,
+          "context": "const baseTotal = metrics.totalPrisoners || 9500;",
+          "suggestedReplacement": "Use data from: goodshepherd, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:78",
+          "lineNumber": 78,
+          "type": "mock_calculation",
+          "currentValue": "{ group: '18-25 years', count: Math.round(baseTotal * 0.295) },",
+          "context": "{ group: '18-25 years', count: Math.round(baseTotal * 0.295) },",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:79",
+          "lineNumber": 79,
+          "type": "mock_calculation",
+          "currentValue": "{ group: '26-35 years', count: Math.round(baseTotal * 0.337) },",
+          "context": "{ group: '26-35 years', count: Math.round(baseTotal * 0.337) },",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:80",
+          "lineNumber": 80,
+          "type": "mock_calculation",
+          "currentValue": "{ group: '36-45 years', count: Math.round(baseTotal * 0.221) },",
+          "context": "{ group: '36-45 years', count: Math.round(baseTotal * 0.221) },",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:81",
+          "lineNumber": 81,
+          "type": "mock_calculation",
+          "currentValue": "{ group: '46-55 years', count: Math.round(baseTotal * 0.100) },",
+          "context": "{ group: '46-55 years', count: Math.round(baseTotal * 0.100) },",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:82",
+          "lineNumber": 82,
+          "type": "mock_calculation",
+          "currentValue": "{ group: '56+ years', count: Math.round(baseTotal * 0.047) }",
+          "context": "{ group: '56+ years', count: Math.round(baseTotal * 0.047) }",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:101",
+          "lineNumber": 101,
+          "type": "fallback_value",
+          "currentValue": 3500,
+          "context": "const baseAdmin = metrics.administrative || 3500;",
+          "suggestedReplacement": "Use data from: goodshepherd, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:104",
+          "lineNumber": 104,
+          "type": "fake_array",
+          "currentValue": "return Array.from({ length: 6 }, (_, i) => {",
+          "context": "return Array.from({ length: 6 }, (_, i) => {",
+          "suggestedReplacement": "Use real data from API instead of generating fake arrays",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.95
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:133",
+          "lineNumber": 133,
+          "type": "fallback_value",
+          "currentValue": 3500,
+          "context": "const baseAdmin = metrics.administrative || 3500;",
+          "suggestedReplacement": "Use data from: goodshepherd, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:134",
+          "lineNumber": 134,
+          "type": "fallback_value",
+          "currentValue": 9500,
+          "context": "const baseTotal = metrics.totalPrisoners || 9500;",
+          "suggestedReplacement": "Use data from: goodshepherd, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:137",
+          "lineNumber": 137,
+          "type": "fake_array",
+          "currentValue": "return Array.from({ length: 6 }, (_, i) => {",
+          "context": "return Array.from({ length: 6 }, (_, i) => {",
+          "suggestedReplacement": "Use real data from API instead of generating fake arrays",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.95
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:389",
+          "lineNumber": 389,
+          "type": "placeholder_text",
+          "currentValue": "N/A",
+          "context": "<p className=\"text-xl font-bold text-destructive\">{summaryData?.west_bank?.violations_summary?.torture_allegations || 'N/A'}</p>",
+          "suggestedReplacement": "Replace with real data or proper loading state",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.7
+        },
+        {
+          "location": "src/components/v3/westbank/PrisonersDetention.tsx:394",
+          "lineNumber": 394,
+          "type": "placeholder_text",
+          "currentValue": "N/A",
+          "context": "<p className=\"text-xl font-bold text-destructive\">{summaryData?.west_bank?.violations_summary?.deaths_in_custody || 'N/A'}</p>",
+          "suggestedReplacement": "Replace with real data or proper loading state",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "btselem"
+          ],
+          "confidence": 0.7
+        }
+      ],
+      "severity": "critical",
+      "replacementComplexity": 10,
+      "totalIssues": 19,
+      "criticalIssues": 17,
+      "estimatedEffort": "1-2 days"
+    },
+    {
+      "componentPath": "src/components/v3/westbank/SettlerViolence.tsx",
+      "componentName": "SettlerViolence",
+      "fakeDataInstances": [
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:26",
+          "lineNumber": 26,
+          "type": "fallback_value",
+          "currentValue": 1200,
+          "context": "settlerAttacks: westBankViolenceData?.attacks?.total || 1200,",
+          "suggestedReplacement": "Use data from: goodshepherd, un_ocha, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:27",
+          "lineNumber": 27,
+          "type": "fallback_value",
+          "currentValue": 250,
+          "context": "demolitions: westBankViolenceData?.demolitions?.total || 250,",
+          "suggestedReplacement": "Use data from: goodshepherd, un_ocha, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:28",
+          "lineNumber": 28,
+          "type": "fallback_value",
+          "currentValue": 1500,
+          "context": "agriculturalLand: westBankViolenceData?.agriculture?.land_destroyed || 1500",
+          "suggestedReplacement": "Use data from: goodshepherd, un_ocha, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:104",
+          "lineNumber": 104,
+          "type": "fallback_value",
+          "currentValue": 250,
+          "context": "const baseDemolitions = metrics.demolitions || 250;",
+          "suggestedReplacement": "Use data from: goodshepherd, un_ocha, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:106",
+          "lineNumber": 106,
+          "type": "mock_calculation",
+          "currentValue": "{ region: 'Hebron', count: Math.round(baseDemolitions * 0.34) },",
+          "context": "{ region: 'Hebron', count: Math.round(baseDemolitions * 0.34) },",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:107",
+          "lineNumber": 107,
+          "type": "mock_calculation",
+          "currentValue": "{ region: 'Jerusalem', count: Math.round(baseDemolitions * 0.26) },",
+          "context": "{ region: 'Jerusalem', count: Math.round(baseDemolitions * 0.26) },",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:108",
+          "lineNumber": 108,
+          "type": "mock_calculation",
+          "currentValue": "{ region: 'Nablus', count: Math.round(baseDemolitions * 0.18) },",
+          "context": "{ region: 'Nablus', count: Math.round(baseDemolitions * 0.18) },",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:109",
+          "lineNumber": 109,
+          "type": "mock_calculation",
+          "currentValue": "{ region: 'Ramallah', count: Math.round(baseDemolitions * 0.14) },",
+          "context": "{ region: 'Ramallah', count: Math.round(baseDemolitions * 0.14) },",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:110",
+          "lineNumber": 110,
+          "type": "mock_calculation",
+          "currentValue": "{ region: 'Bethlehem', count: Math.round(baseDemolitions * 0.08) }",
+          "context": "{ region: 'Bethlehem', count: Math.round(baseDemolitions * 0.08) }",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:128",
+          "lineNumber": 128,
+          "type": "fallback_value",
+          "currentValue": 1500,
+          "context": "const baseLand = metrics.agriculturalLand || 1500;",
+          "suggestedReplacement": "Use data from: goodshepherd, un_ocha, btselem",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:130",
+          "lineNumber": 130,
+          "type": "mock_calculation",
+          "currentValue": "{ region: 'Nablus', trees: Math.round(baseLand * 5.67), farmland: Math.round(baseLand * 0.3), wells: 12, livestock: 200 },",
+          "context": "{ region: 'Nablus', trees: Math.round(baseLand * 5.67), farmland: Math.round(baseLand * 0.3), wells: 12, livestock: 200 },",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:131",
+          "lineNumber": 131,
+          "type": "mock_calculation",
+          "currentValue": "{ region: 'Hebron', trees: Math.round(baseLand * 4.13), farmland: Math.round(baseLand * 0.25), wells: 8, livestock: 150 },",
+          "context": "{ region: 'Hebron', trees: Math.round(baseLand * 4.13), farmland: Math.round(baseLand * 0.25), wells: 8, livestock: 150 },",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:132",
+          "lineNumber": 132,
+          "type": "mock_calculation",
+          "currentValue": "{ region: 'Ramallah', trees: Math.round(baseLand * 2.73), farmland: Math.round(baseLand * 0.19), wells: 5, livestock: 90 },",
+          "context": "{ region: 'Ramallah', trees: Math.round(baseLand * 2.73), farmland: Math.round(baseLand * 0.19), wells: 5, livestock: 90 },",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:133",
+          "lineNumber": 133,
+          "type": "mock_calculation",
+          "currentValue": "{ region: 'Jerusalem', trees: Math.round(baseLand * 2.53), farmland: Math.round(baseLand * 0.15), wells: 3, livestock: 75 },",
+          "context": "{ region: 'Jerusalem', trees: Math.round(baseLand * 2.53), farmland: Math.round(baseLand * 0.15), wells: 3, livestock: 75 },",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:134",
+          "lineNumber": 134,
+          "type": "mock_calculation",
+          "currentValue": "{ region: 'Bethlehem', trees: Math.round(baseLand * 1.4), farmland: Math.round(baseLand * 0.1), wells: 2, livestock: 45 }",
+          "context": "{ region: 'Bethlehem', trees: Math.round(baseLand * 1.4), farmland: Math.round(baseLand * 0.1), wells: 2, livestock: 45 }",
+          "suggestedReplacement": "Replace with actual calculated data from API",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:341",
+          "lineNumber": 341,
+          "type": "placeholder_text",
+          "currentValue": "N/A",
+          "context": "<p className=\"text-xl font-bold text-destructive\">{summaryData?.west_bank?.demolitions_impact?.people_homeless || 'N/A'}</p>",
+          "suggestedReplacement": "Replace with real data or proper loading state",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.7
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:345",
+          "lineNumber": 345,
+          "type": "placeholder_text",
+          "currentValue": "N/A",
+          "context": "<p className=\"text-xl font-bold\">{summaryData?.west_bank?.demolitions_impact?.children_affected || 'N/A'}</p>",
+          "suggestedReplacement": "Replace with real data or proper loading state",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.7
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:349",
+          "lineNumber": 349,
+          "type": "placeholder_text",
+          "currentValue": "N/A",
+          "context": "<p className=\"text-xl font-bold\">{summaryData?.west_bank?.demolitions_impact?.administrative_demolitions || 'N/A'}</p>",
+          "suggestedReplacement": "Replace with real data or proper loading state",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.7
+        },
+        {
+          "location": "src/components/v3/westbank/SettlerViolence.tsx:353",
+          "lineNumber": 353,
+          "type": "placeholder_text",
+          "currentValue": "N/A",
+          "context": "<p className=\"text-xl font-bold text-destructive\">{summaryData?.west_bank?.demolitions_impact?.punitive_demolitions || 'N/A'}</p>",
+          "suggestedReplacement": "Replace with real data or proper loading state",
+          "dataSourceMapping": [
+            "goodshepherd",
+            "un_ocha",
+            "btselem"
+          ],
+          "confidence": 0.7
+        }
+      ],
+      "severity": "critical",
+      "replacementComplexity": 10,
+      "totalIssues": 19,
+      "criticalIssues": 15,
+      "estimatedEffort": "1-2 days"
+    },
+    {
+      "componentPath": "src/components/v3/shared/DataTable.tsx",
+      "componentName": "DataTable",
+      "fakeDataInstances": [
+        {
+          "location": "src/components/v3/shared/DataTable.tsx:233",
+          "lineNumber": 233,
+          "type": "fake_array",
+          "currentValue": "{Array.from({ length: Math.min(5, totalPages) }, (_, i) => {",
+          "context": "{Array.from({ length: Math.min(5, totalPages) }, (_, i) => {",
+          "suggestedReplacement": "Use real data from API instead of generating fake arrays",
+          "dataSourceMapping": [],
+          "confidence": 0.95
+        }
+      ],
+      "severity": "low",
+      "replacementComplexity": 1,
+      "totalIssues": 1,
+      "criticalIssues": 1,
+      "estimatedEffort": "1-2 hours"
+    }
+  ],
+  "prioritizedReplacementPlan": {
+    "phases": [
+      {
+        "phase": 2,
+        "name": "Critical West Bank Components",
+        "components": [
+          "src/components/v3/westbank/PrisonersDetention.tsx",
+          "src/components/v3/westbank/SettlerViolence.tsx",
+          "src/components/v3/westbank/OccupationMetrics.tsx"
+        ],
+        "estimatedEffort": "1-2 weeks",
+        "priority": "critical"
+      },
+      {
+        "phase": 3,
+        "name": "High Priority Components",
+        "components": [
+          "src/components/v3/gaza/InfrastructureDestruction.tsx",
+          "src/components/v3/gaza/PopulationImpact.tsx",
+          "src/components/v3/gaza/AidSurvival.tsx",
+          "src/components/v3/gaza/HumanitarianCrisis.tsx"
+        ],
+        "estimatedEffort": "2-3 weeks",
+        "priority": "high"
+      }
+    ],
+    "estimatedTotalEffort": "5 weeks",
+    "dependencies": [
+      "Data Consolidation Service must be fully functional",
+      "All API endpoints must be verified and tested",
+      "Component data mapping must be complete"
+    ]
+  },
+  "summary": {
+    "gazaComponents": {
+      "total": 4,
+      "withFakeData": 4,
+      "fakeDataPercentage": 100
+    },
+    "westBankComponents": {
+      "total": 5,
+      "withFakeData": 5,
+      "fakeDataPercentage": 100
+    },
+    "sharedComponents": {
+      "total": 1,
+      "withFakeData": 1,
+      "fakeDataPercentage": 100
+    },
+    "topIssues": [
+      "fake_array at src/components/v3/gaza/AidSurvival.tsx:40: Array.from({ length: 6 }, (_, i) => ({...",
+      "fake_array at src/components/v3/gaza/AidSurvival.tsx:56: return Array.from({ length: 12 }, (_, i) => ({...",
+      "fake_array at src/components/v3/gaza/AidSurvival.tsx:74: Array.from({ length: 12 }, (_, i) => ({...",
+      "fake_array at src/components/v3/westbank/EconomicStrangulation.tsx:51: return Array.from({ length: 10 }, (_, i) => ({...",
+      "fake_array at src/components/v3/westbank/EconomicStrangulation.tsx:70: return Array.from({ length: 12 }, (_, i) => ({...",
+      "fake_array at src/components/v3/westbank/OccupationMetrics.tsx:89: return Array.from({ length: 6 }, (_, i) => {...",
+      "fake_array at src/components/v3/westbank/OccupationMetrics.tsx:128: return Array.from({ length: 6 }, (_, i) => {...",
+      "fake_array at src/components/v3/westbank/OccupationMetrics.tsx:163: return Array.from({ length: 6 }, (_, i) => {...",
+      "fake_array at src/components/v3/westbank/PrisonersDetention.tsx:51: return Array.from({ length: 6 }, (_, i) => {...",
+      "fake_array at src/components/v3/westbank/PrisonersDetention.tsx:104: return Array.from({ length: 6 }, (_, i) => {..."
+    ],
+    "recommendations": [
+      "Prioritize Gaza humanitarian crisis components due to high visibility",
+      "Integrate Tech4Palestine API for all casualty data",
+      "Use Good Shepherd Collective for infrastructure and West Bank data",
+      "Implement proper loading states instead of fallback values",
+      "Add data quality indicators to all metrics",
+      "Create automated tests to prevent fake data regression"
+    ]
+  }
+}

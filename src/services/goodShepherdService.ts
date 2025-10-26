@@ -142,14 +142,6 @@ export class GoodShepherdService {
     'ngo-data': '/api/goodshepherd/data/ngo_data',
   };
 
-  // Fallback data for when API is not available
-  private fallbackData = {
-    'gaza-casualties': () => import('@/data/maindata-pre.json'),
-    'political-prisoners': () => import('@/data/spi-pre.json'),
-    'child-prisoners': () => import('@/data/minors-pre.json'),
-    'home-demolitions': () => import('@/data/demolitions-pre.json'),
-  };
-
   /**
    * Fetch all available datasets from Good Shepherd Collective
    */
@@ -225,22 +217,9 @@ export class GoodShepherdService {
         }
         throw new Error(`API returned ${response.status}`);
       } catch (error) {
-        console.warn('Child prisoners API failed, using fallback data:', error);
-
-        // Use fallback data
-        const fallbackModule = await this.fallbackData['child-prisoners']();
-        const rawData = fallbackModule.default || fallbackModule;
-
-        // Transform to expected format
-        return Array.isArray(rawData) ? rawData.map(item => ({
-          name: item.Name || 'Unknown',
-          age: item.Age || 17,
-          location: item['Place of residence'] || 'Unknown',
-          date_of_arrest: item['Date of event'] || new Date().toISOString().split('T')[0],
-          status: 'detained',
-          charges: item.Notes || undefined,
-          notes: item.Notes || undefined,
-        })) : [];
+        console.error('Child prisoners API failed:', error);
+        // Return empty array - components should use useUnifiedData hook instead
+        return [];
       }
     });
   }
@@ -309,24 +288,9 @@ export class GoodShepherdService {
         }
         throw new Error(`API returned ${response.status}`);
       } catch (error) {
-        console.warn('Gaza casualties API failed, using fallback data:', error);
-
-        // Use fallback data
-        const fallbackModule = await this.fallbackData['gaza-casualties']();
-        const rawData = fallbackModule.default || fallbackModule;
-
-        // Transform to expected format
-        return Array.isArray(rawData) ? rawData.map(item => ({
-          date: item['Date of event'] || item.date || new Date().toISOString().split('T')[0],
-          killed: item.killed || 1,
-          killed_cumulative: item.killed_cum || 0,
-          injured: item.injured || 0,
-          injured_cumulative: item.injured_cum || 0,
-          killed_children: item['Age'] && item['Age'] < 18 ? 1 : 0,
-          killed_women: item['Gender'] === 'F' ? 1 : 0,
-          massacres: 0,
-          source: 'goodshepherd-fallback'
-        })) : [];
+        console.error('Gaza casualties API failed:', error);
+        // Return empty array - components should use useUnifiedData hook instead
+        return [];
       }
     });
   }
@@ -397,33 +361,9 @@ export class GoodShepherdService {
         if (response.ok) return response.json();
         throw new Error(`API returned ${response.status}`);
       } catch (error) {
-        console.warn('Home demolitions API failed, using fallback data:', error);
-
-        // Use fallback data
-        try {
-          const fallbackModule = await this.fallbackData['home-demolitions']();
-          const rawData = fallbackModule.default || fallbackModule;
-
-          return Array.isArray(rawData) ? rawData.map(item => ({
-            date: item['Date of Demolition'] || new Date().toISOString().split('T')[0],
-            location: item.Locality || 'Unknown',
-            homes_demolished: item['Housing Units'] || 1,
-            people_affected: item['People left Homeless'] || 4,
-            reason: 'Administrative demolition',
-            source: 'goodshepherd-fallback'
-          })) : [];
-        } catch (fallbackError) {
-          return [
-            {
-              date: new Date().toISOString().split('T')[0],
-              location: 'East Jerusalem',
-              homes_demolished: 2,
-              people_affected: 8,
-              reason: 'Administrative demolition',
-              source: 'goodshepherd-fallback'
-            }
-          ];
-        }
+        console.error('Home demolitions API failed:', error);
+        // Return empty array - components should use useUnifiedData hook instead
+        return [];
       }
     });
   }
@@ -467,22 +407,9 @@ export class GoodShepherdService {
         }
         throw new Error(`API returned ${response.status}`);
       } catch (error) {
-        console.warn('Political prisoners API failed, using fallback data:', error);
-
-        // Use fallback data
-        const fallbackModule = await this.fallbackData['political-prisoners']();
-        const rawData = fallbackModule.default || fallbackModule;
-
-        // Transform to expected format
-        return Array.isArray(rawData) ? rawData.map(item => ({
-          name: item.name || item.Name || 'Unknown',
-          age: item.age || item.Age || undefined,
-          location: item.location || item['Place of residence'] || 'Unknown',
-          date_of_arrest: item.date_of_arrest || item['Date of event'] || new Date().toISOString().split('T')[0],
-          detention_type: item.detention_type || 'administrative',
-          charges: item.charges || item.Notes || undefined,
-          notes: item.notes || item.Notes || undefined,
-        })) : [];
+        console.error('Political prisoners API failed:', error);
+        // Return empty array - components should use useUnifiedData hook instead
+        return [];
       }
     });
   }

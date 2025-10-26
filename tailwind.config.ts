@@ -58,12 +58,26 @@ export default {
           "3": "hsl(var(--chart-3))",
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
+          "6": "hsl(var(--chart-6))",
+          "7": "hsl(var(--chart-7))",
+          "8": "hsl(var(--chart-8))",
+          "9": "hsl(var(--chart-9))",
+          "10": "hsl(var(--chart-10))",
         },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        'theme-sm': 'var(--shadow-sm)',
+        'theme-md': 'var(--shadow-md)',
+        'theme-lg': 'var(--shadow-lg)',
+        'theme-xl': 'var(--shadow-xl)',
+        'theme-2xl': 'var(--shadow-2xl)',
+        'theme-glow': 'var(--shadow-glow)',
+        'theme-glow-primary': 'var(--shadow-glow-primary)',
       },
       keyframes: {
         "accordion-down": {

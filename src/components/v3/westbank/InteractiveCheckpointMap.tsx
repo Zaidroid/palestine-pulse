@@ -9,7 +9,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MapPin, Filter, BarChart3, PieChart, Activity, AlertTriangle, TrendingUp, TrendingDown, Eye, EyeOff } from "lucide-react";
 import { BtselemService, DetailedCheckpoint } from "@/services/btselemService";
-import { DataSourceBadge } from "@/components/v3/shared/DataSourceBadge";
+import { EnhancedDataSourceBadge } from "@/components/v3/shared/EnhancedDataSourceBadge";
 import { cn } from "@/lib/utils";
 
 interface InteractiveCheckpointMapProps {
@@ -987,10 +987,12 @@ export const InteractiveCheckpointMap = ({ checkpointData, loading, compact = fa
                   <div className="w-2 h-2 bg-primary rounded-full" />
                   Live Data
                 </motion.div>
-                <DataSourceBadge
-                  sources={["Btselem", "Tech4Palestine"]}
-                  quality="high"
-                  lastUpdated={new Date().toLocaleString()}
+                <EnhancedDataSourceBadge
+                  sources={['btselem', 'tech4palestine']}
+                  lastRefresh={new Date()}
+                  showRefreshTime={true}
+                  showLinks={true}
+                  compact={true}
                 />
               </div>
             </div>

@@ -1,0 +1,433 @@
+{
+  "version": "1.0.0",
+  "generated": "2025-10-24",
+  "description": "Comprehensive mapping of data sources to dashboard visualizations",
+  "dashboards": {
+    "gaza_healthcare": {
+      "name": "Gaza Healthcare Status",
+      "route": "/dashboards/HealthcareStatus",
+      "dataSources": [
+        {
+          "source": "goodshepherd",
+          "dataset": "healthcare",
+          "path": "/data/goodshepherd/healthcare/",
+          "records": 2900,
+          "dateRange": {
+            "start": "2023-10-07",
+            "end": "2025-09-04"
+          },
+          "quality": "high",
+          "partitioned": true
+        }
+      ],
+      "visualizations": [
+        {
+          "id": "hospital_status",
+          "type": "AdvancedDonutChart",
+          "title": "Hospital Operational Status",
+          "dataTransformation": "aggregateByFacilityType",
+          "dataFields": ["facility_type", "count"],
+          "categories": ["operational", "partial", "non-operational"]
+        },
+        {
+          "id": "attacks_timeline",
+          "type": "AnimatedAreaChart",
+          "title": "Healthcare Attacks Timeline",
+          "dataTransformation": "aggregateByDate",
+          "dataFields": ["date", "count"],
+          "timeRange": ["7d", "1m", "3m", "1y", "all"]
+        },
+        {
+          "id": "attacks_by_type",
+          "type": "InteractiveBarChart",
+          "title": "Attacks by Facility Type",
+          "dataTransformation": "groupByCategory",
+          "dataFields": ["facility_type", "count"],
+          "sortable": true
+        },
+        {
+          "id": "regional_comparison",
+          "type": "SmallMultiplesChart",
+          "title": "Attacks by Region",
+          "dataTransformation": "groupByRegion",
+          "dataFields": ["location", "date", "count"],
+          "synchronized": true
+        }
+      ]
+    },
+
+    "gaza_economic": {
+      "name": "Gaza Economic Impact",
+      "route": "/dashboards/EconomicImpact",
+      "dataSources": [
+        {
+          "source": "worldbank",
+          "dataset": "economic_indicators",
+          "path": "/data/worldbank/",
+          "indicators": 9,
+          "dataPoints": 135,
+          "quality": "high"
+        }
+      ],
+      "visualizations": [
+        {
+          "id": "gdp_trends",
+          "type": "HorizonChart",
+          "title": "Economic Indicators Overview",
+          "dataTransformation": "multiMetricTimeSeries",
+          "dataFields": ["year", "gdp", "gdp_growth", "gdp_per_capita"],
+          "indicators": ["NY.GDP.MKTP.CD", "NY.GDP.MKTP.KD.ZG", "NY.GDP.PCAP.CD"]
+        },
+        {
+          "id": "unemployment",
+          "type": "AnimatedAreaChart",
+          "title": "Unemployment Trends",
+          "dataTransformation": "timeSeriesByGender",
+          "dataFields": ["year", "total", "male", "female"],
+          "indicators": ["SL.UEM.TOTL.ZS", "SL.UEM.TOTL.MA.ZS", "SL.UEM.TOTL.FE.ZS"]
+        },
+        {
+          "id": "poverty_indicators",
+          "type": "RadarChart",
+          "title": "Poverty Multi-Dimensional Analysis",
+          "dataTransformation": "latestValuesByIndicator",
+          "indicators": ["SI.POV.GINI", "SI.POV.DDAY", "SI.POV.LMIC", "SI.POV.UMIC"]
+        },
+        {
+          "id": "trade_impact",
+          "type": "ChordDiagramChart",
+          "title": "Trade Relationships",
+          "dataTransformation": "tradeFlows",
+          "indicators": ["NE.EXP.GNFS.ZS", "NE.IMP.GNFS.ZS", "NE.TRD.GNFS.ZS"]
+        }
+      ]
+    },
+
+    "gaza_education": {
+      "name": "Gaza Education Impact",
+      "route": "/dashboards/EducationImpact",
+      "dataSources": [
+        {
+          "source": "worldbank",
+          "dataset": "education_indicators",
+          "path": "/data/worldbank/",
+          "indicators": 6,
+          "dataPoints": 82,
+          "quality": "high",
+          "notes": "Historical enrollment data only, no current damage data"
+        }
+      ],
+      "visualizations": [
+        {
+          "id": "enrollment_trends",
+          "type": "AnimatedAreaChart",
+          "title": "School Enrollment Trends",
+          "dataTransformation": "timeSeriesByLevel",
+          "indicators": ["SE.PRM.ENRR", "SE.SEC.ENRR", "SE.TER.ENRR"],
+          "dataFields": ["year", "primary", "secondary", "tertiary"]
+        },
+        {
+          "id": "school_damage",
+          "type": "InteractiveBarChart",
+          "title": "School Damage Assessment",
+          "dataTransformation": "estimatedData",
+          "dataFields": ["status", "count"],
+          "categories": ["destroyed", "damaged", "operational"],
+          "notes": "Estimated data - mark clearly"
+        }
+      ]
+    },
+    "gaza_utilities": {
+      "name": "Gaza Utilities Status",
+      "route": "/dashboards/UtilitiesStatus",
+      "dataSources": [
+        {
+          "source": "worldbank",
+          "dataset": "infrastructure_indicators",
+          "path": "/data/worldbank/",
+          "indicators": 6,
+          "dataPoints": 80,
+          "quality": "medium",
+          "notes": "Historical trends only, no current crisis data"
+        }
+      ],
+      "visualizations": [
+        {
+          "id": "electricity_access",
+          "type": "AnimatedAreaChart",
+          "title": "Electricity Access Trends",
+          "dataTransformation": "timeSeries",
+          "indicators": ["EG.ELC.ACCS.ZS"],
+          "dataFields": ["year", "access_percentage"]
+        },
+        {
+          "id": "water_services",
+          "type": "InteractiveBarChart",
+          "title": "Water Service Access",
+          "dataTransformation": "latestValues",
+          "indicators": ["SH.H2O.SMDW.ZS"],
+          "dataFields": ["indicator", "value"]
+        },
+        {
+          "id": "sanitation",
+          "type": "InteractiveBarChart",
+          "title": "Sanitation Services",
+          "dataTransformation": "latestValues",
+          "indicators": ["SH.STA.SMSS.ZS", "SH.STA.BASS.ZS"],
+          "dataFields": ["indicator", "value"]
+        }
+      ]
+    },
+
+    "westbank_prisoners": {
+      "name": "West Bank Prisoners Statistics",
+      "route": "/dashboards/PrisonersStats",
+      "dataSources": [
+        {
+          "source": "goodshepherd",
+          "dataset": "childPrisoners",
+          "path": "/data/goodshepherd/prisoners/",
+          "records": 206,
+          "dateRange": {
+            "start": "2023-10-07",
+            "end": "2025-07-24"
+          },
+          "quality": "high"
+        },
+        {
+          "source": "goodshepherd",
+          "dataset": "politicalPrisoners",
+          "path": "/data/goodshepherd/prisoners/",
+          "records": 19,
+          "dateRange": {
+            "start": "2024-05-01",
+            "end": "2025-10-05"
+          },
+          "quality": "high"
+        }
+      ],
+      "visualizations": [
+        {
+          "id": "total_detainees",
+          "type": "IsotypeChart",
+          "title": "Total Detainees",
+          "dataTransformation": "sumRecords",
+          "dataFields": ["total"],
+          "iconScale": 10,
+          "iconType": "person"
+        },
+        {
+          "id": "demographic_breakdown",
+          "type": "PopulationPyramidChart",
+          "title": "Prisoner Demographics",
+          "dataTransformation": "transformToPyramid",
+          "dataFields": ["ageGroup", "male", "female"],
+          "categories": ["12-15", "16-17", "18+"]
+        },
+        {
+          "id": "detention_timeline",
+          "type": "TimelineEventsChart",
+          "title": "Detention Timeline",
+          "dataTransformation": "monthlyAggregation",
+          "dataFields": ["date", "count", "type"]
+        }
+      ]
+    },
+    "westbank_settlement": {
+      "name": "West Bank Settlement Expansion",
+      "route": "/dashboards/SettlementExpansion",
+      "dataSources": [
+        {
+          "source": "goodshepherd",
+          "dataset": "demolitions",
+          "path": "/data/goodshepherd/demolitions/",
+          "records": 1000,
+          "dateRange": {
+            "start": "2023-10-12",
+            "end": "2025-07-31"
+          },
+          "quality": "high",
+          "partitioned": true
+        }
+      ],
+      "visualizations": [
+        {
+          "id": "demolitions_timeline",
+          "type": "AnimatedAreaChart",
+          "title": "Home Demolitions Timeline",
+          "dataTransformation": "aggregateByDate",
+          "dataFields": ["date", "count", "affected_people"]
+        },
+        {
+          "id": "demolition_types",
+          "type": "AdvancedDonutChart",
+          "title": "Demolition Types",
+          "dataTransformation": "groupByType",
+          "dataFields": ["type", "count"],
+          "categories": ["punitive", "administrative", "military"]
+        },
+        {
+          "id": "regional_impact",
+          "type": "SmallMultiplesChart",
+          "title": "Regional Demolition Patterns",
+          "dataTransformation": "groupByRegion",
+          "dataFields": ["region", "date", "count"]
+        }
+      ]
+    },
+
+    "westbank_economic": {
+      "name": "West Bank Economic Impact",
+      "route": "/dashboards/EconomicImpact",
+      "dataSources": [
+        {
+          "source": "worldbank",
+          "dataset": "economic_indicators",
+          "path": "/data/worldbank/",
+          "indicators": 9,
+          "dataPoints": 135,
+          "quality": "high",
+          "notes": "Same indicators as Gaza, applies to all Palestine"
+        }
+      ],
+      "visualizations": [
+        {
+          "id": "economic_indicators",
+          "type": "HorizonChart",
+          "title": "Economic Indicators Overview",
+          "dataTransformation": "multiMetricTimeSeries",
+          "indicators": ["NY.GDP.MKTP.CD", "SL.UEM.TOTL.ZS", "SI.POV.GINI"]
+        },
+        {
+          "id": "unemployment_trends",
+          "type": "AnimatedAreaChart",
+          "title": "Unemployment by Gender",
+          "dataTransformation": "timeSeriesByGender",
+          "indicators": ["SL.UEM.TOTL.ZS", "SL.UEM.TOTL.MA.ZS", "SL.UEM.TOTL.FE.ZS"]
+        },
+        {
+          "id": "sector_analysis",
+          "type": "RadarChart",
+          "title": "Economic Sector Analysis",
+          "dataTransformation": "latestValuesByIndicator",
+          "indicators": ["NE.EXP.GNFS.ZS", "NE.IMP.GNFS.ZS", "NE.TRD.GNFS.ZS"]
+        }
+      ]
+    },
+    "casualties_overview": {
+      "name": "Casualties Overview",
+      "route": "/",
+      "dataSources": [
+        {
+          "source": "tech4palestine",
+          "dataset": "casualties",
+          "path": "/data/tech4palestine/casualties/",
+          "records": 748,
+          "quality": "high",
+          "updateFrequency": "daily"
+        },
+        {
+          "source": "tech4palestine",
+          "dataset": "killed-in-gaza",
+          "path": "/data/tech4palestine/killed-in-gaza/",
+          "records": 60200,
+          "quality": "high",
+          "paginated": true
+        },
+        {
+          "source": "tech4palestine",
+          "dataset": "summary",
+          "path": "/data/tech4palestine/summary.json",
+          "quality": "high",
+          "updateFrequency": "daily"
+        }
+      ],
+      "visualizations": [
+        {
+          "id": "main_timeline",
+          "type": "AnimatedAreaChart",
+          "title": "Casualties Timeline",
+          "dataTransformation": "dailyTimeSeries",
+          "dataFields": ["date", "killed", "injured"],
+          "timeRange": ["7d", "1m", "3m", "1y", "all"]
+        },
+        {
+          "id": "daily_intensity",
+          "type": "CalendarHeatmapChart",
+          "title": "Daily Casualty Intensity",
+          "dataTransformation": "transformToCalendar",
+          "dataFields": ["date", "total_casualties", "intensity"]
+        },
+        {
+          "id": "demographic_breakdown",
+          "type": "PopulationPyramidChart",
+          "title": "Casualties by Age and Gender",
+          "dataTransformation": "transformToPyramid",
+          "dataFields": ["ageGroup", "male", "female"],
+          "dataSource": "killed-in-gaza"
+        },
+        {
+          "id": "casualty_types",
+          "type": "AdvancedDonutChart",
+          "title": "Casualties by Category",
+          "dataTransformation": "categoryBreakdown",
+          "dataFields": ["category", "count"],
+          "categories": ["children", "women", "press", "medical", "other"]
+        },
+        {
+          "id": "weekly_patterns",
+          "type": "StreamGraphChart",
+          "title": "Weekly Casualty Patterns",
+          "dataTransformation": "weeklyAggregationByCategory",
+          "dataFields": ["week", "category", "count"]
+        }
+      ]
+    }
+  },
+  "dataTransformations": {
+    "aggregateByDate": {
+      "description": "Aggregate records by date with configurable time range",
+      "input": "Array<{date: string, ...}>",
+      "output": "TimeSeriesData[]",
+      "parameters": ["timeRange", "aggregationPeriod"]
+    },
+    "aggregateByFacilityType": {
+      "description": "Group healthcare attacks by facility type",
+      "input": "HealthcareAttackRecord[]",
+      "output": "CategoryData[]"
+    },
+    "groupByCategory": {
+      "description": "Generic category grouping with count",
+      "input": "Array<{category: string, ...}>",
+      "output": "CategoryData[]",
+      "parameters": ["categoryField", "valueField"]
+    },
+    "transformToPyramid": {
+      "description": "Transform demographic data to pyramid structure",
+      "input": "Array<{age: number, gender: string}>",
+      "output": "PyramidData[]",
+      "parameters": ["ageGroups"]
+    },
+    "transformToCalendar": {
+      "description": "Transform daily data to calendar heatmap format",
+      "input": "Array<{date: string, value: number}>",
+      "output": "CalendarData[]"
+    },
+    "multiMetricTimeSeries": {
+      "description": "Combine multiple World Bank indicators into time series",
+      "input": "WorldBankDataPoint[]",
+      "output": "TimeSeriesData[]",
+      "parameters": ["indicators"]
+    },
+    "timeSeriesByGender": {
+      "description": "Create separate time series for male/female/total",
+      "input": "WorldBankDataPoint[]",
+      "output": "{total: TimeSeriesData[], male: TimeSeriesData[], female: TimeSeriesData[]}"
+    },
+    "latestValuesByIndicator": {
+      "description": "Get latest value for each indicator",
+      "input": "WorldBankDataPoint[]",
+      "output": "CategoryData[]"
+    }
+  }
+}

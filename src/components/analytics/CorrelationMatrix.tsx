@@ -9,9 +9,9 @@
  */
 
 import { useMemo } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
-import { Badge } from './components/ui/badge';
-import { Skeleton } from './components/ui/skeleton';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { 
   Network,
   TrendingUp,
@@ -28,8 +28,8 @@ import {
   ResponsiveContainer,
   ZAxis
 } from 'recharts';
-import { correlation } from './utils/statistics';
-import { Alert, AlertDescription } from './components/ui/alert';
+import { correlation } from '@/utils/statistics';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 // ============================================
 // SAMPLE DATA

@@ -8,6 +8,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* RTL Utilities - Import after Tailwind */
+@import './lib/rtl-utils.css';
+
 /* RTL Support */
 [dir="rtl"] {
   direction: rtl;
@@ -53,134 +56,248 @@
 
 @layer base {
   :root {
-    /* Palestinian Solidarity Theme - Light Mode */
-    --background: 0 0% 98%;
-    --foreground: 0 0% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
+    /* Modern Humanitarian Dashboard - Light Mode */
+    /* Warm, sophisticated light theme with depth and visual interest */
+    
+    /* Base: Soft warm gray with subtle warmth */
+    --background: 30 15% 96%;
+    --foreground: 220 15% 15%;
+    
+    /* Cards: Elevated white with warm undertone */
+    --card: 30 20% 99%;
+    --card-foreground: 220 15% 15%;
+    
+    /* Popover: Pure white for maximum contrast */
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
+    --popover-foreground: 220 15% 15%;
     
-    /* Primary: Crisis Red (Palestinian flag) */
-    --primary: 0 85% 45%;
-    --primary-foreground: 0 0% 98%;
+    /* Primary: Deep red - serious and somber */
+    --primary: 0 70% 45%;
+    --primary-foreground: 0 0% 100%;
     
-    /* Secondary: Hope Green (Palestinian flag) */
-    --secondary: 142 76% 36%;
-    --secondary-foreground: 0 0% 98%;
+    /* Secondary: Muted gray-green - restrained */
+    --secondary: 150 15% 40%;
+    --secondary-foreground: 0 0% 100%;
     
-    /* Muted */
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 50%;
+    /* Muted: Warm neutral with subtle color */
+    --muted: 30 12% 92%;
+    --muted-foreground: 220 10% 45%;
     
-    /* Accent */
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 10%;
+    /* Accent: Soft blue-gray for subtle highlights */
+    --accent: 210 20% 92%;
+    --accent-foreground: 220 15% 20%;
     
-    /* Destructive: Danger */
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
+    /* Destructive: Clear danger signal */
+    --destructive: 0 75% 52%;
+    --destructive-foreground: 0 0% 100%;
     
-    /* Warning */
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 10%;
+    /* Warning: Warm amber */
+    --warning: 35 85% 52%;
+    --warning-foreground: 30 15% 15%;
     
-    /* Borders & Input */
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 0 85% 45%;
+    /* Borders & Input: Subtle with warmth */
+    --border: 30 10% 88%;
+    --input: 30 10% 88%;
+    --ring: 355 70% 48%;
     
-    /* Chart Colors: 10-color accessible palette */
-    --chart-1: 0 85% 45%;      /* Red - Primary */
-    --chart-2: 142 76% 36%;    /* Green - Secondary */
-    --chart-3: 0 0% 10%;       /* Black - Mourning */
-    --chart-4: 38 92% 50%;     /* Warning Orange */
-    --chart-5: 221 83% 53%;    /* Blue */
-    --chart-6: 280 65% 60%;    /* Purple */
-    --chart-7: 173 58% 39%;    /* Teal */
-    --chart-8: 43 74% 66%;     /* Yellow */
-    --chart-9: 330 81% 60%;    /* Pink */
-    --chart-10: 24 70% 50%;    /* Brown */
+    /* Chart Colors: Somber, respectful palette */
+    --chart-1: 0 70% 45%;      /* Deep Red - Crisis */
+    --chart-2: 150 25% 40%;    /* Muted Green - Hope */
+    --chart-3: 220 15% 35%;    /* Dark Gray - Data */
+    --chart-4: 35 70% 50%;     /* Muted Amber - Warning */
+    --chart-5: 210 50% 48%;    /* Subdued Blue - Information */
+    --chart-6: 270 35% 50%;    /* Muted Purple - Analysis */
+    --chart-7: 180 25% 42%;    /* Gray-Teal - Secondary */
+    --chart-8: 45 60% 48%;     /* Muted Gold - Attention */
+    --chart-9: 330 40% 48%;    /* Subdued Rose - Highlight */
+    --chart-10: 25 45% 42%;    /* Muted Terracotta - Support */
     
     /* Design Tokens */
     --radius: 0.5rem;
-    --shadow-glow: 0 0 20px rgba(239, 68, 68, 0.2);
     --duration-fast: 200ms;
     --duration-normal: 400ms;
     --duration-slow: 600ms;
     
+    /* Shadow System - Layered, sophisticated shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.04), 0 1px 1px 0 rgb(0 0 0 / 0.02);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.04);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+    --shadow-glow: 0 0 20px rgba(220, 38, 38, 0.15);
+    --shadow-glow-primary: 0 0 20px hsl(var(--primary) / 0.2);
+    
     /* Colors for specific use cases */
-    --color-crisis: 0 85% 45%;
-    --color-hope: 142 76% 36%;
-    --color-mourning: 0 0% 10%;
+    --color-crisis: 355 70% 48%;
+    --color-hope: 160 50% 42%;
+    --color-mourning: 220 15% 20%;
   }
 
   .dark {
-    /* Palestinian Solidarity Theme - Dark Mode */
-    --background: 0 0% 10%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 12%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 98%;
+    /* Modern Humanitarian Dashboard - Dark Mode */
+    /* Rich, layered dark theme with depth and visual sophistication */
     
-    /* Primary: Crisis Red (Palestinian flag) */
-    --primary: 0 85% 55%;
-    --primary-foreground: 0 0% 10%;
+    /* Base: Deep blue-gray with subtle color - not pure black */
+    --background: 220 20% 12%;
+    --foreground: 30 10% 95%;
     
-    /* Secondary: Hope Green (Palestinian flag) */
-    --secondary: 142 76% 46%;
-    --secondary-foreground: 0 0% 10%;
+    /* Cards: Elevated layer with subtle blue tint */
+    --card: 220 18% 16%;
+    --card-foreground: 30 10% 95%;
     
-    /* Muted */
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 60%;
+    /* Popover: Slightly elevated from cards */
+    --popover: 220 18% 18%;
+    --popover-foreground: 30 10% 95%;
     
-    /* Accent */
-    --accent: 0 0% 20%;
-    --accent-foreground: 0 0% 98%;
+    /* Primary: Deep red - visible but somber */
+    --primary: 0 75% 55%;
+    --primary-foreground: 220 20% 12%;
     
-    /* Destructive: Danger */
-    --destructive: 0 84% 65%;
-    --destructive-foreground: 0 0% 10%;
+    /* Secondary: Muted gray-green - restrained */
+    --secondary: 150 20% 50%;
+    --secondary-foreground: 220 20% 12%;
     
-    /* Warning */
-    --warning: 38 92% 60%;
-    --warning-foreground: 0 0% 10%;
+    /* Muted: Mid-tone with color */
+    --muted: 220 15% 22%;
+    --muted-foreground: 220 8% 65%;
     
-    /* Borders & Input */
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 0 85% 55%;
+    /* Accent: Subtle blue highlight */
+    --accent: 210 30% 24%;
+    --accent-foreground: 210 20% 90%;
     
-    /* Chart Colors: 10-color accessible palette (adjusted for dark) */
-    --chart-1: 0 85% 55%;      /* Red - Primary */
-    --chart-2: 142 76% 46%;    /* Green - Secondary */
-    --chart-3: 0 0% 90%;       /* White - Inverse mourning */
-    --chart-4: 38 92% 60%;     /* Warning Orange */
-    --chart-5: 221 83% 63%;    /* Blue */
-    --chart-6: 280 65% 70%;    /* Purple */
-    --chart-7: 173 58% 49%;    /* Teal */
-    --chart-8: 43 74% 76%;     /* Yellow */
-    --chart-9: 330 81% 70%;    /* Pink */
-    --chart-10: 24 70% 60%;    /* Brown */
+    /* Destructive: Clear danger */
+    --destructive: 0 75% 60%;
+    --destructive-foreground: 220 20% 12%;
     
-    /* Design Tokens */
-    --shadow-glow: 0 0 20px rgba(239, 68, 68, 0.3);
+    /* Warning: Warm amber */
+    --warning: 35 90% 60%;
+    --warning-foreground: 220 20% 12%;
+    
+    /* Borders & Input: Subtle with color */
+    --border: 220 15% 24%;
+    --input: 220 15% 24%;
+    --ring: 355 75% 58%;
+    
+    /* Chart Colors: Visible but respectful for dark backgrounds */
+    --chart-1: 0 75% 60%;      /* Deep Red - Crisis */
+    --chart-2: 150 35% 55%;    /* Muted Green - Hope */
+    --chart-3: 220 20% 70%;    /* Light Gray - Data */
+    --chart-4: 35 75% 60%;     /* Muted Amber - Warning */
+    --chart-5: 210 55% 62%;    /* Subdued Blue - Information */
+    --chart-6: 270 40% 62%;    /* Muted Purple - Analysis */
+    --chart-7: 180 35% 55%;    /* Gray-Teal - Secondary */
+    --chart-8: 45 65% 60%;     /* Muted Gold - Attention */
+    --chart-9: 330 45% 60%;    /* Subdued Rose - Highlight */
+    --chart-10: 25 50% 55%;    /* Muted Terracotta - Support */
+    
+    /* Shadow System - Glows and subtle borders for depth */
+    --shadow-sm: 0 0 0 1px rgb(255 255 255 / 0.05);
+    --shadow-md: 0 0 0 1px rgb(255 255 255 / 0.05), 0 4px 12px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 0 0 1px rgb(255 255 255 / 0.08), 0 8px 24px rgb(0 0 0 / 0.4);
+    --shadow-xl: 0 0 0 1px rgb(255 255 255 / 0.08), 0 12px 32px rgb(0 0 0 / 0.5);
+    --shadow-2xl: 0 0 0 1px rgb(255 255 255 / 0.1), 0 16px 48px rgb(0 0 0 / 0.6);
+    --shadow-glow: 0 0 24px rgba(239, 68, 68, 0.3);
+    --shadow-glow-primary: 0 0 28px hsl(var(--primary) / 0.35);
     
     /* Colors for specific use cases */
-    --color-crisis: 0 85% 55%;
-    --color-hope: 142 76% 46%;
-    --color-mourning: 0 0% 90%;
+    --color-crisis: 355 75% 58%;
+    --color-hope: 160 60% 55%;
+    --color-mourning: 220 10% 85%;
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+    /* Smooth transitions for theme changes - optimized for performance */
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, box-shadow;
+    transition-duration: 400ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
+  
+  /* Subtle background texture - very minimal */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.02;
+    background: 
+      radial-gradient(circle at 20% 50%, hsl(var(--muted-foreground)) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, hsl(var(--muted-foreground)) 0%, transparent 50%);
+    background-size: 200% 200%;
+    animation: mesh-gradient 30s ease infinite;
+  }
+  
+  .dark body::before {
+    opacity: 0.03;
+    animation: mesh-gradient-dark 35s ease infinite;
+  }
+  
+  @keyframes mesh-gradient {
+    0%, 100% {
+      background-position: 0% 0%, 100% 100%, 50% 0%;
+    }
+    33% {
+      background-position: 100% 0%, 0% 100%, 80% 20%;
+    }
+    66% {
+      background-position: 0% 100%, 100% 0%, 20% 80%;
+    }
+  }
+  
+  @keyframes mesh-gradient-dark {
+    0%, 100% {
+      background-position: 0% 0%, 100% 100%, 50% 0%;
+    }
+    25% {
+      background-position: 50% 50%, 50% 50%, 100% 0%;
+    }
+    50% {
+      background-position: 100% 100%, 0% 0%, 0% 100%;
+    }
+    75% {
+      background-position: 50% 50%, 50% 50%, 100% 100%;
+    }
+  }
+  
+  /* Prevent transitions on page load */
+  .no-transitions * {
+    transition: none !important;
+  }
+  
+  /* Respect user's motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  
   body {
     @apply bg-background text-foreground;
+    /* Smooth scrolling for better UX */
+    scroll-behavior: smooth;
+    /* Optimize font rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Improve text rendering */
+    text-rendering: optimizeLegibility;
+  }
+  
+  /* Ensure proper box-sizing */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
   }
 }
 
@@ -198,6 +315,125 @@
 
 .animate-fade-in {
   animation: fade-in 0.5s ease-out;
+}
+
+/* Smooth counter animation - slower and more elegant */
+@keyframes counter-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-5px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-counter {
+  animation: counter-up 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Stagger animation for multiple counters */
+.animate-counter-delay-1 {
+  animation: counter-up 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+}
+
+.animate-counter-delay-2 {
+  animation: counter-up 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+}
+
+.animate-counter-delay-3 {
+  animation: counter-up 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+}
+
+.animate-counter-delay-4 {
+  animation: counter-up 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both;
+}
+
+/* Pulse glow animation for important stats - SUBTLE */
+@keyframes pulse-glow-soft {
+  0%, 100% {
+    box-shadow: 0 0 0 0 hsl(var(--primary) / 0.2);
+  }
+  50% {
+    box-shadow: 0 0 12px 4px hsl(var(--primary) / 0);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow-soft 3s ease-in-out infinite;
+}
+
+/* Floating animation for cards */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Shimmer effect for loading states */
+@keyframes shimmer-wave {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-shimmer-wave {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 0%,
+    hsl(var(--muted-foreground) / 0.15) 20%,
+    hsl(var(--muted)) 40%,
+    hsl(var(--muted)) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer-wave 2s linear infinite;
+}
+
+/* Slide in from bottom */
+@keyframes slide-in-bottom {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in-bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Scale in animation */
+@keyframes scale-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Leaflet map container fixes */
@@ -262,4 +498,1392 @@
   );
   background-size: 1000px 100%;
   animation: shimmer 1.5s linear infinite;
+}
+
+/* Skeleton loading with pulse */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 0%,
+    hsl(var(--muted) / 0.8) 50%,
+    hsl(var(--muted)) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-pulse 2s ease-in-out infinite;
+  border-radius: var(--radius);
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% {
+    background-position: 0% 0%;
+    opacity: 1;
+  }
+  50% {
+    background-position: 100% 0%;
+    opacity: 0.8;
+  }
+}
+
+/* Page transition fade */
+.page-transition {
+  animation: page-fade-in 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stagger children animations */
+.stagger-children > * {
+  animation: fade-in-up 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Theme-aware shadow utilities */
+.shadow-theme-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-theme-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-theme-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.shadow-theme-xl {
+  box-shadow: var(--shadow-xl);
+}
+
+.shadow-theme-2xl {
+  box-shadow: var(--shadow-2xl);
+}
+
+.shadow-theme-glow {
+  box-shadow: var(--shadow-glow);
+}
+
+.shadow-theme-glow-primary {
+  box-shadow: var(--shadow-glow-primary);
+}
+
+/* Card elevation system with theme-aware shadows - STAYS ELEVATED */
+.card-elevated {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  transition: all var(--duration-normal) cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.card-elevated:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-6px);
+  /* No transition out - stays elevated */
+  transition: all var(--duration-normal) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Interactive card with glow on hover */
+.card-interactive {
+  position: relative;
+  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.card-interactive::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  background: radial-gradient(
+    circle at center,
+    hsl(var(--primary) / 0.1) 0%,
+    transparent 70%
+  );
+  transition: opacity 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.card-interactive:hover::after {
+  opacity: 1;
+}
+
+.card-interactive:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--shadow-xl);
+}
+
+.dark .card-interactive:hover {
+  box-shadow: 
+    0 0 0 1px rgb(255 255 255 / 0.1),
+    0 12px 32px rgb(0 0 0 / 0.5),
+    0 0 40px hsl(var(--primary) / 0.2);
+}
+
+/* Stat card - SOPHISTICATED DESIGN */
+.stat-card {
+  position: relative;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  transform: translateY(0);
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+/* Subtle top shine */
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 
+    0 12px 24px rgba(0, 0, 0, 0.12),
+    0 4px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border-color: hsl(var(--border));
+}
+
+.dark .stat-card {
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.dark .stat-card::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+}
+
+.dark .stat-card:hover {
+  box-shadow: 
+    0 12px 24px rgba(0, 0, 0, 0.6),
+    0 4px 8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced card with animated gradient border - FIXED */
+.card-gradient {
+  position: relative;
+  background: hsl(var(--card));
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-image: 
+    linear-gradient(hsl(var(--card)), hsl(var(--card))),
+    linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0.4),
+      hsl(var(--secondary) / 0.4),
+      hsl(var(--primary) / 0.4)
+    );
+  background-size: 100%, 200% 200%;
+  animation: gradient-border 8s ease infinite;
+}
+
+.card-gradient:hover {
+  background-image: 
+    linear-gradient(hsl(var(--card)), hsl(var(--card))),
+    linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0.6),
+      hsl(var(--secondary) / 0.6),
+      hsl(var(--primary) / 0.6)
+    );
+  animation: gradient-border 4s ease infinite;
+}
+
+.dark .card-gradient {
+  background-image: 
+    linear-gradient(hsl(var(--card)), hsl(var(--card))),
+    linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0.5),
+      hsl(var(--secondary) / 0.5),
+      hsl(var(--primary) / 0.5)
+    );
+}
+
+.dark .card-gradient:hover {
+  background-image: 
+    linear-gradient(hsl(var(--card)), hsl(var(--card))),
+    linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0.7),
+      hsl(var(--secondary) / 0.7),
+      hsl(var(--primary) / 0.7)
+    );
+}
+
+@keyframes gradient-border {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Card with visible internal gradient */
+.card-gradient-bg {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--card)) 0%,
+    hsl(var(--primary) / 0.08) 50%,
+    hsl(var(--secondary) / 0.08) 100%
+  );
+  border: 1px solid hsl(var(--border) / 0.5);
+  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-gradient-bg:hover {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--card)) 0%,
+    hsl(var(--primary) / 0.12) 50%,
+    hsl(var(--secondary) / 0.12) 100%
+  );
+  border-color: hsl(var(--border));
+}
+
+.dark .card-gradient-bg {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--card)) 0%,
+    hsl(var(--primary) / 0.12) 50%,
+    hsl(var(--secondary) / 0.12) 100%
+  );
+}
+
+.dark .card-gradient-bg:hover {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--card)) 0%,
+    hsl(var(--primary) / 0.18) 50%,
+    hsl(var(--secondary) / 0.18) 100%
+  );
+}
+
+/* Maintain visual hierarchy in dark mode with subtle borders */
+.dark .border-subtle {
+  border-color: hsl(var(--border) / 0.5);
+}
+
+.dark .border-emphasis {
+  border-color: hsl(var(--border));
+}
+
+/* GPU Acceleration and Performance Optimizations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.will-change-transform-opacity {
+  will-change: transform, opacity;
+}
+
+/* Remove will-change after animation completes */
+.animation-complete {
+  will-change: auto;
+}
+
+/* Optimize scroll performance */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Optimize rendering for animated elements */
+.optimize-rendering {
+  contain: layout style paint;
+}
+
+/* Reduce paint areas for better performance */
+.isolate-layer {
+  isolation: isolate;
+}
+
+/* Enhanced Focus Styles for Accessibility */
+.focus-visible-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+}
+
+/* Ensure all interactive elements have visible focus */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[role="link"]:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth hover transitions for interactive elements */
+button,
+a,
+[role="button"],
+[role="link"] {
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Consistent touch feedback */
+@media (hover: none) and (pointer: coarse) {
+  button:active,
+  a:active,
+  [role="button"]:active,
+  [role="link"]:active {
+    transform: scale(0.98);
+    transition: transform 100ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Ensure minimum touch target sizes on mobile */
+@media (max-width: 768px) {
+  button,
+  a,
+  input[type="button"],
+  input[type="submit"],
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Consistent spacing utilities */
+.spacing-xs { padding: 0.25rem; }
+.spacing-sm { padding: 0.5rem; }
+.spacing-md { padding: 1rem; }
+.spacing-lg { padding: 1.5rem; }
+.spacing-xl { padding: 2rem; }
+
+/* Glass effect - ULTRA REALISTIC GLASS */
+.glass-effect {
+  /* Almost completely transparent - see through clearly */
+  background: rgba(255, 255, 255, 0.03) !important;
+  /* EXTREME blur - heavy frosted glass */
+  backdrop-filter: blur(100px) saturate(300%) brightness(105%) !important;
+  -webkit-backdrop-filter: blur(100px) saturate(300%) brightness(105%) !important;
+  /* Thick glass edge with strong refraction */
+  border: 2px solid transparent !important;
+  border-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  ) 1 !important;
+  /* Complex glass shadows - multiple light sources */
+  box-shadow: 
+    /* Main shadow */
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    /* Strong top reflection */
+    inset 0 2px 8px rgba(255, 255, 255, 0.8),
+    /* Bottom depth */
+    inset 0 -2px 8px rgba(0, 0, 0, 0.1),
+    /* Left reflection */
+    inset 2px 0 8px rgba(255, 255, 255, 0.5),
+    /* Right shadow */
+    inset -2px 0 8px rgba(0, 0, 0, 0.05),
+    /* Outer glow */
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    /* Far glow */
+    0 0 40px rgba(255, 255, 255, 0.1) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Strong reflection gradient */
+.glass-effect::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  transform: rotate(-10deg);
+  pointer-events: none;
+}
+
+.dark .glass-effect {
+  /* Very transparent dark glass */
+  background: rgba(15, 23, 42, 0.15) !important;
+  /* EXTREME blur for dark mode */
+  backdrop-filter: blur(80px) saturate(250%) contrast(120%) brightness(95%) !important;
+  -webkit-backdrop-filter: blur(80px) saturate(250%) contrast(120%) brightness(95%) !important;
+  /* Glowing glass edge */
+  border: 2px solid transparent !important;
+  border-image: linear-gradient(
+    135deg,
+    rgba(148, 163, 184, 0.6) 0%,
+    rgba(148, 163, 184, 0.3) 50%,
+    rgba(148, 163, 184, 0.1) 100%
+  ) 1 !important;
+  /* Complex dark glass shadows */
+  box-shadow: 
+    /* Deep shadow */
+    0 8px 32px rgba(0, 0, 0, 0.8),
+    /* Top glow */
+    inset 0 2px 8px rgba(148, 163, 184, 0.6),
+    /* Bottom depth */
+    inset 0 -2px 8px rgba(0, 0, 0, 0.4),
+    /* Left glow */
+    inset 2px 0 8px rgba(148, 163, 184, 0.3),
+    /* Right shadow */
+    inset -2px 0 8px rgba(0, 0, 0, 0.2),
+    /* Outer glow */
+    0 0 0 1px rgba(148, 163, 184, 0.3),
+    /* Far glow */
+    0 0 40px rgba(148, 163, 184, 0.2) !important;
+}
+
+.dark .glass-effect::before {
+  background: linear-gradient(
+    135deg,
+    rgba(148, 163, 184, 0.3) 0%,
+    rgba(148, 163, 184, 0.1) 50%,
+    transparent 100%
+  );
+}
+
+
+
+/* Subtle gradient backgrounds for sections */
+.gradient-bg-subtle {
+  background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted) / 0.3) 100%);
+  position: relative;
+}
+
+.dark .gradient-bg-subtle {
+  background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--accent) / 0.2) 100%);
+}
+
+/* Radial gradient background */
+.gradient-bg-radial {
+  background: radial-gradient(
+    circle at 50% 0%,
+    hsl(var(--primary) / 0.05) 0%,
+    hsl(var(--background)) 50%
+  );
+}
+
+.dark .gradient-bg-radial {
+  background: radial-gradient(
+    circle at 50% 0%,
+    hsl(var(--primary) / 0.08) 0%,
+    hsl(var(--background)) 50%
+  );
+}
+
+/* Mesh gradient background for hero sections */
+.gradient-bg-mesh {
+  background: 
+    radial-gradient(at 0% 0%, hsl(var(--primary) / 0.1) 0%, transparent 50%),
+    radial-gradient(at 100% 0%, hsl(var(--secondary) / 0.1) 0%, transparent 50%),
+    radial-gradient(at 100% 100%, hsl(var(--primary) / 0.08) 0%, transparent 50%),
+    radial-gradient(at 0% 100%, hsl(var(--secondary) / 0.08) 0%, transparent 50%),
+    hsl(var(--background));
+}
+
+.dark .gradient-bg-mesh {
+  background: 
+    radial-gradient(at 0% 0%, hsl(var(--primary) / 0.15) 0%, transparent 50%),
+    radial-gradient(at 100% 0%, hsl(var(--secondary) / 0.15) 0%, transparent 50%),
+    radial-gradient(at 100% 100%, hsl(var(--primary) / 0.12) 0%, transparent 50%),
+    radial-gradient(at 0% 100%, hsl(var(--secondary) / 0.12) 0%, transparent 50%),
+    hsl(var(--background));
+}
+
+/* Dot pattern background */
+.bg-dots {
+  background-image: radial-gradient(
+    circle,
+    hsl(var(--foreground) / 0.05) 1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
+}
+
+.dark .bg-dots {
+  background-image: radial-gradient(
+    circle,
+    hsl(var(--foreground) / 0.08) 1px,
+    transparent 1px
+  );
+}
+
+/* Grid pattern background */
+.bg-grid {
+  background-image: 
+    linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.dark .bg-grid {
+  background-image: 
+    linear-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--border) / 0.5) 1px, transparent 1px);
+}
+
+/* Spotlight effect that follows cursor */
+.spotlight-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight-effect::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    hsl(var(--primary) / 0.08),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.spotlight-effect:hover::before {
+  opacity: 1;
+}
+
+.dark .spotlight-effect::before {
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    hsl(var(--primary) / 0.12),
+    transparent 40%
+  );
+}
+
+/* Noise texture overlay for depth */
+.texture-noise {
+  position: relative;
+}
+
+.texture-noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.02;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+.dark .texture-noise::after {
+  opacity: 0.03;
+}
+
+/* Accent border for emphasis */
+.border-accent-gradient {
+  border-image: linear-gradient(135deg, hsl(var(--primary) / 0.5), hsl(var(--secondary) / 0.5)) 1;
+}
+
+/* Glow effect for important elements - SUBTLE */
+.glow-primary {
+  box-shadow: 0 0 12px hsl(var(--primary) / 0.12);
+  transition: box-shadow 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glow-primary:hover {
+  box-shadow: 0 0 16px hsl(var(--primary) / 0.18);
+}
+
+.dark .glow-primary {
+  box-shadow: 0 0 14px hsl(var(--primary) / 0.15);
+}
+
+.dark .glow-primary:hover {
+  box-shadow: 0 0 20px hsl(var(--primary) / 0.22);
+}
+
+.glow-secondary {
+  box-shadow: 0 0 12px hsl(var(--secondary) / 0.12);
+  transition: box-shadow 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glow-secondary:hover {
+  box-shadow: 0 0 16px hsl(var(--secondary) / 0.18);
+}
+
+.dark .glow-secondary {
+  box-shadow: 0 0 14px hsl(var(--secondary) / 0.15);
+}
+
+.dark .glow-secondary:hover {
+  box-shadow: 0 0 40px hsl(var(--secondary) / 0.4);
+}
+
+/* Text gradient effect - SUBTLE & RESPECTFUL */
+.text-gradient {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--foreground)) 0%,
+    hsl(var(--muted-foreground)) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animated text gradient - VERY SUBTLE */
+.text-gradient-animated {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--foreground)) 0%,
+    hsl(var(--muted-foreground)) 50%,
+    hsl(var(--foreground)) 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-text 10s ease-in-out infinite;
+}
+
+@keyframes gradient-text {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Highlight effect on hover */
+.highlight-hover {
+  position: relative;
+  transition: color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.highlight-hover::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    hsl(var(--primary)),
+    hsl(var(--secondary))
+  );
+  transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.highlight-hover:hover::after {
+  width: 100%;
+}
+
+.highlight-hover:hover {
+  color: hsl(var(--primary));
+}
+
+/* Consistent border radius */
+.radius-sm { border-radius: 0.25rem; }
+.radius-md { border-radius: 0.5rem; }
+.radius-lg { border-radius: 0.75rem; }
+.radius-xl { border-radius: 1rem; }
+
+/* Smooth color transitions */
+.transition-colors-smooth {
+  transition: color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth transform transitions */
+.transition-transform-smooth {
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Combined smooth transitions */
+.transition-all-smooth {
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ripple effect for buttons */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.6);
+  transform: scale(0);
+  animation: ripple-animation 600ms ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Ensure buttons can contain ripples */
+button {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Screen Reader Only - Accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Skip to content link */
+.skip-link {
+  @apply sr-only;
+}
+
+.skip-link:focus {
+  @apply not-sr-only absolute top-4 left-4 z-50 px-4 py-2 bg-primary text-primary-foreground rounded-md;
+}
+
+/* Mobile Optimizations */
+@layer utilities {
+  /* Touch-friendly tap targets */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Mobile-optimized spacing */
+  @media (max-width: 768px) {
+    .mobile-compact {
+      padding: 0.75rem !important;
+    }
+
+    .mobile-spacing-sm {
+      gap: 0.75rem !important;
+    }
+
+    .mobile-spacing-md {
+      gap: 1rem !important;
+    }
+
+    .mobile-spacing-lg {
+      gap: 1.5rem !important;
+    }
+
+    /* Reduce font sizes on mobile */
+    .mobile-text-sm {
+      font-size: 0.875rem !important;
+    }
+
+    .mobile-text-base {
+      font-size: 1rem !important;
+    }
+
+    /* Mobile-friendly card padding */
+    .mobile-card-padding {
+      padding: 1rem !important;
+    }
+
+    /* Hide on mobile */
+    .mobile-hidden {
+      display: none !important;
+    }
+
+    /* Full width on mobile */
+    .mobile-full-width {
+      width: 100% !important;
+    }
+
+    /* Reduce chart heights on mobile */
+    .mobile-chart-height {
+      height: 280px !important;
+    }
+  }
+
+  /* Tablet optimizations */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .tablet-spacing {
+      gap: 1.25rem !important;
+    }
+
+    .tablet-chart-height {
+      height: 350px !important;
+    }
+  }
+
+  /* Prevent text selection on interactive elements */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Smooth scrolling for mobile */
+  .smooth-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Hide scrollbar while maintaining scroll functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Safe area insets for notched devices */
+  .safe-area-inset-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-area-inset-left {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .safe-area-inset-right {
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* Mobile-specific performance optimizations */
+@media (max-width: 768px) {
+  /* Reduce animation complexity on mobile */
+  * {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+  }
+
+  /* Optimize rendering */
+  .card,
+  .chart-container {
+    will-change: auto;
+  }
+
+  /* Improve scrolling performance */
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Reduce shadows on mobile for better performance */
+  .shadow-lg {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+  }
+
+  .shadow-xl {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) !important;
+  }
+}
+
+/* ============================================================================
+   REALISTIC GLASS MORPHISM EFFECT
+   Physics-based glass material with proper light refraction
+   ============================================================================ */
+
+.glass-effect {
+  /* Base: Almost completely transparent */
+  background: rgba(255, 255, 255, 0.01) !important;
+  
+  /* Extreme blur with color enhancement */
+  backdrop-filter: blur(120px) saturate(400%) contrast(110%) brightness(102%) !important;
+  -webkit-backdrop-filter: blur(120px) saturate(400%) contrast(110%) brightness(102%) !important;
+  
+  /* Glass edge - gradient border for light refraction */
+  border: 2px solid transparent !important;
+  border-image: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.4) 25%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 75%,
+    rgba(255, 255, 255, 0.05) 100%
+  ) 1 !important;
+  
+  /* Complex shadow system - multiple light sources */
+  box-shadow: 
+    /* Main drop shadow */
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    /* Strong top highlight - light hitting glass */
+    inset 0 3px 12px rgba(255, 255, 255, 0.9),
+    /* Bottom depth shadow */
+    inset 0 -3px 12px rgba(0, 0, 0, 0.08),
+    /* Left edge highlight - side reflection */
+    inset 3px 0 12px rgba(255, 255, 255, 0.6),
+    /* Right edge shadow - depth */
+    inset -3px 0 12px rgba(0, 0, 0, 0.04),
+    /* Outer glow - glass edge definition */
+    0 0 0 1px rgba(255, 255, 255, 0.3),
+    /* Far glow - atmospheric effect */
+    0 0 60px rgba(255, 255, 255, 0.08) !important;
+  
+  position: relative;
+  overflow: hidden;
+}
+
+/* Top reflection gradient - simulates light hitting glass surface */
+.glass-effect::before {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -60%;
+  right: -60%;
+  bottom: 40%;
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.25) 30%,
+    rgba(255, 255, 255, 0.1) 60%,
+    transparent 100%
+  );
+  transform: rotate(-8deg);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Bottom subtle tint - glass thickness effect */
+.glass-effect::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Dark mode glass - NEUTRAL GRAY (NO BLUE) */
+.dark .glass-effect {
+  /* Almost transparent with neutral dark tint */
+  background: rgba(0, 0, 0, 0.02) !important;
+  
+  /* EXTREME blur for dark mode */
+  backdrop-filter: blur(140px) saturate(500%) contrast(125%) brightness(85%) !important;
+  -webkit-backdrop-filter: blur(140px) saturate(500%) contrast(125%) brightness(85%) !important;
+  
+  /* Neutral gray glowing edge */
+  border-image: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(200, 200, 200, 0.6) 25%,
+    rgba(150, 150, 150, 0.4) 50%,
+    rgba(100, 100, 100, 0.2) 75%,
+    rgba(80, 80, 80, 0.1) 100%
+  ) 1 !important;
+  
+  /* Neutral gray glowing shadows */
+  box-shadow: 
+    /* Deep shadow */
+    0 8px 32px rgba(0, 0, 0, 0.9),
+    /* Bright top glow - neutral white */
+    inset 0 4px 16px rgba(255, 255, 255, 0.8),
+    /* Bottom depth */
+    inset 0 -4px 16px rgba(0, 0, 0, 0.5),
+    /* Left bright glow - neutral */
+    inset 4px 0 16px rgba(220, 220, 220, 0.5),
+    /* Right shadow */
+    inset -4px 0 16px rgba(0, 0, 0, 0.3),
+    /* Outer bright glow - neutral */
+    0 0 0 1px rgba(200, 200, 200, 0.5),
+    /* Far atmospheric glow - neutral */
+    0 0 80px rgba(180, 180, 180, 0.25) !important;
+}
+
+/* Dark mode reflection - NEUTRAL WHITE */
+.dark .glass-effect::before {
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(200, 200, 200, 0.3) 30%,
+    rgba(150, 150, 150, 0.15) 60%,
+    transparent 100%
+  );
+}
+
+/* Dark mode bottom tint - NEUTRAL */
+.dark .glass-effect::after {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+}
+
+/* Ensure content stays above pseudo-elements */
+.glass-effect > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* ============================================================================
+   ADVANCED THEME DEMO ANIMATIONS
+   Additional animations for expandable cards, modals, and interactive elements
+   ============================================================================ */
+
+/* Modal backdrop fade in */
+@keyframes modal-backdrop-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-modal-backdrop {
+  animation: modal-backdrop-fade 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Slide down animation for expanded content */
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Bounce in animation for modals */
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  50% {
+    transform: scale(1.02) translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-bounce-in {
+  animation: bounce-in 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Glow pulse for interactive elements */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px hsl(var(--primary) / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.6);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Rotate animation for loading states */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-rotate {
+  animation: rotate 1s linear infinite;
+}
+
+/* Slide in from right */
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Slide in from left */
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Progress bar fill animation */
+@keyframes progress-fill {
+  from {
+    width: 0%;
+  }
+}
+
+.animate-progress-fill {
+  animation: progress-fill 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Heartbeat animation for critical alerts */
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  10%, 30% {
+    transform: scale(1.1);
+  }
+  20%, 40% {
+    transform: scale(1);
+  }
+}
+
+.animate-heartbeat {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+/* Wiggle animation for attention */
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out;
+}
+
+/* Expand width animation */
+@keyframes expand-width {
+  from {
+    width: 0%;
+  }
+}
+
+.animate-expand-width {
+  animation: expand-width 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fade in up with delay support */
+@keyframes fade-in-up-delayed {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up-delayed 500ms cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+
+/* Stagger delays for multiple elements */
+.stagger-delay-1 { animation-delay: 50ms; }
+.stagger-delay-2 { animation-delay: 100ms; }
+.stagger-delay-3 { animation-delay: 150ms; }
+.stagger-delay-4 { animation-delay: 200ms; }
+.stagger-delay-5 { animation-delay: 250ms; }
+.stagger-delay-6 { animation-delay: 300ms; }
+
+/* Hover lift effect */
+.hover-lift {
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+/* Smooth color transition */
+.smooth-color-transition {
+  transition: color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Interactive element states */
+.interactive-element {
+  position: relative;
+  overflow: hidden;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.interactive-element::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: hsl(var(--primary) / 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 600ms, height 600ms;
+}
+
+.interactive-element:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Ensure content stays above ripple effect */
+.interactive-element > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Advanced Interactive Demo Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+/* Smooth transitions for all interactive elements */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Slow gradient animation for banner backgrounds */
+@keyframes gradient-slow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-slow {
+  background-size: 200% 200%;
+  animation: gradient-slow 15s ease infinite;
 }

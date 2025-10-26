@@ -10,7 +10,8 @@ import {
 } from "recharts";
 import { useHomeDemolitionsSummary, useWestBankData } from "./hooks/useGoodShepherdData";
 import { getTopN } from "./utils/dataAggregation";
-import { DataQualityBadge, DataLoadingBadge } from "./components/ui/data-quality-badge";
+import { UnifiedBadge as DataQualityBadge } from "./components/ui/unified-badge";
+import { UnifiedBadge as DataLoadingBadge } from "./components/ui/unified-badge";
 import { useEconomicSnapshot, useLatestValue, calculateYoYChange, transformForChart } from "./hooks/useWorldBankData";
 
 interface WestBankOverviewProps {
